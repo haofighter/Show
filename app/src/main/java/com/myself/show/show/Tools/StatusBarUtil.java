@@ -42,7 +42,7 @@ public class StatusBarUtil {
      * @return
      */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static void setAnimal(View v ,long t,boolean isDismis){
+    public static void setAnimal(View v ,long t,boolean isDismis,Animator.AnimatorListener animatorListener){
         final int width = v.getMeasuredWidth();
         final int height = v.getMeasuredHeight();
         final float radius = (float)Math.sqrt(width*width + height*height) / 2;//半径
@@ -52,7 +52,9 @@ public class StatusBarUtil {
         }else{
             animator=ViewAnimationUtils.createCircularReveal(v, width / 2, height / 2, 0, radius);
         }
-
+        if(animatorListener!=null) {
+            animator.addListener(animatorListener);
+        }
         animator.setDuration(t);
         animator.start();
     }

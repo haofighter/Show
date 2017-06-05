@@ -1,4 +1,4 @@
-package com.myself.show.show.ViewUtil.FlowingDraw;
+package com.myself.show.show.View.FlowingDraw;
 
 import android.annotation.SuppressLint;
 import android.os.Build;

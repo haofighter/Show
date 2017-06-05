@@ -1,5 +1,5 @@
 
-package com.myself.show.show.ViewUtil;
+package com.myself.show.show.View;
 
 import android.content.Context;
 import android.graphics.Canvas;
