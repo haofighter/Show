@@ -1,4 +1,4 @@
-package com.myself.show.show;
+package com.myself.show.show.Ui;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.myself.show.show.Ui.MainActivity;
+import com.myself.show.show.R;
 import com.myself.show.show.View.GuideVideoView;
 import com.myself.show.show.base.BaseActivity;
 

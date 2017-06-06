@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GuideActivity" />
+<activity android:name=".Ui.GuideActivity"/>
         <activity
             android:name=".Ui.Login.LoginActivity"
             android:label="@string/title_activity_login"
