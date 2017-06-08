@@ -20,7 +20,7 @@
             android:id="@+id/na_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></com.myself.show.show.View.NavigationBar>
-
+  
         <FrameLayout
             android:id="@+id/content_layout"
             android:layout_width="match_parent"

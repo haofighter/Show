@@ -1,10 +1,14 @@
 package com.myself.show.show.Ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,8 +41,31 @@ public class GuideActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guide,ActivityBarType.all_none);
+        setContentView(R.layout.activity_guide,null);
         setContent();
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.INTERNET) != PackageManager.PERMISSION_DENIED) {
+            // 申请CAMERA权限
+            ActivityCompat.requestPermissions(this,
+                    new String[] { Manifest.permission.CAMERA }, 3);
+        } else {
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (3 == requestCode) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 授权
+
+            } else {
+
+            }
+        }
     }
 
 

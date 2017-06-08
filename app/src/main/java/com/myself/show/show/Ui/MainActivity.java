@@ -5,20 +5,27 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
 import com.myself.show.show.Ui.Login.LoginActivity;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.customview.ShadowLayout;
+import com.myself.show.show.net.RetrofitManager;
+import com.myself.show.show.net.responceBean.LoginResponse;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends BaseActivity {
@@ -51,7 +58,6 @@ public class MainActivity extends BaseActivity {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onResume() {
-
         super.onResume();
     }
 
@@ -71,7 +77,21 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animator) {
-                        startActivity(LoginActivity.class);
+
+                        RetrofitManager.builder(MainActivity.this).login("123456","app_test").subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<LoginResponse>() {
+                                    @Override
+                                    public void call(LoginResponse mLoginBean) {
+                                        Toast.makeText(MainActivity.this, "成功"+mLoginBean.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        Log.e("错误", throwable.toString());
+                                        Toast.makeText(MainActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                                    }
+                                });;
                     }
 
                     @Override
@@ -92,6 +112,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.first)
     public void onClick() {
-        startActivity(SlidingActivity.class);
+        startActivity(LoginActivity.class);
     }
 }

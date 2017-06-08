@@ -4,7 +4,7 @@
     android:id="@+id/activity_guide"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.hao.infinitestart.personalsignproject.GuideActivity">
+    >
 
     <ImageView
         android:id="@+id/guide_show"
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone">
-    <com.hao.infinitestart.personalsignproject.View.GuideVideoView
+    <com.myself.show.show.View.GuideVideoView
         android:id="@+id/gvv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
