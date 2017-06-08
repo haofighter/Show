@@ -4,10 +4,7 @@ package com.myself.show.show.net;
 import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
-import com.myself.show.show.net.responceBean.BaseResponse;
-import com.myself.show.show.net.responceBean.HangYeBean;
 import com.myself.show.show.net.responceBean.LoginResponse;
-import com.myself.show.show.net.responceBean.response;
 
 import java.util.concurrent.TimeUnit;
 
@@ -60,25 +57,25 @@ public class RetrofitManager {
 //        return mService.register(mobile, password, sex, age, city, head_portrait, industry_id, user_name);
 //    }
 
-    public Observable<HangYeBean> getHangYe() {
-        return mService.getHangYe();
-    }
-
-    public Observable<BaseResponse> getToken() {
-        return mService.getToken();
-    }
+//    public Observable<HangYeBean> getHangYe() {
+//        return mService.getHangYe();
+//    }
+//
+//    public Observable<BaseResponse> getToken() {
+//        return mService.getToken();
+//    }
 
 //    public Observable<LoginBean> SaveImage(String s) {
 //        return mService.SaveImage(s);
 //    }
 
-    public Observable<response> WriteInfo(String user_id, String sign, String nick_name, String avatar) {
-        return mService.WriteInfo(user_id, sign, nick_name, avatar);
-    }
-
-    public Observable<response> WriteInfo1(String nick_name, String avatar) {
-        return mService.WriteInfo1(nick_name, avatar);
-    }
+//    public Observable<response> WriteInfo(String user_id, String sign, String nick_name, String avatar) {
+//        return mService.WriteInfo(user_id, sign, nick_name, avatar);
+//    }
+//
+//    public Observable<response> WriteInfo1(String nick_name, String avatar) {
+//        return mService.WriteInfo1(nick_name, avatar);
+//    }
 
 
     public Observable<LoginResponse> login(String nick_name, String avatar) {
