@@ -1,0 +1,100 @@
+package com.myself.show.show.Ui.music.acitivity;
+
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.myself.show.show.R;
+import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
+import com.myself.show.show.base.BaseActivity;
+import com.myself.show.show.net.RetrofitManager;
+import com.myself.show.show.net.responceBean.WySearchInfo;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
+public class MusicActivityTheme extends BaseActivity {
+
+    @BindView(R.id.search_result_show)
+    RecyclerView searchResultShow;
+    @BindView(R.id.refresh)
+    TwinklingRefreshLayout refresh;
+    @BindView(R.id.search_content)
+    EditText searchContent;
+    private MusicItemAdapter musicItemAdapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_music);
+        ButterKnife.bind(this);
+        setStatuBarColor(R.color.colorPrimaryDark);
+        initView();
+    }
+
+    /**
+     * 初始化界面及完成逻辑
+     */
+    public void initView() {
+        refresh.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                page++;
+                loadDate();
+            }
+        });
+
+         //设置布局管理器
+        searchResultShow.setLayoutManager(new LinearLayoutManager(this));
+        //设置增加或删除条目的动画
+        searchResultShow.setItemAnimator(new DefaultItemAnimator());
+
+        musicItemAdapter = new MusicItemAdapter(this);
+        searchResultShow.setAdapter(musicItemAdapter);
+    }
+
+    public void initDate(WySearchInfo mLoginBean) {
+
+    }
+
+    private String musicType = "100";
+    private int page = 1;
+    private int limit = 10;
+
+    public void loadDate() {
+        if (searchContent.getText().toString().equals("")) {
+            return;
+        }
+        RetrofitManager.builder(this).wyYun(searchContent.getText().toString(), page, limit, musicType).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<WySearchInfo>() {
+                    @Override
+                    public void call(WySearchInfo mLoginBean) {
+                        Toast.makeText(MusicActivityTheme.this, "成功" + mLoginBean.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("错误", throwable.toString());
+                        Toast.makeText(MusicActivityTheme.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+
+    @OnClick(R.id.search)
+    public void onClick() {
+        loadDate();
+    }
+}

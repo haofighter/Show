@@ -5,12 +5,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 
 import com.myself.show.show.R;
-import com.myself.show.show.base.BaseActivity;
+import com.myself.show.show.base.ThemeBaseActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class SlidingActivity extends BaseActivity {
+public class SlidingActivityTheme extends ThemeBaseActivity {
 
     @BindView(R.id.fab)
     FloatingActionButton fab;

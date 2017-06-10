@@ -18,9 +18,19 @@ public class App extends Application {
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
 
+    private static App mInstance = null;
+
+    /**
+     * getInstance
+     */
+    public synchronized static App getInstance() {
+        return mInstance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
         setDatabase();
     }
 

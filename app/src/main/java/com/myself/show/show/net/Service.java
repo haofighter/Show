@@ -1,6 +1,7 @@
 package com.myself.show.show.net;
 
 import com.myself.show.show.net.responceBean.LoginResponse;
+import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -28,6 +29,11 @@ public interface Service {
     @POST("smarthouse/index.php/Api/api/login")
     @FormUrlEncoded
     Observable<LoginResponse> login(@Field("password") String password, @Field("username") String username);
+
+
+  @POST("http://music.163.com/api/search/pc")
+    @FormUrlEncoded
+    Observable<WySearchInfo> wyYun(@Field("s") String searchContent, @Field("offset") int page, @Field("limit") int limit, @Field("type") String type);
 
 
 

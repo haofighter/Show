@@ -16,12 +16,12 @@ import android.widget.RelativeLayout;
 
 import com.myself.show.show.R;
 import com.myself.show.show.View.GuideVideoView;
-import com.myself.show.show.base.BaseActivity;
+import com.myself.show.show.base.ThemeBaseActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class GuideActivity extends BaseActivity {
+public class GuideActivityTheme extends ThemeBaseActivity {
 
     @BindView(R.id.gvv)
     GuideVideoView gvv;
@@ -71,7 +71,7 @@ public class GuideActivity extends BaseActivity {
 
     @OnClick(R.id.btn_start)
     public void onClick(View v) {
-        startActivity(MainActivity.class);
+        startActivity(MainActivityTheme.class);
         finish();
     }
 
@@ -104,7 +104,7 @@ public class GuideActivity extends BaseActivity {
         gvv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                startActivity(MainActivity.class);
+                startActivity(MainActivityTheme.class);
                 finish();
             }
         });

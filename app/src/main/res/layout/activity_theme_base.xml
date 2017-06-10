@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.myself.show.show.View.FlowingDraw.FlowingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flowingDrawer_base"
+    app:edPosition="1"
+    app:edMenuSize="260dp"
+    app:edMenuBackground="@color/colorAccent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clipToPadding="false"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.myself.show.show.View.NavigationBar
+            android:id="@+id/na_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.myself.show.show.View.NavigationBar>
+  
+        <FrameLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"></FrameLayout>
+    </LinearLayout>
+
+    <com.myself.show.show.View.FlowingDraw.FlowingMenuLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/flowing_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="策划de" />
+
+        </FrameLayout>
+    </com.myself.show.show.View.FlowingDraw.FlowingMenuLayout>
+</com.myself.show.show.View.FlowingDraw.FlowingDrawer>

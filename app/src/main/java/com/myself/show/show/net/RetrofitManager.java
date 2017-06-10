@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.myself.show.show.net.responceBean.LoginResponse;
+import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import java.util.concurrent.TimeUnit;
 
@@ -82,6 +83,13 @@ public class RetrofitManager {
 
 
         return mService.login(nick_name, avatar);
+    }
+
+
+    //网易云音乐查询
+    public Observable<WySearchInfo> wyYun(String searchContent, int page, int limit, String type) {
+
+        return mService.wyYun(  searchContent,  page,  limit,  type);
     }
 
 }
