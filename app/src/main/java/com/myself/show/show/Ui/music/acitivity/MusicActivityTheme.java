@@ -23,6 +23,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+//网易云音乐  API  http://www.jianshu.com/p/97e35fa456ce
+
+
 public class MusicActivityTheme extends BaseActivity {
 
     @BindView(R.id.search_result_show)
