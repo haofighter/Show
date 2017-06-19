@@ -47,15 +47,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-    /**
-     * Rx网络框架
-     */
-    //配合Rx使用的网络框架  可以替换为其他的
-    //Rx相关jar包
-    //okhttp相关jar包
-
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.android.support:design:25.3.1'
@@ -73,8 +64,7 @@ dependencies {
     compile 'com.lcodecorex:tkrefreshlayout:1.0.5'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
-
+    compile 'com.github.bumptech.glide:glide:4.0.0-RC0'
 }
 
 

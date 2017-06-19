@@ -49,6 +49,7 @@ public class MusicActivityTheme extends BaseActivity {
      * 初始化界面及完成逻辑
      */
     public void initView() {
+        refresh.setEnableRefresh(false);
         refresh.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
@@ -67,11 +68,16 @@ public class MusicActivityTheme extends BaseActivity {
         searchResultShow.setAdapter(musicItemAdapter);
     }
 
-    public void initDate(WySearchInfo mLoginBean) {
-
+    public void initDate(WySearchInfo wySearchInfo) {
+        if(page!=1){
+            musicItemAdapter.addDate(wySearchInfo.getResult().getSongs());
+        }else{
+            musicItemAdapter.setDate(wySearchInfo.getResult().getSongs());
+        }
+        musicItemAdapter.notifyDataSetChanged();;
     }
 
-    private String musicType = "100";
+    private String musicType = "1";
     private int page = 1;
     private int limit = 10;
 
@@ -83,8 +89,10 @@ public class MusicActivityTheme extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<WySearchInfo>() {
                     @Override
-                    public void call(WySearchInfo mLoginBean) {
-                        Toast.makeText(MusicActivityTheme.this, "成功" + mLoginBean.toString(), Toast.LENGTH_SHORT).show();
+                    public void call(WySearchInfo wySearchInfo) {
+                        initDate(wySearchInfo);
+                        Toast.makeText(MusicActivityTheme.this, "成功" + wySearchInfo.toString(), Toast.LENGTH_SHORT).show();
+                        refresh.finishLoadmore();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -98,6 +106,7 @@ public class MusicActivityTheme extends BaseActivity {
 
     @OnClick(R.id.search)
     public void onClick() {
+        page=1;
         loadDate();
     }
 }

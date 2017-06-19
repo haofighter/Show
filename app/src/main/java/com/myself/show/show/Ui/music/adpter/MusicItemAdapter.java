@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
@@ -42,18 +43,26 @@ public class MusicItemAdapter extends RecyclerView.Adapter {
         View view = minflater.inflate(R.layout.music_item_layout,
                 parent, false);
         MusicItemHolder viewHolder = new MusicItemHolder(view);
-
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+        ((MusicItemHolder)holder).musicTitle.setText(items.get(position).getName());
+        ((MusicItemHolder)holder).musicAuther.setText(items.get(position).getArtists().size()==0?"未知":items.get(position).getArtists().get(0).getName());
+        Glide.with(context).load(items.get(position).getAlbum().getBlurPicUrl()).into(((MusicItemHolder)holder).musicPic);
     }
 
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void addDate(List<WySearchInfo.ResultBean.SongsBean> songs) {
+        if(items==null){
+            items=new ArrayList<>();
+        }
+        items.addAll(songs);
     }
 
 
@@ -67,7 +76,7 @@ public class MusicItemAdapter extends RecyclerView.Adapter {
 
         public MusicItemHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }
