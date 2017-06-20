@@ -39,8 +39,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.myself.show.show.base.ThemeBaseActivity" />
         </activity>
-        <activity android:name=".Ui.music.acitivity.MusicActivityTheme"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Ui.music.acitivity.MusicActivityTheme"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".Ui.music.MusicService.MusicService"
@@ -48,6 +49,7 @@
             android:exported="true" />
 
         <activity android:name=".base.BaseActivity"></activity>
+
     </application>
 
 </manifest>

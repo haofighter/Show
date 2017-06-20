@@ -6,10 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
+import com.myself.show.show.base.BackCall;
+import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import java.util.ArrayList;
@@ -25,10 +28,12 @@ import butterknife.ButterKnife;
 public class MusicItemAdapter extends RecyclerView.Adapter {
     Context context;
     LayoutInflater minflater;
+    BackCall backCall;
 
 
-    public MusicItemAdapter(Context context) {
+    public MusicItemAdapter(Context context, BackCall backCall) {
         this.context = context;
+        this.backCall = backCall;
         minflater = LayoutInflater.from(context);
     }
 
@@ -47,10 +52,16 @@ public class MusicItemAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((MusicItemHolder)holder).musicTitle.setText(items.get(position).getName());
-        ((MusicItemHolder)holder).musicAuther.setText(items.get(position).getArtists().size()==0?"未知":items.get(position).getArtists().get(0).getName());
-        Glide.with(context).load(items.get(position).getAlbum().getBlurPicUrl()).into(((MusicItemHolder)holder).musicPic);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        ((MusicItemHolder) holder).musicTitle.setText(items.get(position).getName());
+        ((MusicItemHolder) holder).musicAuther.setText(items.get(position).getArtists().size() == 0 ? "未知" : items.get(position).getArtists().get(0).getName());
+        Glide.with(context).load(items.get(position).getAlbum().getBlurPicUrl()).into(((MusicItemHolder) holder).musicPic);
+        ((MusicItemHolder) holder).musicItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backCall.backCall(v.getId(), position);
+            }
+        });
     }
 
     @Override
@@ -59,16 +70,24 @@ public class MusicItemAdapter extends RecyclerView.Adapter {
     }
 
     public void addDate(List<WySearchInfo.ResultBean.SongsBean> songs) {
-        if(items==null){
-            items=new ArrayList<>();
+        if (items == null) {
+            items = new ArrayList<>();
         }
         items.addAll(songs);
     }
 
+    public List<WySearchInfo.ResultBean.SongsBean> getDate() {
+        if (items == null) {
+            items = new ArrayList<>();
+        }
+        return items;
+    }
 
     public class MusicItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.music_pic)
         ImageView musicPic;
+        @BindView(R.id.music_item)
+        LinearLayout musicItem;
         @BindView(R.id.music_title)
         TextView musicTitle;
         @BindView(R.id.music_auther)
@@ -76,7 +95,7 @@ public class MusicItemAdapter extends RecyclerView.Adapter {
 
         public MusicItemHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

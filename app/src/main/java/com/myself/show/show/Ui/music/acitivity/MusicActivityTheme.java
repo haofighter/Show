@@ -1,17 +1,24 @@
 package com.myself.show.show.Ui.music.acitivity;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.myself.show.show.R;
+import com.myself.show.show.Ui.music.MusicService.MusicService;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
 import com.myself.show.show.View.Twink.RefreshListenerAdapter;
 import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
+import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.WySearchInfo;
@@ -34,7 +41,9 @@ public class MusicActivityTheme extends BaseActivity {
     TwinklingRefreshLayout refresh;
     @BindView(R.id.search_content)
     EditText searchContent;
+
     private MusicItemAdapter musicItemAdapter;
+    private MusicService musicService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +51,11 @@ public class MusicActivityTheme extends BaseActivity {
         setContentView(R.layout.activity_music);
         ButterKnife.bind(this);
         setStatuBarColor(R.color.colorPrimaryDark);
+        musicService = new MusicService();
+        bindServiceConnection();
         initView();
     }
+
 
     /**
      * 初始化界面及完成逻辑
@@ -61,22 +73,30 @@ public class MusicActivityTheme extends BaseActivity {
             }
         });
 
-         //设置布局管理器
+        //设置布局管理器
         searchResultShow.setLayoutManager(new LinearLayoutManager(this));
         //设置增加或删除条目的动画
         searchResultShow.setItemAnimator(new DefaultItemAnimator());
-
-        musicItemAdapter = new MusicItemAdapter(this);
+        musicItemAdapter = new MusicItemAdapter(this, backCall);
         searchResultShow.setAdapter(musicItemAdapter);
     }
 
+    BackCall backCall = new BackCall() {
+        @Override
+        public void backCall(int tag, Object... obj) {
+            Log.i("播放的歌曲",musicItemAdapter.getDate().get((int)obj[0]).getMp3Url());
+            musicService.playMusic(musicItemAdapter.getDate().get((int)obj[0]).getMp3Url());
+        }
+    };
+
     public void initDate(WySearchInfo wySearchInfo) {
-        if(page!=1){
+        if (page != 1) {
             musicItemAdapter.addDate(wySearchInfo.getResult().getSongs());
-        }else{
+        } else {
             musicItemAdapter.setDate(wySearchInfo.getResult().getSongs());
         }
-        musicItemAdapter.notifyDataSetChanged();;
+        musicItemAdapter.notifyDataSetChanged();
+        ;
     }
 
     private String musicType = "1";
@@ -84,9 +104,11 @@ public class MusicActivityTheme extends BaseActivity {
     private int limit = 10;
 
     public void loadDate() {
-        if (searchContent.getText().toString().equals("")) {
+        String searchStr = "";
+        if (searchContent.getText().toString().equals("") || searchContent.getText().toString().equals(searchStr)) {
             return;
         }
+        searchStr = searchContent.getText().toString();
         RetrofitManager.builder(this).wyYun(searchContent.getText().toString(), page, limit, musicType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<WySearchInfo>() {
@@ -106,9 +128,44 @@ public class MusicActivityTheme extends BaseActivity {
     }
 
 
-    @OnClick(R.id.search)
-    public void onClick() {
-        page=1;
-        loadDate();
+    private ServiceConnection sc = new ServiceConnection() {
+
+        public MusicService musicService;
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            musicService = ((MusicService.MusicBinder) iBinder).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            musicService = null;
+        }
+    };
+
+    private void bindServiceConnection() {
+        Intent intent = new Intent(MusicActivityTheme.this, MusicService.class);
+        startService(intent);
+        bindService(intent, sc, this.BIND_AUTO_CREATE);
+    }
+
+    @OnClick({R.id.search, R.id.run_song_name, R.id.before, R.id.pause, R.id.next, R.id.close})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.search:
+                page = 1;
+                loadDate();
+                break;
+            case R.id.run_song_name:
+                break;
+            case R.id.before:
+                break;
+            case R.id.pause:
+                break;
+            case R.id.next:
+                break;
+            case R.id.close:
+                break;
+        }
     }
 }
