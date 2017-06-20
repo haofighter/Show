@@ -8,10 +8,10 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
+import com.myself.show.show.View.Twink.RefreshListenerAdapter;
+import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.WySearchInfo;
@@ -50,6 +50,8 @@ public class MusicActivityTheme extends BaseActivity {
      */
     public void initView() {
         refresh.setEnableRefresh(false);
+        refresh.setOverScrollTopShow(false);
+        refresh.setEnableOverScroll(false);//禁止界面回弹  可去掉刷新效果
         refresh.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onLoadMore(TwinklingRefreshLayout refreshLayout) {

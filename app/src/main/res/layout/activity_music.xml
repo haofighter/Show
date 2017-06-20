@@ -35,7 +35,7 @@
             android:background="@mipmap/search" />
     </LinearLayout>
 
-    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+    <com.myself.show.show.View.Twink.TwinklingRefreshLayout
         android:id="@+id/refresh"
 
         android:layout_width="match_parent"
@@ -45,5 +45,5 @@
             android:id="@+id/search_result_show"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+    </com.myself.show.show.View.Twink.TwinklingRefreshLayout>
 </LinearLayout>
