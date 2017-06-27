@@ -21,7 +21,13 @@ import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
+import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
+
+import org.ow2.util.base64.Base64;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,8 +90,25 @@ public class MusicActivityTheme extends BaseActivity {
     BackCall backCall = new BackCall() {
         @Override
         public void backCall(int tag, Object... obj) {
-            Log.i("播放的歌曲",musicItemAdapter.getDate().get((int)obj[0]).getMp3Url());
-            musicService.playMusic(musicItemAdapter.getDate().get((int)obj[0]).getMp3Url());
+            RetrofitManager.builder(MusicActivityTheme.this).musicPath(musicItemAdapter.getDate().get((int)obj[0]).getId()).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<MusicPath>() {
+                        @Override
+                        public void call(MusicPath musicPath) {
+                            musicService.playMusic(musicPath.getData().getUrl());
+                            Toast.makeText(MusicActivityTheme.this, "成功" + musicPath.getData().getUrl(), Toast.LENGTH_SHORT).show();
+                            refresh.finishLoadmore();
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            Log.e("错误", throwable.toString());
+                            Toast.makeText(MusicActivityTheme.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+//            Log.i("播放的歌曲",musicItemAdapter.getDate().get((int)obj[0]).getMp3Url());
+//            Log.i("播放的歌曲","http://m2.music.126.net/" + params + "/" + input + ".mp3");
+
         }
     };
 
@@ -149,6 +172,12 @@ public class MusicActivityTheme extends BaseActivity {
         bindService(intent, sc, this.BIND_AUTO_CREATE);
     }
 
+    @Override
+    protected void onDestroy() {
+        unbindService(sc);
+        super.onDestroy();
+    }
+
     @OnClick({R.id.search, R.id.run_song_name, R.id.before, R.id.pause, R.id.next, R.id.close})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -159,12 +188,16 @@ public class MusicActivityTheme extends BaseActivity {
             case R.id.run_song_name:
                 break;
             case R.id.before:
+
                 break;
             case R.id.pause:
+                musicService.stop();
                 break;
             case R.id.next:
+
                 break;
             case R.id.close:
+
                 break;
         }
     }

@@ -1,8 +1,14 @@
 package com.myself.show.show.base;
 
 import android.app.Application;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.IBinder;
 
+import com.myself.show.show.Ui.music.MusicService.MusicService;
+import com.myself.show.show.Ui.music.acitivity.MusicActivityTheme;
 import com.myself.show.show.sql.DaoMaster;
 import com.myself.show.show.sql.DaoSession;
 
@@ -17,7 +23,7 @@ public class App extends Application {
     private SQLiteDatabase db;
     private DaoMaster mDaoMaster;
     private DaoSession mDaoSession;
-
+    private MusicService musicService;
     private static App mInstance = null;
 
     /**
@@ -34,6 +40,42 @@ public class App extends Application {
         setDatabase();
     }
 
+    public MusicService getMediaPlayerServer(){
+        if(musicService==null) {
+            musicService = new MusicService();
+//            bindServiceConnection();
+        }
+        return musicService;
+    }
+
+    private ServiceConnection sc = new ServiceConnection() {
+
+        public MusicService musicService;
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            musicService = ((MusicService.MusicBinder) iBinder).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            musicService = null;
+        }
+    };
+
+    private void bindServiceConnection() {
+        Intent intent = new Intent(this, MusicService.class);
+        startService(intent);
+        bindService(intent, sc, this.BIND_AUTO_CREATE);
+    }
+
+
+    //程序终止时
+    @Override
+    public void onTerminate() {
+        unbindService(sc);
+        super.onTerminate();
+    }
 
     /**
      * 设置greenDao

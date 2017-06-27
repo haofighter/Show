@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.myself.show.show.net.responceBean.LoginResponse;
+import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import java.util.concurrent.TimeUnit;
@@ -47,7 +48,6 @@ public class RetrofitManager {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         mOkHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
-                //
                 .addNetworkInterceptor(new StethoInterceptor())
                 .retryOnConnectionFailure(true)
                 .connectTimeout(15, TimeUnit.SECONDS)
@@ -90,6 +90,11 @@ public class RetrofitManager {
     public Observable<WySearchInfo> wyYun(String searchContent, int page, int limit, String type) {
 
         return mService.wyYun(  searchContent,  page,  limit,  type);
+    }
+//网易云音乐下载地址
+    public Observable<MusicPath>  musicPath(int musicId) {
+
+        return mService.musicPath( musicId );
     }
 
 }

@@ -1,11 +1,15 @@
 package com.myself.show.show.net;
 
 import com.myself.show.show.net.responceBean.LoginResponse;
+import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -31,10 +35,13 @@ public interface Service {
     Observable<LoginResponse> login(@Field("password") String password, @Field("username") String username);
 
 
-  @POST("http://music.163.com/api/search/pc")
+    @POST("http://music.163.com/api/search/pc")
     @FormUrlEncoded
     Observable<WySearchInfo> wyYun(@Field("s") String searchContent, @Field("offset") int page, @Field("limit") int limit, @Field("type") String type);
 
+
+    @GET("http://music.163.com/api/song/enhance/download/url?br=320000")
+    Observable<MusicPath> musicPath(@Query("id") int id);
 
 
 //    @GET( "https://wxt.hbglky.com/oauth-provider/oauth/token?client_id=drv-client&client_secret=D76A9FA10B87&grant_type=client_credentials&scope=pub_api")
