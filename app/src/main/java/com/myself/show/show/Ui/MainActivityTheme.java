@@ -1,6 +1,7 @@
 package com.myself.show.show.Ui;
 
 import android.animation.Animator;
+import android.app.ActivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -49,6 +50,7 @@ public class MainActivityTheme extends ThemeBaseActivity {
         na_bar.setTitle("标题栏");
         na_bar.setLeftBack();
         view_shadow.setIsShadowed(true);//是否显示阴影
+//        ActivityManager.RunningServiceInfo();
 
     }
 

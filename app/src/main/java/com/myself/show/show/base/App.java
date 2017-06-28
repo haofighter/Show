@@ -6,11 +6,24 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.myself.show.show.Ui.music.MusicService.MusicService;
 import com.myself.show.show.Ui.music.acitivity.MusicActivityTheme;
+import com.myself.show.show.net.RetrofitManager;
+import com.myself.show.show.net.responceBean.MusicPath;
+import com.myself.show.show.net.responceBean.WySearchInfo;
 import com.myself.show.show.sql.DaoMaster;
 import com.myself.show.show.sql.DaoSession;
+import com.myself.show.show.utils.ToastUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -25,6 +38,11 @@ public class App extends Application {
     private DaoSession mDaoSession;
     private MusicService musicService;
     private static App mInstance = null;
+    private List<WySearchInfo.ResultBean.SongsBean> songsList=new ArrayList<>();
+
+    public List<WySearchInfo.ResultBean.SongsBean>  getSongsList(){
+        return songsList;
+    }
 
     /**
      * getInstance
@@ -46,6 +64,10 @@ public class App extends Application {
 //            bindServiceConnection();
         }
         return musicService;
+    }
+
+    public void setMediaPlayerServer(MusicService musicService){
+        this.musicService = musicService;
     }
 
     private ServiceConnection sc = new ServiceConnection() {

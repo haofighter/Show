@@ -18,6 +18,7 @@ import com.myself.show.show.Ui.music.MusicService.MusicService;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
 import com.myself.show.show.View.Twink.RefreshListenerAdapter;
 import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
+import com.myself.show.show.base.App;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
@@ -90,25 +91,7 @@ public class MusicActivityTheme extends BaseActivity {
     BackCall backCall = new BackCall() {
         @Override
         public void backCall(int tag, Object... obj) {
-            RetrofitManager.builder(MusicActivityTheme.this).musicPath(musicItemAdapter.getDate().get((int)obj[0]).getId()).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<MusicPath>() {
-                        @Override
-                        public void call(MusicPath musicPath) {
-                            musicService.playMusic(musicPath.getData().getUrl());
-                            Toast.makeText(MusicActivityTheme.this, "成功" + musicPath.getData().getUrl(), Toast.LENGTH_SHORT).show();
-                            refresh.finishLoadmore();
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            Log.e("错误", throwable.toString());
-                            Toast.makeText(MusicActivityTheme.this, "网络连接失败", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-//            Log.i("播放的歌曲",musicItemAdapter.getDate().get((int)obj[0]).getMp3Url());
-//            Log.i("播放的歌曲","http://m2.music.126.net/" + params + "/" + input + ".mp3");
-
+           App.getInstance().getMediaPlayerServer().GetMusicUrlPlay(musicItemAdapter.getDate().get((int)obj[0]).getId());
         }
     };
 

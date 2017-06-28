@@ -8,10 +8,18 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.myself.show.show.base.App;
+import com.myself.show.show.net.RetrofitManager;
+import com.myself.show.show.net.responceBean.MusicPath;
+import com.myself.show.show.net.responceBean.WySearchInfo;
 import com.myself.show.show.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class MusicService extends Service {
 
@@ -78,6 +86,28 @@ public class MusicService extends Service {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void next(){
+
+    }
+
+
+    public  void  GetMusicUrlPlay(int musicId){
+        RetrofitManager.builder(getApplicationContext()).musicPath(musicId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<MusicPath>() {
+                    @Override
+                    public void call(MusicPath musicPath) {
+                    playMusic(musicPath.getData().getUrl());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("错误", throwable.toString());
+                        ToastUtils.showMessage("网络连接失败");
+                    }
+                });
     }
 
 }
