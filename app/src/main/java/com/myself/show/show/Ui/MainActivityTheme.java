@@ -16,6 +16,7 @@ import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
 import com.myself.show.show.Ui.Login.LoginActivityTheme;
 import com.myself.show.show.Ui.music.acitivity.MusicActivityTheme;
+import com.myself.show.show.base.App;
 import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.customview.ShadowLayout;
 
@@ -44,13 +45,12 @@ public class MainActivityTheme extends ThemeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main, null);
-        setFlowingLayout(R.layout.activity_login);
-        setFLowingLayoutBackGround(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         ButterKnife.bind(this);
         na_bar.setTitle("标题栏");
         na_bar.setLeftBack();
         view_shadow.setIsShadowed(true);//是否显示阴影
 //        ActivityManager.RunningServiceInfo();
+
 
     }
 
@@ -71,7 +71,6 @@ public class MainActivityTheme extends ThemeBaseActivity {
                 StatusBarUtil.setAnimal(button, 2000l, false, new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animator) {
-
                     }
 
                     @Override

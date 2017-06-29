@@ -35,22 +35,15 @@ public class MusicService extends Service {
         }
     }
 
-    public static MediaPlayer mp = new MediaPlayer();
-
-    public MusicService() {
-        try {
-            mp.prepare();
-            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
-                }
-            });
-        } catch (Exception e) {
-            Log.d("hint", "can't get to the song");
-            e.printStackTrace();
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if(mp==null){
+            mp = new MediaPlayer();
         }
     }
+
+    public static MediaPlayer mp = new MediaPlayer();
 
     public void playOrPause() {
         if (mp.isPlaying()) {
@@ -92,9 +85,14 @@ public class MusicService extends Service {
 
     }
 
+    public void before(){
 
-    public  void  GetMusicUrlPlay(int musicId){
-        RetrofitManager.builder(getApplicationContext()).musicPath(musicId).subscribeOn(Schedulers.io())
+    }
+
+
+    public  void  GetMusicUrlPlay(int index){
+        ;
+        RetrofitManager.builder(this).musicPath(App.getInstance().getSongsList().get(index).getId()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<MusicPath>() {
                     @Override

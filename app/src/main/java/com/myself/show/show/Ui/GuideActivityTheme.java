@@ -27,7 +27,6 @@ public class GuideActivityTheme extends ThemeBaseActivity {
     GuideVideoView gvv;
     @BindView(R.id.btn_start)
     Button btn_start;
-
     @BindView(R.id.activity_guide)
     RelativeLayout activity_guide;
     @BindView(R.id.layout_video)
@@ -35,7 +34,6 @@ public class GuideActivityTheme extends ThemeBaseActivity {
     @BindView(R.id.guide_show)
     ImageView guide_show;
 
-    private int guideType = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override

@@ -21,6 +21,7 @@ import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.App;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseActivity;
+import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
@@ -61,6 +62,7 @@ public class MusicActivityTheme extends BaseActivity {
         musicService = new MusicService();
         bindServiceConnection();
         initView();
+        App.getInstance().setMusicMediaSever(musicService);
     }
 
 
@@ -91,7 +93,7 @@ public class MusicActivityTheme extends BaseActivity {
     BackCall backCall = new BackCall() {
         @Override
         public void backCall(int tag, Object... obj) {
-           App.getInstance().getMediaPlayerServer().GetMusicUrlPlay(musicItemAdapter.getDate().get((int)obj[0]).getId());
+            musicService.GetMusicUrlPlay(musicItemAdapter.getDate().get((int)obj[0]).getId());
         }
     };
 

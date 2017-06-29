@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -38,16 +39,18 @@ public class App extends Application {
     private DaoSession mDaoSession;
     private MusicService musicService;
     private static App mInstance = null;
-    private List<WySearchInfo.ResultBean.SongsBean> songsList=new ArrayList<>();
+    private List<WySearchInfo.ResultBean.SongsBean> songsList = new ArrayList<>();
 
-    public List<WySearchInfo.ResultBean.SongsBean>  getSongsList(){
+    public List<WySearchInfo.ResultBean.SongsBean> getSongsList() {
         return songsList;
     }
 
     /**
      * getInstance
      */
-    public synchronized static App getInstance() {
+    public static App getInstance() {
+        if (mInstance == null)
+            mInstance = new App();
         return mInstance;
     }
 
@@ -56,18 +59,17 @@ public class App extends Application {
         super.onCreate();
         mInstance = this;
         setDatabase();
+        createMusicServie();
     }
 
-    public MusicService getMediaPlayerServer(){
-        if(musicService==null) {
-            musicService = new MusicService();
-//            bindServiceConnection();
-        }
+
+    public void createMusicServie() {
+        musicService = new MusicService();
+        bindServiceConnection();
+    }
+
+    public MusicService getMusicServie() {
         return musicService;
-    }
-
-    public void setMediaPlayerServer(MusicService musicService){
-        this.musicService = musicService;
     }
 
     private ServiceConnection sc = new ServiceConnection() {
@@ -120,6 +122,12 @@ public class App extends Application {
 
     public SQLiteDatabase getDb() {
         return db;
+    }
+
+    MusicService musicMediaSever;
+
+    public void setMusicMediaSever(MusicService musicMediaSever) {
+        this.musicMediaSever = musicMediaSever;
     }
 }
 

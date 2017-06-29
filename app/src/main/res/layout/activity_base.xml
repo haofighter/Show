@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.myself.show.show.View.FlowingDraw.FlowingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/all_base_view"
+    android:id="@+id/flowingDrawer_base"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.myself.show.show.base.BaseActivity">
-<RelativeLayout
-    android:id="@+id/show_content"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"></RelativeLayout>
-</RelativeLayout>
+    android:background="@color/white"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    app:edMenuBackground="@color/colorAccent"
+    app:edMenuSize="260dp"
+    app:edPosition="1">
+
+    <RelativeLayout
+        android:id="@+id/show_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></RelativeLayout>
+
+    <com.myself.show.show.View.FlowingDraw.FlowingMenuLayout
+        android:id="@+id/flowing_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/flowing_content_layout" />
+    </com.myself.show.show.View.FlowingDraw.FlowingMenuLayout>
+</com.myself.show.show.View.FlowingDraw.FlowingDrawer>

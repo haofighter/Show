@@ -3,11 +3,14 @@ package com.myself.show.show.base;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -20,6 +23,8 @@ import com.myself.show.show.View.FlowingDraw.ElasticDrawer;
 import com.myself.show.show.View.FlowingDraw.FlowingDrawer;
 import com.myself.show.show.View.NavigationBar;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,18 +36,24 @@ public class ThemeBaseActivity extends BaseActivity {
     @BindView(R.id.na_bar)
     protected NavigationBar na_bar;
 
-    @BindView(R.id.flowingDrawer_base)
-    public FlowingDrawer base;
-
-
     protected FrameLayout content_layout;
-    private FrameLayout flowing_content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+
+//        List<ActivityManager.RunningServiceInfo> runningServiceInfos = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getRunningServices(Integer.MAX_VALUE);
+//
+//        for (int i = 0; i < runningServiceInfos.size(); i++) {
+//            Log.i("正在运行的服务", runningServiceInfos.get(i).service.getPackageName()+"========"+getApplicationContext().getPackageName());
+//            if(runningServiceInfos.get(i).service.getPackageName().equals(getApplicationContext().getPackageName())){
+//                Log.i("============", runningServiceInfos.get(i).service.toString());
+//            }
+//
+//        }
     }
+
 
 
     /**
@@ -75,47 +86,20 @@ public class ThemeBaseActivity extends BaseActivity {
         }
     }
 
-    public void  setFlowingShow(boolean show){
-        if(show){
-            base.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
-        }else{
-            base.setTouchMode(ElasticDrawer.TOUCH_MODE_NONE);
-        }
-
-    }
-
 
 
     public void setContentView(View v) {
         View view = LayoutInflater.from(this).inflate(R.layout.activity_theme_base, null);
         content_layout = (FrameLayout) view.findViewById(R.id.content_layout);
-        flowing_content = (FrameLayout) view.findViewById(R.id.flowing_content);
         content_layout.addView(v);
         super.setContentView(view);
         ButterKnife.bind(this);
         setToolbarColor(-1);
-        base.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
         setActivityBar();
     }
 
-    protected void setFlowingLayout(int layoutId) {
-        View view = LayoutInflater.from(this).inflate(layoutId, null);
-        setFlowingLayout(view);
-    }
-
-    protected void setFlowingLayout(View layout) {
-        if (flowing_content != null) {
-            flowing_content.addView(layout);
-        } else {
-            throw new NullPointerException("侧滑布局是空的,请确实是否初始化了布局!");
-        }
-    }
 
 
-    //设置侧滑栏的颜色
-    protected  void  setFLowingLayoutBackGround(int color){
-        StatusBarUtil.changeViewColor(flowing_content, color);
-    }
 
 
     protected void setContentView(int layoutResID, ActivityBarType activityBarType) {
@@ -145,9 +129,8 @@ public class ThemeBaseActivity extends BaseActivity {
     protected void setStatuBarSteep() {
         na_bar.setPadding(0, StatusBarUtil.getStatusBarHight(this), 0, 0);
         StatusBarUtil.setTranslucent(this);
-        StatusBarUtil.setColor(this, ContextCompat.getColor(this,R.color.traslant));
+        StatusBarUtil.setColor(this, ContextCompat.getColor(this, R.color.traslant));
     }
-
 
 
     //设置导航栏的颜色
