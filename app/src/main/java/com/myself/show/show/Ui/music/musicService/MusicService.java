@@ -7,6 +7,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.myself.show.show.Ui.music.listener.OnSongChangeListener;
 import com.myself.show.show.base.App;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.MusicPath;
@@ -32,6 +33,15 @@ public class MusicService extends Service {
 
     public int getRunIndex() {
         return index;
+    }
+    OnSongChangeListener onSongChangeListener=new OnSongChangeListener() {
+        @Override
+        public void onChange() {
+
+        }
+    };
+    public void setOnSongChangeListener(OnSongChangeListener onSongChangeListener) {
+        this.onSongChangeListener=onSongChangeListener;
     }
 
     public class MusicBinder extends Binder {
@@ -64,11 +74,13 @@ public class MusicService extends Service {
 
 
     public void playOrPause() {
+
         if (mp.isPlaying()) {
             mp.pause();
         } else {
             mp.start();
         }
+        onSongChangeListener.onChange();
     }
 
     public void playMusic(String str) {
@@ -82,6 +94,7 @@ public class MusicService extends Service {
             });
             mp.setDataSource(str);
             mp.prepare();
+            onSongChangeListener.onChange();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,6 +106,7 @@ public class MusicService extends Service {
             try {
                 mp.prepare();
                 mp.seekTo(0);
+                onSongChangeListener.onChange();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -104,6 +118,7 @@ public class MusicService extends Service {
         if (index >= App.getInstance().getSongsList().size()) {
             index = 0;
         }
+        GetMusicUrlPlay();
     }
 
     public void before() {

@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
 import com.myself.show.show.View.CircleImageView;
@@ -60,12 +61,20 @@ public class BaseActivity extends AppCompatActivity {
         super.setContentView(base);
     }
 
+
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         View content = LayoutInflater.from(this).inflate(layoutResID, null);
         setContentView(content);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(isSetMySelfFlowingLayout){
+            initDefaultFlow();
+        }
+    }
 
     /**
      * 设置状态栏颜色
@@ -93,21 +102,30 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    //设置默认播放界面数据
+    private void initDefaultFlow() {
+        if(App.getInstance().getMusicServie().getMediaPlayer().isPlaying()){
+            Glide.with(BaseActivity.this).load(App.getInstance().getRunMusicInfo().getAlbum().getBlurPicUrl()).into(musicItemHolder.music_image_show);
+            Glide.with(BaseActivity.this).load(R.mipmap.pause).into(musicItemHolder.playorpouse);
+            musicItemHolder.sing_song_arthur.setText(App.getInstance().getRunMusicInfo().getArtists().get(0).getName());
+            musicItemHolder.sing_song_name.setText(App.getInstance().getRunMusicInfo().getName());
+        }
+    }
 
 
-//    public void musicClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.before:
-//                App.getInstance().getMusicServie().before();
-//                break;
-//            case R.id.playorpouse:
-//                App.getInstance().getMusicServie().playOrPause();
-//                break;
-//            case R.id.next:
-//                App.getInstance().getMusicServie().next();
-//                break;
-//        }
-//    }
+    public void musicClick(View view) {
+        switch (view.getId()) {
+            case R.id.before:
+                App.getInstance().getMusicServie().before();
+                break;
+            case R.id.playorpouse:
+                App.getInstance().getMusicServie().playOrPause();
+                break;
+            case R.id.next:
+                App.getInstance().getMusicServie().next();
+                break;
+        }
+    }
 
 
     //将侧滑设置成默认界面
@@ -132,8 +150,6 @@ public class BaseActivity extends AppCompatActivity {
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         setFlowingLayout(view);
     }
-
-
 
 
     /**

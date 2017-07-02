@@ -6,17 +6,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 
 import com.myself.show.show.Ui.music.musicService.MusicService;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 import com.myself.show.show.sql.DaoMaster;
 import com.myself.show.show.sql.DaoSession;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**
@@ -31,145 +28,7 @@ public class App extends Application {
     private DaoSession mDaoSession;
     private MusicService musicService;
     private static App mInstance = null;
-    private List<WySearchInfo.ResultBean.SongsBean> songsList = new List<WySearchInfo.ResultBean.SongsBean>() {
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(Object o) {
-            return false;
-        }
-
-        @NonNull
-        @Override
-        public Iterator iterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        @NonNull
-        @Override
-        public <T> T[] toArray(@NonNull T[] ts) {
-            return null;
-        }
-
-        @Override
-        public boolean add(WySearchInfo.ResultBean.SongsBean songsBean) {
-            for (int i = 0; i <this.size() ; i++) {
-                if(this.get(i).getId()==songsBean.getId()){
-                    return false;
-                }
-            }
-            return true;
-        }
-
-
-        @Override
-        public boolean remove(Object o) {
-            return true;
-        }
-
-        @Override
-        public boolean addAll(@NonNull Collection collection) {
-            return true;
-        }
-
-        @Override
-        public boolean addAll(int i, @NonNull Collection collection) {
-            return true;
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            return false;
-        }
-
-        @Override
-        public int hashCode() {
-            return 0;
-        }
-
-        @Override
-        public WySearchInfo.ResultBean.SongsBean get(int i) {
-            return null;
-        }
-
-
-        @Override
-        public WySearchInfo.ResultBean.SongsBean set(int i, WySearchInfo.ResultBean.SongsBean songsBean) {
-            return null;
-        }
-
-        @Override
-        public void add(int i, WySearchInfo.ResultBean.SongsBean songsBean) {
-
-        }
-
-        @Override
-        public WySearchInfo.ResultBean.SongsBean remove(int i) {
-            return null;
-        }
-
-        @Override
-        public int indexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public int lastIndexOf(Object o) {
-            return 0;
-        }
-
-        @Override
-        public ListIterator listIterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator listIterator(int i) {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public List subList(int i, int i1) {
-            return null;
-        }
-
-        @Override
-        public boolean retainAll(@NonNull Collection collection) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(@NonNull Collection collection) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(@NonNull Collection collection) {
-            return false;
-        }
-
-    };
+    private List<WySearchInfo.ResultBean.SongsBean> songsList = new ArrayList<>();
 
     public List<WySearchInfo.ResultBean.SongsBean> getSongsList() {
         return songsList;
@@ -199,6 +58,9 @@ public class App extends Application {
     }
 
     public MusicService getMusicServie() {
+        if (musicService==null){
+            createMusicServie();
+        }
         return musicService;
     }
 
@@ -218,13 +80,13 @@ public class App extends Application {
     };
 
     private void bindServiceConnection() {
-        Intent intent = new Intent(this, MusicService.class);
+        Intent intent = new Intent(getApplicationContext(), MusicService.class);
         startService(intent);
         bindService(intent, sc, this.BIND_AUTO_CREATE);
     }
 
-    public void getRunMusicInfo(){
-        this.getSongsList().get(musicService.getRunIndex());
+    public WySearchInfo.ResultBean.SongsBean getRunMusicInfo(){
+       return this.getSongsList().get(musicService.getRunIndex());
     }
 
 
