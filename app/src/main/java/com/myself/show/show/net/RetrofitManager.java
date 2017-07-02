@@ -80,8 +80,6 @@ public class RetrofitManager {
 
 
     public Observable<LoginResponse> login(String nick_name, String avatar) {
-
-
         return mService.login(nick_name, avatar);
     }
 

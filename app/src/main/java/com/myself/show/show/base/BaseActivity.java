@@ -1,11 +1,7 @@
 package com.myself.show.show.base;
 
-import android.content.ComponentName;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.ColorRes;
 import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
@@ -15,24 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
-import com.myself.show.show.Ui.music.MusicService.MusicService;
-import com.myself.show.show.Ui.music.acitivity.MusicActivityTheme;
 import com.myself.show.show.View.CircleImageView;
 import com.myself.show.show.View.FlowingDraw.ElasticDrawer;
 import com.myself.show.show.View.FlowingDraw.FlowingDrawer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 
 /**
@@ -40,6 +31,7 @@ import butterknife.Unbinder;
  */
 
 public class BaseActivity extends AppCompatActivity {
+
     private FrameLayout flowing_content;
     protected FlowingDrawer flowView;
 
@@ -72,7 +64,6 @@ public class BaseActivity extends AppCompatActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         View content = LayoutInflater.from(this).inflate(layoutResID, null);
         setContentView(content);
-        super.setContentView(layoutResID);
     }
 
 
@@ -89,8 +80,11 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isSetMySelfFlowingLayout = false;
 
+    //给侧滑栏重新填充布局
     protected void setFlowingLayout(View layout) {
+        isSetMySelfFlowingLayout = true;
         if (flowing_content != null) {
             flowing_content.removeAllViews();
             flowing_content.addView(layout);
@@ -100,15 +94,46 @@ public class BaseActivity extends AppCompatActivity {
     }
 
 
+
+//    public void musicClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.before:
+//                App.getInstance().getMusicServie().before();
+//                break;
+//            case R.id.playorpouse:
+//                App.getInstance().getMusicServie().playOrPause();
+//                break;
+//            case R.id.next:
+//                App.getInstance().getMusicServie().next();
+//                break;
+//        }
+//    }
+
+
+    //将侧滑设置成默认界面
+    protected void setDefaultFlowingLayout() {
+        isSetMySelfFlowingLayout = false;
+        if (flowing_content != null) {
+            flowing_content.removeAllViews();
+            flowing_content.addView(LayoutInflater.from(this).inflate(R.layout.flowing_content_layout, null));
+        } else {
+            throw new NullPointerException("侧滑布局是空的,请确实是否初始化了布局!");
+        }
+    }
+
     //设置侧滑栏的颜色
     protected void setFLowingLayoutBackGround(int color) {
         StatusBarUtil.changeViewColor(flowing_content, color);
     }
 
+
+    //自定义侧滑界面 填充布局
     protected void setFlowingLayout(int layoutId) {
         View view = LayoutInflater.from(this).inflate(layoutId, null);
         setFlowingLayout(view);
     }
+
+
 
 
     /**

@@ -1,11 +1,9 @@
 package com.myself.show.show.Ui;
 
 import android.animation.Animator;
-import android.app.ActivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,9 +12,7 @@ import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
-import com.myself.show.show.Ui.Login.LoginActivityTheme;
-import com.myself.show.show.Ui.music.acitivity.MusicActivityTheme;
-import com.myself.show.show.base.App;
+import com.myself.show.show.Ui.music.activity.MusicActivity;
 import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.customview.ShadowLayout;
 
@@ -25,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivityTheme extends ThemeBaseActivity {
+public class MainActivity extends ThemeBaseActivity {
 
     @BindView(R.id.view_shadow)
     ShadowLayout view_shadow;
@@ -76,18 +72,18 @@ public class MainActivityTheme extends ThemeBaseActivity {
                     @Override
                     public void onAnimationEnd(Animator animator) {
 
-//                        RetrofitManager.builder(MainActivityTheme.this).login("123456","app_test").subscribeOn(Schedulers.io())
+//                        RetrofitManager.builder(MainActivity.this).login("123456","app_test").subscribeOn(Schedulers.io())
 //                                .observeOn(AndroidSchedulers.mainThread())
 //                                .subscribe(new Action1<LoginResponse>() {
 //                                    @Override
 //                                    public void call(LoginResponse mLoginBean) {
-//                                        Toast.makeText(MainActivityTheme.this, "成功"+mLoginBean.toString(), Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(MainActivity.this, "成功"+mLoginBean.toString(), Toast.LENGTH_SHORT).show();
 //                                    }
 //                                }, new Action1<Throwable>() {
 //                                    @Override
 //                                    public void call(Throwable throwable) {
 //                                        Log.e("错误", throwable.toString());
-//                                        Toast.makeText(MainActivityTheme.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+//                                        Toast.makeText(MainActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
 //                                    }
 //                                });
                         ;
@@ -112,11 +108,10 @@ public class MainActivityTheme extends ThemeBaseActivity {
 
     @OnClick(R.id.first)
     public void onClick() {
-        startActivity(LoginActivityTheme.class);
     }
 
     @OnClick(R.id.search)
     public void search() {
-        startActivity(MusicActivityTheme.class);
+        startActivity(MusicActivity.class);
     }
 }

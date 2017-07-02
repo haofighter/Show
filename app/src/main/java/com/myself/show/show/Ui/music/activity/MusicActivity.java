@@ -1,4 +1,4 @@
-package com.myself.show.show.Ui.music.acitivity;
+package com.myself.show.show.Ui.music.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -14,22 +14,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.myself.show.show.R;
-import com.myself.show.show.Ui.music.MusicService.MusicService;
+import com.myself.show.show.Ui.music.musicService.MusicService;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
 import com.myself.show.show.View.Twink.RefreshListenerAdapter;
 import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.App;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseActivity;
-import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.net.RetrofitManager;
-import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
-
-import org.ow2.util.base64.Base64;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +34,7 @@ import rx.schedulers.Schedulers;
 //网易云音乐  API  http://www.jianshu.com/p/97e35fa456ce
 
 
-public class MusicActivityTheme extends BaseActivity {
+public class MusicActivity extends BaseActivity {
 
     @BindView(R.id.search_result_show)
     RecyclerView searchResultShow;
@@ -93,7 +86,8 @@ public class MusicActivityTheme extends BaseActivity {
     BackCall backCall = new BackCall() {
         @Override
         public void backCall(int tag, Object... obj) {
-            musicService.GetMusicUrlPlay(musicItemAdapter.getDate().get((int)obj[0]).getId());
+            App.getInstance().getSongsList().add(musicItemAdapter.getDate().get((int)obj[0]));
+            musicService.setRunIndex(App.getInstance().getSongsList().size()-1).GetMusicUrlPlay();
         }
     };
 
@@ -104,7 +98,6 @@ public class MusicActivityTheme extends BaseActivity {
             musicItemAdapter.setDate(wySearchInfo.getResult().getSongs());
         }
         musicItemAdapter.notifyDataSetChanged();
-        ;
     }
 
     private String musicType = "1";
@@ -123,14 +116,14 @@ public class MusicActivityTheme extends BaseActivity {
                     @Override
                     public void call(WySearchInfo wySearchInfo) {
                         initDate(wySearchInfo);
-                        Toast.makeText(MusicActivityTheme.this, "成功" + wySearchInfo.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MusicActivity.this, "成功" + wySearchInfo.toString(), Toast.LENGTH_SHORT).show();
                         refresh.finishLoadmore();
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         Log.e("错误", throwable.toString());
-                        Toast.makeText(MusicActivityTheme.this, "网络连接失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MusicActivity.this, "网络连接失败", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -152,7 +145,7 @@ public class MusicActivityTheme extends BaseActivity {
     };
 
     private void bindServiceConnection() {
-        Intent intent = new Intent(MusicActivityTheme.this, MusicService.class);
+        Intent intent = new Intent(MusicActivity.this, MusicService.class);
         startService(intent);
         bindService(intent, sc, this.BIND_AUTO_CREATE);
     }

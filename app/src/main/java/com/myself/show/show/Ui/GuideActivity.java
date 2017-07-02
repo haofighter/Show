@@ -21,7 +21,7 @@ import com.myself.show.show.base.ThemeBaseActivity;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class GuideActivityTheme extends ThemeBaseActivity {
+public class GuideActivity extends ThemeBaseActivity {
 
     @BindView(R.id.gvv)
     GuideVideoView gvv;
@@ -69,7 +69,7 @@ public class GuideActivityTheme extends ThemeBaseActivity {
 
     @OnClick(R.id.btn_start)
     public void onClick(View v) {
-        startActivity(MainActivityTheme.class);
+        startActivity(MainActivity.class);
         finish();
     }
 
@@ -102,7 +102,7 @@ public class GuideActivityTheme extends ThemeBaseActivity {
         gvv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                startActivity(MainActivityTheme.class);
+                startActivity(MainActivity.class);
                 finish();
             }
         });
