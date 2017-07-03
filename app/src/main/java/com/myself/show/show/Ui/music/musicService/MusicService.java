@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.myself.show.show.Ui.music.listener.OnSongChangeListener;
 import com.myself.show.show.base.App;
+import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.utils.ToastUtils;
@@ -34,14 +35,17 @@ public class MusicService extends Service {
     public int getRunIndex() {
         return index;
     }
-    OnSongChangeListener onSongChangeListener=new OnSongChangeListener() {
+
+
+    OnSongChangeListener onSongChangeListener = new OnSongChangeListener() {
         @Override
         public void onChange() {
-
+            Log.e("", "歌曲的状态进行了改变");
         }
     };
+
     public void setOnSongChangeListener(OnSongChangeListener onSongChangeListener) {
-        this.onSongChangeListener=onSongChangeListener;
+        this.onSongChangeListener = onSongChangeListener;
     }
 
     public class MusicBinder extends Binder {
@@ -59,8 +63,7 @@ public class MusicService extends Service {
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                index++;
-                GetMusicUrlPlay();
+                next();
             }
         });
     }
@@ -74,7 +77,6 @@ public class MusicService extends Service {
 
 
     public void playOrPause() {
-
         if (mp.isPlaying()) {
             mp.pause();
         } else {
@@ -94,10 +96,10 @@ public class MusicService extends Service {
             });
             mp.setDataSource(str);
             mp.prepare();
-            onSongChangeListener.onChange();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        onSongChangeListener.onChange();
     }
 
     public void stop() {
@@ -106,11 +108,11 @@ public class MusicService extends Service {
             try {
                 mp.prepare();
                 mp.seekTo(0);
-                onSongChangeListener.onChange();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        onSongChangeListener.onChange();
     }
 
     public void next() {
@@ -118,15 +120,17 @@ public class MusicService extends Service {
         if (index >= App.getInstance().getSongsList().size()) {
             index = 0;
         }
+        Log.e("", "下一曲");
         GetMusicUrlPlay();
     }
 
     public void before() {
         index--;
-        if (index == -1) {
+        if (index < 0) {
             ToastUtils.showMessage("亲,前面没有了哦!");
             return;
         }
+        Log.e("", "上一曲");
         GetMusicUrlPlay();
     }
 
@@ -135,6 +139,11 @@ public class MusicService extends Service {
 
     //播放歌曲 通过存在的标识来播放
     public void GetMusicUrlPlay() {
+        if (App.getInstance().getSongsList() == null || App.getInstance().getSongsList().size() == 0) {
+            ToastUtils.showMessage("没有正在播放的歌曲");
+            return;
+        }
+
         if (App.getInstance().getSongsList().size() <= index) {
             throw new ArrayIndexOutOfBoundsException("播放的歌曲标识越界了");
         }
@@ -143,6 +152,10 @@ public class MusicService extends Service {
                 .subscribe(new Action1<MusicPath>() {
                     @Override
                     public void call(MusicPath musicPath) {
+                        if (musicPath.getData().getUrl() == null) {
+                            ToastUtils.showMessage("未获取到播放资源");
+                            return;
+                        }
                         playMusic(musicPath.getData().getUrl());
                     }
                 }, new Action1<Throwable>() {

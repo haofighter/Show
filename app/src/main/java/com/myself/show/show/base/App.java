@@ -2,6 +2,7 @@ package com.myself.show.show.base;
 
 import android.app.Application;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,7 @@ import com.myself.show.show.Ui.music.musicService.MusicService;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 import com.myself.show.show.sql.DaoMaster;
 import com.myself.show.show.sql.DaoSession;
+import com.myself.show.show.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +36,14 @@ public class App extends Application {
         return songsList;
     }
 
+
     /**
      * getInstance
      */
     public static App getInstance() {
-        if (mInstance == null)
-            mInstance = new App();
+        if (mInstance == null){
+            ToastUtils.showMessage("APP是个空的");
+            mInstance = new App();}
         return mInstance;
     }
 
@@ -48,18 +52,18 @@ public class App extends Application {
         super.onCreate();
         mInstance = this;
         setDatabase();
-        createMusicServie();
+        createMusicServie(getApplicationContext());
     }
 
 
-    public void createMusicServie() {
+    public void createMusicServie(Context context) {
         musicService = new MusicService();
-        bindServiceConnection();
+        bindServiceConnection(context);
     }
 
-    public MusicService getMusicServie() {
+    public MusicService getMusicServie(Context context) {
         if (musicService==null){
-            createMusicServie();
+            createMusicServie(context);
         }
         return musicService;
     }
@@ -79,14 +83,20 @@ public class App extends Application {
         }
     };
 
-    private void bindServiceConnection() {
-        Intent intent = new Intent(getApplicationContext(), MusicService.class);
+    private void bindServiceConnection(Context context) {
+        Intent intent = new Intent(context, MusicService.class);
         startService(intent);
         bindService(intent, sc, this.BIND_AUTO_CREATE);
     }
 
     public WySearchInfo.ResultBean.SongsBean getRunMusicInfo(){
-       return this.getSongsList().get(musicService.getRunIndex());
+        WySearchInfo.ResultBean.SongsBean songsBean=null;
+        try{
+            songsBean= this.getSongsList().get(musicService.getRunIndex());
+        }catch (Exception e){
+            return null;
+        }
+       return songsBean;
     }
 
 

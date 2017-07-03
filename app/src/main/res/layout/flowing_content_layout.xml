@@ -18,12 +18,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:background="@color/white_44"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp">
@@ -52,14 +54,15 @@
             android:id="@+id/music_image_show"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_margin="20dp"
-             />
+            android:layout_centerInParent="true"
+            android:layout_margin="20dp" />
+
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,6 +89,14 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/music_progress"
+            style="@style/progress_myself"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_margin="5dp"
+            android:max="1000" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -94,47 +105,47 @@
             android:padding="5dp">
 
             <ImageView
-                android:onClick="musicClick"
                 android:id="@+id/play_style"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="musicClick" />
 
             <ImageView
                 android:id="@+id/before"
-                android:onClick="musicClick"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:onClick="musicClick"
                 android:src="@mipmap/before" />
 
             <ImageView
-                android:onClick="musicClick"
                 android:id="@+id/playorpouse"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:onClick="musicClick"
                 android:src="@mipmap/play" />
 
             <ImageView
                 android:id="@+id/next"
-                android:onClick="musicClick"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:onClick="musicClick"
                 android:src="@mipmap/next" />
 
             <ImageView
                 android:id="@+id/future"
-                android:onClick="musicClick"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:onClick="musicClick" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

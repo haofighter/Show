@@ -1,5 +1,6 @@
 package com.myself.show.show.base;
 
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
@@ -7,21 +8,27 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
+import com.myself.show.show.Ui.music.listener.OnSongChangeListener;
 import com.myself.show.show.View.CircleImageView;
 import com.myself.show.show.View.FlowingDraw.ElasticDrawer;
 import com.myself.show.show.View.FlowingDraw.FlowingDrawer;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +47,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
@@ -52,13 +60,20 @@ public class BaseActivity extends AppCompatActivity {
         RelativeLayout relativeLayout = (RelativeLayout) base.findViewById(R.id.show_content);
         flowView = (FlowingDrawer) base.findViewById(R.id.flowingDrawer_base);
         flowing_content = (FrameLayout) base.findViewById(R.id.flowing_content);
-        musicItemHolder = new MusicItemHolder(flowing_content);
         if (flowing_content == null) {
             throw new NullPointerException("侧滑栏初始失败!");
         }
         relativeLayout.addView(view);
         flowView.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
         super.setContentView(base);
+        App.getInstance().getMusicServie(getApplicationContext()).setOnSongChangeListener(new OnSongChangeListener() {
+            @Override
+            public void onChange() {
+                if (!isSetMySelfFlowingLayout) {
+                    initDefaultFlow();
+                }
+            }
+        });
     }
 
 
@@ -71,9 +86,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(isSetMySelfFlowingLayout){
-            initDefaultFlow();
-        }
+        setDefaultFlowingLayout();
     }
 
     /**
@@ -102,13 +115,73 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    //将侧滑设置成默认界面
+    public void setDefaultFlowingLayout() {
+        isSetMySelfFlowingLayout = false;
+        if (flowing_content != null) {
+            flowing_content.removeAllViews();
+            flowing_content.addView(LayoutInflater.from(this).inflate(R.layout.flowing_content_layout, null));
+            musicItemHolder = new MusicItemHolder(flowing_content);
+            initDefaultFlow();
+        } else {
+            throw new NullPointerException("侧滑布局是空的,请确实是否初始化了布局!");
+        }
+    }
+
+
     //设置默认播放界面数据
     private void initDefaultFlow() {
-        if(App.getInstance().getMusicServie().getMediaPlayer().isPlaying()){
+        if (App.getInstance().getRunMusicInfo() != null) {
             Glide.with(BaseActivity.this).load(App.getInstance().getRunMusicInfo().getAlbum().getBlurPicUrl()).into(musicItemHolder.music_image_show);
             Glide.with(BaseActivity.this).load(R.mipmap.pause).into(musicItemHolder.playorpouse);
             musicItemHolder.sing_song_arthur.setText(App.getInstance().getRunMusicInfo().getArtists().get(0).getName());
             musicItemHolder.sing_song_name.setText(App.getInstance().getRunMusicInfo().getName());
+            App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+                @Override
+                public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                    Log.i("", "缓存的进度" + percent);
+                    musicItemHolder.musicProgress.setSecondaryProgress(percent);
+                }
+            });
+        }else{
+            Log.e("","未获取到歌曲的信息");
+        }
+        if (App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().isPlaying()) {
+            Log.e("......", "播放状态");
+            Glide.with(BaseActivity.this).load(R.mipmap.pause).into(musicItemHolder.playorpouse);
+        } else {
+            Log.e("......", "暂停状态");
+            Glide.with(BaseActivity.this).load(R.mipmap.play).into(musicItemHolder.playorpouse);
+        }
+        if (timer == null)
+            timer = new Timer();
+        MyMusicUIRefreshTask myMusicUIRefreshTask = null;
+        if (myMusicUIRefreshTask != null)
+            myMusicUIRefreshTask.cancel();
+        myMusicUIRefreshTask = new MyMusicUIRefreshTask();
+        timer.schedule(myMusicUIRefreshTask, 0, 1000);
+    }
+
+    int progress = 0;
+    Timer timer = new Timer() {
+    };
+
+
+    //实时修改音乐播放进度
+    class MyMusicUIRefreshTask extends TimerTask {
+        @Override
+        public void run() {
+            if (App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().isPlaying()) {
+                progress = App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().getCurrentPosition() * 1000 / App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().getDuration();
+            } else {
+                progress = 0;
+            }
+            runOnUiThread(new TimerTask() {
+                @Override
+                public void run() {
+                    musicItemHolder.musicProgress.setProgress(progress);
+                }
+            });
         }
     }
 
@@ -116,28 +189,17 @@ public class BaseActivity extends AppCompatActivity {
     public void musicClick(View view) {
         switch (view.getId()) {
             case R.id.before:
-                App.getInstance().getMusicServie().before();
+                App.getInstance().getMusicServie(getApplicationContext()).before();
                 break;
             case R.id.playorpouse:
-                App.getInstance().getMusicServie().playOrPause();
+                App.getInstance().getMusicServie(getApplicationContext()).playOrPause();
                 break;
             case R.id.next:
-                App.getInstance().getMusicServie().next();
+                App.getInstance().getMusicServie(getApplicationContext()).next();
                 break;
         }
     }
 
-
-    //将侧滑设置成默认界面
-    protected void setDefaultFlowingLayout() {
-        isSetMySelfFlowingLayout = false;
-        if (flowing_content != null) {
-            flowing_content.removeAllViews();
-            flowing_content.addView(LayoutInflater.from(this).inflate(R.layout.flowing_content_layout, null));
-        } else {
-            throw new NullPointerException("侧滑布局是空的,请确实是否初始化了布局!");
-        }
-    }
 
     //设置侧滑栏的颜色
     protected void setFLowingLayoutBackGround(int color) {
@@ -171,6 +233,9 @@ public class BaseActivity extends AppCompatActivity {
         //侧滑的背景
         @BindView(R.id.flowing_bg)
         ImageView flowing_bg;
+        //音乐进度
+        @BindView(R.id.music_progress)
+        ProgressBar musicProgress;
         //循环方式
         @BindView(R.id.play_style)
         ImageView play_style;

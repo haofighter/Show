@@ -21,6 +21,6 @@
         android:id="@+id/flowing_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include layout="@layout/flowing_content_layout" />
+        <!--<include layout="@layout/flowing_content_layout" />-->
     </com.myself.show.show.View.FlowingDraw.FlowingMenuLayout>
 </com.myself.show.show.View.FlowingDraw.FlowingDrawer>

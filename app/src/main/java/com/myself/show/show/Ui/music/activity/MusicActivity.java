@@ -23,6 +23,7 @@ import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.WySearchInfo;
+import com.myself.show.show.utils.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,10 +53,7 @@ public class MusicActivity extends BaseActivity {
         setContentView(R.layout.activity_music);
         ButterKnife.bind(this);
         setStatuBarColor(R.color.colorPrimaryDark);
-        musicService = new MusicService();
-        bindServiceConnection();
         initView();
-        App.getInstance().setMusicMediaSever(musicService);
     }
 
 
@@ -86,8 +84,9 @@ public class MusicActivity extends BaseActivity {
     BackCall backCall = new BackCall() {
         @Override
         public void backCall(int tag, Object... obj) {
-            App.getInstance().getSongsList().add(musicItemAdapter.getDate().get((int)obj[0]));
-            musicService.setRunIndex(App.getInstance().getSongsList().size()-1).GetMusicUrlPlay();
+            App.getInstance().getSongsList().add(musicItemAdapter.getDate().get((int) obj[0]));
+            Log.i("列表中的的歌曲数", App.getInstance().getSongsList().size() + "");
+            App.getInstance().getMusicServie(MusicActivity.this).setRunIndex(App.getInstance().getSongsList().size() - 1).GetMusicUrlPlay();
         }
     };
 
@@ -128,54 +127,12 @@ public class MusicActivity extends BaseActivity {
                 });
     }
 
-
-    private ServiceConnection sc = new ServiceConnection() {
-
-        public MusicService musicService;
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            musicService = ((MusicService.MusicBinder) iBinder).getService();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            musicService = null;
-        }
-    };
-
-    private void bindServiceConnection() {
-        Intent intent = new Intent(MusicActivity.this, MusicService.class);
-        startService(intent);
-        bindService(intent, sc, this.BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        unbindService(sc);
-        super.onDestroy();
-    }
-
-    @OnClick({R.id.search, R.id.run_song_name, R.id.before, R.id.pause, R.id.next, R.id.close})
+    @OnClick({R.id.search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.search:
                 page = 1;
                 loadDate();
-                break;
-            case R.id.run_song_name:
-                break;
-            case R.id.before:
-
-                break;
-            case R.id.pause:
-                musicService.stop();
-                break;
-            case R.id.next:
-
-                break;
-            case R.id.close:
-
                 break;
         }
     }
