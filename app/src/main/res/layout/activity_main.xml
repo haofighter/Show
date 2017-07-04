@@ -57,6 +57,11 @@
                 android:layout_height="wrap_content"
                 android:text="查询" />
 
+            <Button
+                android:id="@+id/viewpage_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="fragment滑动" />
         </LinearLayout>
 
     </com.myself.show.show.customview.ShadowLayout>
