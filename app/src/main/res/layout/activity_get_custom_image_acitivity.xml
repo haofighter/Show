@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity">
+
+    <TextView
+        android:id="@+id/get_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="获取图片" />
+
+    <ImageView
+        android:id="@+id/image_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/image_custon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

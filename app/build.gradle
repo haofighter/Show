@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.myself.show.show"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -73,9 +73,11 @@ dependencies {
     compile 'org.ow2.util.base64:base64:2.0.0'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'net.qiujuer.genius:blur:2.0.0-beta4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
+
 
 
 

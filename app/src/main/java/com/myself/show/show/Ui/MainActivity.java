@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
+import com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity;
 import com.myself.show.show.Ui.music.activity.MusicActivity;
 import com.myself.show.show.Ui.viewpage.ViewPageFragmentActivity;
+import com.myself.show.show.Ui.viewpage1.ViewPageFragment1Activity;
 import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.customview.ShadowLayout;
 
@@ -55,7 +57,7 @@ public class MainActivity extends ThemeBaseActivity {
         super.onResume();
     }
 
-    @OnClick({R.id.first,R.id.search,R.id.button})
+    @OnClick({R.id.first,R.id.search,R.id.button,R.id.viewpage_test,R.id.image_control})
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.first:
@@ -93,6 +95,12 @@ public class MainActivity extends ThemeBaseActivity {
                         });
                     }
                 });
+                break;
+            case R.id.viewpage_test:
+                startActivity(ViewPageFragment1Activity.class);
+                break;
+            case R.id.image_control:
+                startActivity(GetCustomImageAcitivity.class);
                 break;
         }
     }

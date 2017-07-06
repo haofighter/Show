@@ -23,14 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Ui.MainActivity" />
-        <activity
-            android:name=".Ui.Login.LoginActivityTheme"
-            android:label="@string/title_activity_login"
-            android:parentActivityName=".base.ThemeBaseActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.myself.show.show.base.ThemeBaseActivity" />
-        </activity>
+        <activity android:name=".Ui.viewpage1.ViewPageFragment1Activity" />
 
         <service
             android:name=".Ui.music.musicService.MusicService"
@@ -39,7 +32,8 @@
 
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".Ui.music.activity.MusicActivity" />
-        <activity android:name=".Ui.viewpage.ViewPageFragmentActivity"></activity>
+        <activity android:name=".Ui.viewpage.ViewPageFragmentActivity" />
+        <activity android:name=".Ui.imageCorrelation.GetCustomImageAcitivity"></activity>
     </application>
 
 </manifest>

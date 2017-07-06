@@ -1,6 +1,5 @@
-package com.myself.show.show.Ui.viewpage.fagment;
+package com.myself.show.show.Ui.viewpage1.fagment;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,46 +11,42 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myself.show.show.R;
-import com.myself.show.show.Ui.music.activity.MusicActivity;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
-import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
+import com.myself.show.show.Ui.viewpage1.listener.OnFragmentInteractionListener;
 import com.myself.show.show.View.Twink.RefreshListenerAdapter;
 import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.BackCall;
-import com.myself.show.show.net.NetManage;
 import com.myself.show.show.net.RetrofitManager;
-import com.myself.show.show.net.requestBean.MusicSearchBean;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class SearchOneFragment extends Fragment {
+public class SearchThridFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.name)
+    TextView name;
     @BindView(R.id.search_result_show)
     RecyclerView searchResultShow;
     @BindView(R.id.refresh)
     TwinklingRefreshLayout refresh;
-    @BindView(R.id.name)
-    TextView name;
-
 
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Unbinder unbinder;
 
-    public SearchOneFragment() {
+    public SearchThridFragment() {
     }
 
     /**
@@ -62,19 +57,13 @@ public class SearchOneFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment SearchOneFragment.
      */
-    public static SearchOneFragment newInstance(String param1, String param2) {
-        SearchOneFragment fragment = new SearchOneFragment();
+    public static SearchThridFragment newInstance(String param1, String param2) {
+        SearchThridFragment fragment = new SearchThridFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        onHiddenChanged(isVisibleToUser);
     }
 
     @Override
@@ -86,45 +75,51 @@ public class SearchOneFragment extends Fragment {
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        onHiddenChanged(isVisibleToUser);
+    }
 
+    private String musicType = "1";
+    private int page = 1;
+    private int limit = 10;
     private MusicItemAdapter musicItemAdapter;
-
     public void initDate(WySearchInfo wySearchInfo) {
         if (page != 1) {
             musicItemAdapter.addDate(wySearchInfo.getResult().getSongs());
         } else {
             musicItemAdapter.setDate(wySearchInfo.getResult().getSongs());
         }
-        Log.i("tag", "添加了数据");
         musicItemAdapter.notifyDataSetChanged();
     }
 
-    int page = 1;
-
     public void loadDate() {
-        MusicSearchBean musicSearchBean = new MusicSearchBean();
-        musicSearchBean.setLimit(10);
-        musicSearchBean.setPage(page);
-        musicSearchBean.setSearchName("许嵩");
-        musicSearchBean.setType("1");
-
-        NetManage.getInstance(getActivity()).loadMusicDate(musicSearchBean, new Action1<WySearchInfo>() {
-            @Override
-            public void call(WySearchInfo wySearchInfo) {
-                initDate(wySearchInfo);
-                refresh.finishLoadmore();
-            }
-        });
-
+        RetrofitManager.builder(getActivity()).wyYun("孙子涵", page, limit, musicType).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<WySearchInfo>() {
+                    @Override
+                    public void call(WySearchInfo wySearchInfo) {
+                        initDate(wySearchInfo);
+                        refresh.finishLoadmore();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("错误", throwable.toString());
+                    }
+                });
     }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_search_one, container, false);
-        ButterKnife.bind(this, v);
-        name.setText("第一个");
+        View  v = inflater.inflate(R.layout.fragment_search_one, container, false);
+        v.setBackgroundColor(getActivity().getResources().getColor(R.color.Green));
+        unbinder = ButterKnife.bind(this, v);
+        name.setText("第三个");
         refresh.setEnableRefresh(false);
         refresh.setOverScrollTopShow(false);
         refresh.setEnableOverScroll(false);//禁止界面回弹  可去掉刷新效果
@@ -136,7 +131,9 @@ public class SearchOneFragment extends Fragment {
                 loadDate();
             }
         });
-        musicItemAdapter = new MusicItemAdapter(getActivity(), new BackCall() {
+
+
+        musicItemAdapter=new MusicItemAdapter(getActivity(), new BackCall() {
             @Override
             public void backCall(int tag, Object... obj) {
 
@@ -150,8 +147,6 @@ public class SearchOneFragment extends Fragment {
         return v;
     }
 
-
-
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -160,7 +155,7 @@ public class SearchOneFragment extends Fragment {
 
     @Override
     public void onAttach(Context context) {
-        Log.i("TAG", "One   onAttach");
+        Log.i("TAG", "Third   onAttach");
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -170,57 +165,53 @@ public class SearchOneFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        Log.i("TAG", "Third=====onDetach=====");
+        super.onDetach();
+    }
 
     @Override
     public void onStart() {
-        Log.i("TAG", "OneStart");
+        Log.i("TAG", "Third===Start");
         super.onStart();
     }
 
     @Override
     public void onResume() {
-        Log.i("TAG", "One=====onResume");
+        Log.i("TAG", "Third=====onResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        Log.i("TAG", "One=====onPause");
+        Log.i("TAG", "Third=====onPause");
         super.onPause();
     }
 
     @Override
     public void onStop() {
-        Log.i("TAG", "One=====onStop");
+        Log.i("TAG", "Third=====onStop");
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        Log.i("TAG", "One=====onDestroy");
+        Log.i("TAG", "Third=====onDestroy");
         super.onDestroy();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        Log.i("TAG", "One=====onHiddenChanged=====" + hidden);
+        Log.i("TAG", "Third=====onHiddenChanged=====" + hidden);
         super.onHiddenChanged(hidden);
-        if (hidden) {
-            loadDate();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        Log.i("TAG", "One=====onDetach=====");
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
     public void onDestroyView() {
-        Log.i("TAG", "One=====onDestroyView=====");
+        Log.i("TAG", "Third=====onDestroyView=====");
         super.onDestroyView();
-    }
+        unbinder.unbind();
 
+    }
 }

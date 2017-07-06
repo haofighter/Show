@@ -45,7 +45,6 @@ public class MusicActivity extends BaseActivity {
     EditText searchContent;
 
     private MusicItemAdapter musicItemAdapter;
-    private MusicService musicService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
