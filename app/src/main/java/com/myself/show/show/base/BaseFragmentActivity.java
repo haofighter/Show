@@ -1,5 +1,9 @@
 package com.myself.show.show.base;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,6 +13,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -143,8 +149,8 @@ public class BaseFragmentActivity extends FragmentActivity {
                     musicItemHolder.musicProgress.setSecondaryProgress(percent);
                 }
             });
-        }else{
-            Log.e("","未获取到歌曲的信息");
+        } else {
+            Log.e("", "未获取到歌曲的信息");
         }
         if (App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().isPlaying()) {
             Log.e("......", "播放状态");
@@ -269,6 +275,59 @@ public class BaseFragmentActivity extends FragmentActivity {
         public MusicItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+
+    protected  void  startActivity(Class<? extends Activity> activity){
+        startActivity(activity,null);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    protected void startActivity(Class<? extends Activity> activity, BaseActivity.ActivityChangeAnimal activityChangeAnimal) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || activityChangeAnimal == null) {
+            Intent intent = new Intent(this, activity);
+            startActivity(intent);
+        } else {
+            Transition exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
+            Transition enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
+            Transition reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
+
+            switch (activityChangeAnimal) {
+                case top:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                    break;
+                case bottom:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                    break;
+                case left:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                    break;
+                case right:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                    break;
+            }
+
+            //退出时使用
+            getWindow().setExitTransition(exitexplode);
+            //第一次进入时使用
+            getWindow().setEnterTransition(enterexplode);
+            //再次进入时使用
+            getWindow().setReenterTransition(reenterexplode);
+
+
+            Intent intent = new Intent(this, activity);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+
         }
     }
 

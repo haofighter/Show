@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
+import com.myself.show.show.Ui.home.HomeActivity;
 import com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity;
 import com.myself.show.show.Ui.music.activity.MusicActivity;
 import com.myself.show.show.Ui.viewpage.ViewPageFragmentActivity;
@@ -39,6 +40,7 @@ public class MainActivity extends ThemeBaseActivity {
     @BindView(R.id.search)
     Button search;
 
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class MainActivity extends ThemeBaseActivity {
         setContentView(R.layout.activity_main, null);
         ButterKnife.bind(this);
         na_bar.setTitle("标题栏");
-        na_bar.setLeftBack();
+        na_bar.setLeftBack(this);
         view_shadow.setIsShadowed(true);//是否显示阴影
 //        ActivityManager.RunningServiceInfo();
     }
@@ -57,14 +59,17 @@ public class MainActivity extends ThemeBaseActivity {
         super.onResume();
     }
 
-    @OnClick({R.id.first,R.id.search,R.id.button,R.id.viewpage_test,R.id.image_control})
+    @OnClick({R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager})
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.first:
-                startActivity(ViewPageFragmentActivity.class);
+                startActivity(ViewPageFragmentActivity.class,ActivityChangeAnimal.left);
+                break;
+            case R.id.vertical_viewpager:
+                startActivity(HomeActivity.class,ActivityChangeAnimal.left);
                 break;
             case R.id.search:
-                startActivity(MusicActivity.class);
+                startActivity(MusicActivity.class,ActivityChangeAnimal.left);
                 break;
             case R.id.button:
                 button.post(new Runnable() {
@@ -97,10 +102,10 @@ public class MainActivity extends ThemeBaseActivity {
                 });
                 break;
             case R.id.viewpage_test:
-                startActivity(ViewPageFragment1Activity.class);
+                startActivity(ViewPageFragment1Activity.class,ActivityChangeAnimal.left);
                 break;
             case R.id.image_control:
-                startActivity(GetCustomImageAcitivity.class);
+                startActivity(GetCustomImageAcitivity.class,ActivityChangeAnimal.left);
                 break;
         }
     }

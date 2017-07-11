@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <com.myself.show.show.customview.verticaltablayout.VerticalTabLayout
+            android:id="@+id/vertiacal_tab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"></com.myself.show.show.customview.verticaltablayout.VerticalTabLayout>
+
+        <com.myself.show.show.customview.verticaltabviewpage.VerticalViewPager
+            android:id="@+id/vertiacal_viewpager"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"></com.myself.show.show.customview.verticaltabviewpage.VerticalViewPager>
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_11"
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:button="@null" />
+
+        <RadioButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:button="@null" />
+
+        <ImageView
+            android:id="@+id/add_note"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:src="@mipmap/add"
+            android:gravity="center" />
+
+        <RadioButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:button="@null" />
+
+        <RadioButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:button="@null" />
+    </RadioGroup>
+</LinearLayout>

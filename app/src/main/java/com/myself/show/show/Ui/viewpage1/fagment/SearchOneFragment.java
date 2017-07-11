@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
-import com.myself.show.show.Ui.viewpage1.listener.OnFragmentInteractionListener;
+import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
 import com.myself.show.show.View.Twink.RefreshListenerAdapter;
 import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.BackCall;
@@ -118,29 +118,29 @@ public class SearchOneFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_search_one, container, false);
         ButterKnife.bind(this, v);
-//        name.setText("第一个");
-//        refresh.setEnableRefresh(false);
-//        refresh.setOverScrollTopShow(false);
-//        refresh.setEnableOverScroll(false);//禁止界面回弹  可去掉刷新效果
-//        refresh.setOnRefreshListener(new RefreshListenerAdapter() {
-//            @Override
-//            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-//                super.onLoadMore(refreshLayout);
-//                page++;
-//                loadDate();
-//            }
-//        });
-//        musicItemAdapter = new MusicItemAdapter(getActivity(), new BackCall() {
-//            @Override
-//            public void backCall(int tag, Object... obj) {
-//
-//            }
-//        });
-//        //设置布局管理器
-//        searchResultShow.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        //设置增加或删除条目的动画
-//        searchResultShow.setItemAnimator(new DefaultItemAnimator());
-//        searchResultShow.setAdapter(musicItemAdapter);
+        name.setText("第一个");
+        refresh.setEnableRefresh(false);
+        refresh.setOverScrollTopShow(false);
+        refresh.setEnableOverScroll(false);//禁止界面回弹  可去掉刷新效果
+        refresh.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                page++;
+                loadDate();
+            }
+        });
+        musicItemAdapter = new MusicItemAdapter(getActivity(), new BackCall() {
+            @Override
+            public void backCall(int tag, Object... obj) {
+
+            }
+        });
+        //设置布局管理器
+        searchResultShow.setLayoutManager(new LinearLayoutManager(getActivity()));
+        //设置增加或删除条目的动画
+        searchResultShow.setItemAnimator(new DefaultItemAnimator());
+        searchResultShow.setAdapter(musicItemAdapter);
 
         return v;
     }
@@ -200,6 +200,9 @@ public class SearchOneFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         Log.i("TAG", "One=====onHiddenChanged=====" + hidden);
         super.onHiddenChanged(hidden);
+        if(hidden){
+            loadDate();
+        }
     }
 
     @Override

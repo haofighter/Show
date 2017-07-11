@@ -11,7 +11,7 @@ import android.support.v4.view.ViewPager;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.viewpage.listener.FragmentInfo;
-import com.myself.show.show.Ui.viewpage1.listener.OnFragmentInteractionListener;
+import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
 import com.myself.show.show.Ui.viewpage1.fagment.SearchOneFragment;
 import com.myself.show.show.Ui.viewpage1.fagment.SearchSecondFragment;
 import com.myself.show.show.Ui.viewpage1.fagment.SearchThridFragment;
@@ -38,7 +38,7 @@ public class ViewPageFragment1Activity extends BaseFragmentActivity implements O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_page_fragment);
-        ButterKnife.bind(this);
+
 
         fragmentList = new ArrayList<>();
 

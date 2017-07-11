@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<slide xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic"
+    android:slideEdge="start">
+    <!--slideEdge表示起始滑动的侧边位置，end表示右侧，start表示左侧，top表示顶部，bottom表示底侧-->
+    <targets>
+        <target android:excludeId="@android:id/navigationBarBackground" />
+        <target android:excludeId="@android:id/statusBarBackground" />
+    </targets>
+    <!--如果你不希望顶部的状态栏以及底部的导航栏一起执行动画-->
+</slide>

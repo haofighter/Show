@@ -1,10 +1,13 @@
 package com.myself.show.show.View;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,10 +30,10 @@ public class NavigationBar extends RelativeLayout {
 
 	private NavigationListener mListener = null;
 
-	private ImageButton mLeftImgBtn;
+	private ImageView mLeftImgBtn;
 	private TextView mLeftTextView;
 	private TextView mTitleView;
-	private ImageButton mRightImgBtn;
+	private ImageView mRightImgBtn;
 	private TextView mRightTextView;
 	private LinearLayout mBar_main_layout;
 
@@ -52,10 +55,10 @@ public class NavigationBar extends RelativeLayout {
 
 
 		mBar_main_layout = (LinearLayout) findViewById(R.id.bar_main_layout);
-		mLeftImgBtn = (ImageButton) findViewById(R.id.img_btn_navigation_left);
+		mLeftImgBtn = (ImageView) findViewById(R.id.img_btn_navigation_left);
 		mLeftTextView = (TextView) findViewById(R.id.tv_navigation_left);
 		mTitleView = (TextView) findViewById(R.id.tv_navigation_title);
-		mRightImgBtn = (ImageButton) findViewById(R.id.img_btn_navigation_right);
+		mRightImgBtn = (ImageView) findViewById(R.id.img_btn_navigation_right);
 		mRightTextView = (TextView) findViewById(R.id.tv_navigation_right);
 
 		mLeftImgBtn.setOnClickListener(buttonListener);
@@ -114,30 +117,29 @@ public class NavigationBar extends RelativeLayout {
 
 
 	public void setLeftImage(int resId) {
-		mLeftTextView.setVisibility(View.INVISIBLE);
+		mLeftTextView.setVisibility(View.GONE);
 		mLeftImgBtn.setVisibility(View.VISIBLE);
 		mLeftImgBtn.setImageResource(resId);
 	}
 
-	public void setLeftBack() {
-		mLeftTextView.setVisibility(View.INVISIBLE);
+	public void setLeftBack(final Activity activity) {
+		mLeftTextView.setVisibility(View.GONE);
 		mLeftImgBtn.setVisibility(View.VISIBLE);
-		mLeftImgBtn.setImageResource(R.mipmap.nv_back);
+		mLeftImgBtn.setImageResource(R.mipmap.back);
+		mLeftImgBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.finish();
+			}
+		});
 	}
 
 	public void setLeftText(String string) {
-		mLeftImgBtn.setVisibility(View.INVISIBLE);
+		mLeftImgBtn.setVisibility(View.GONE);
 		mLeftTextView.setVisibility(View.VISIBLE);
 		mLeftTextView.setText(string);
 	}
 
-	public void setLeftIconText(String string) {
-		// mLeftImgBtn.setVisibility(View.INVISIBLE);
-		// mLeftTextView.setCompoundDrawablesWithIntrinsicBounds(null, null,
-		// getResources().getDrawable(R.drawable.ico_club_arrow_down), null);
-		// mLeftTextView.setVisibility(View.VISIBLE);
-		// mLeftTextView.setText(string);
-	}
 
 	public void setHideLeftButton() {
 		mLeftImgBtn.setVisibility(View.INVISIBLE);
@@ -152,9 +154,12 @@ public class NavigationBar extends RelativeLayout {
 	}
 
 	public void setRightText(String string) {
-		mRightImgBtn.setVisibility(View.INVISIBLE);
+		mRightImgBtn.setVisibility(View.GONE);
 		mRightTextView.setVisibility(View.VISIBLE);
 		mRightTextView.setText(string);
+	}
+	public void setRightTextColor(int color) {
+		mRightTextView.setTextColor(ContextCompat.getColor(getContext(), color));
 	}
 	
 	public void setHiedRightText() {

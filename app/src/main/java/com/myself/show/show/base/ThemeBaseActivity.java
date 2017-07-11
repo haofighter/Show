@@ -2,14 +2,18 @@ package com.myself.show.show.base;
 
 
 import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +59,6 @@ public class ThemeBaseActivity extends BaseActivity {
     }
 
 
-
     /**
      * 设置状态栏的样式
      */
@@ -87,7 +90,6 @@ public class ThemeBaseActivity extends BaseActivity {
     }
 
 
-
     public void setContentView(View v) {
         View view = LayoutInflater.from(this).inflate(R.layout.activity_theme_base, null);
         content_layout = (FrameLayout) view.findViewById(R.id.content_layout);
@@ -97,9 +99,6 @@ public class ThemeBaseActivity extends BaseActivity {
         setToolbarColor(-1);
         setActivityBar();
     }
-
-
-
 
 
     protected void setContentView(int layoutResID, ActivityBarType activityBarType) {
@@ -174,13 +173,6 @@ public class ThemeBaseActivity extends BaseActivity {
         animator.setDuration(time);
         animator.start();
     }
-
-
-    protected void startActivity(Class<? extends Activity> activity) {
-        Intent intent = new Intent(this, activity);
-        startActivity(intent);
-    }
-
 
 }
 

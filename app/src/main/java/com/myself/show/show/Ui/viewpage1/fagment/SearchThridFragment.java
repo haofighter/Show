@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
-import com.myself.show.show.Ui.viewpage1.listener.OnFragmentInteractionListener;
+import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
 import com.myself.show.show.View.Twink.RefreshListenerAdapter;
 import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.BackCall;

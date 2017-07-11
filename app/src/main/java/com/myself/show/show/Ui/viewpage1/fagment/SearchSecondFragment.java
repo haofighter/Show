@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
 import com.myself.show.show.Ui.viewpage.listener.FragmentInfo;
-import com.myself.show.show.Ui.viewpage1.listener.OnFragmentInteractionListener;
+import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 

@@ -1,5 +1,10 @@
 package com.myself.show.show.base;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +13,8 @@ import android.support.annotation.LayoutRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +33,8 @@ import com.myself.show.show.Ui.music.listener.OnSongChangeListener;
 import com.myself.show.show.View.CircleImageView;
 import com.myself.show.show.View.FlowingDraw.ElasticDrawer;
 import com.myself.show.show.View.FlowingDraw.FlowingDrawer;
+
+import net.qiujuer.genius.blur.StackBlur;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,6 +56,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);//用于告诉Window页面切换需要使用动画
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
@@ -132,6 +142,7 @@ public class BaseActivity extends AppCompatActivity {
     //设置默认播放界面数据
     private void initDefaultFlow() {
         if (App.getInstance().getRunMusicInfo() != null) {
+            musicItemHolder.flowing_bg.setImageBitmap(StackBlur.blurNativelyPixels(BitmapFactory.decodeResource(getResources(), R.mipmap.bg_1), 20, false));
             Glide.with(BaseActivity.this).load(App.getInstance().getRunMusicInfo().getAlbum().getBlurPicUrl()).into(musicItemHolder.music_image_show);
             Glide.with(BaseActivity.this).load(R.mipmap.pause).into(musicItemHolder.playorpouse);
             musicItemHolder.sing_song_arthur.setText(App.getInstance().getRunMusicInfo().getArtists().get(0).getName());
@@ -143,19 +154,23 @@ public class BaseActivity extends AppCompatActivity {
                     musicItemHolder.musicProgress.setSecondaryProgress(percent);
                 }
             });
-        }else{
-            Log.e("","未获取到歌曲的信息");
+        } else {
+            Log.e("", "未获取到歌曲的信息");
         }
+
+        MyMusicUIRefreshTask myMusicUIRefreshTask = null;
         if (App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().isPlaying()) {
             Log.e("......", "播放状态");
             Glide.with(BaseActivity.this).load(R.mipmap.pause).into(musicItemHolder.playorpouse);
         } else {
             Log.e("......", "暂停状态");
+            if (myMusicUIRefreshTask != null)
+                myMusicUIRefreshTask.cancel();
             Glide.with(BaseActivity.this).load(R.mipmap.play).into(musicItemHolder.playorpouse);
         }
         if (timer == null)
             timer = new Timer();
-        MyMusicUIRefreshTask myMusicUIRefreshTask = null;
+
         if (myMusicUIRefreshTask != null)
             myMusicUIRefreshTask.cancel();
         myMusicUIRefreshTask = new MyMusicUIRefreshTask();
@@ -173,8 +188,6 @@ public class BaseActivity extends AppCompatActivity {
         public void run() {
             if (App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().isPlaying()) {
                 progress = App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().getCurrentPosition() * 1000 / App.getInstance().getMusicServie(getApplicationContext()).getMediaPlayer().getDuration();
-            } else {
-                progress = 0;
             }
             runOnUiThread(new TimerTask() {
                 @Override
@@ -269,6 +282,50 @@ public class BaseActivity extends AppCompatActivity {
         public MusicItemHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public enum ActivityChangeAnimal {
+        top, bottom, left, right
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    protected void startActivity(Class<? extends Activity> activity, ActivityChangeAnimal activityChangeAnimal) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || activityChangeAnimal == null) {
+            Intent intent = new Intent(this, activity);
+            startActivity(intent);
+        } else {
+            Transition exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+            Transition enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+
+            switch (activityChangeAnimal) {
+                case top:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                    break;
+                case bottom:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                    break;
+                case left:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                    break;
+                case right:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                    break;
+            }
+
+            //第一次进入时使用
+            getWindow().setEnterTransition(enterexplode);
+            //退出时使用
+            getWindow().setExitTransition(exitexplode);
+
+
+            Intent intent = new Intent(this, activity);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+
         }
     }
 

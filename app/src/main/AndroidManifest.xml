@@ -33,7 +33,9 @@
         <activity android:name=".base.BaseActivity" />
         <activity android:name=".Ui.music.activity.MusicActivity" />
         <activity android:name=".Ui.viewpage.ViewPageFragmentActivity" />
-        <activity android:name=".Ui.imageCorrelation.GetCustomImageAcitivity"></activity>
+        <activity android:name=".Ui.imageCorrelation.GetCustomImageAcitivity" />
+        <activity android:name=".Ui.home.HomeActivity" />
+        <activity android:name=".Ui.home.AddNoteActivity"></activity>
     </application>
 
 </manifest>

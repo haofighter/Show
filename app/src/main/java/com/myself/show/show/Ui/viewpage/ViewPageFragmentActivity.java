@@ -46,9 +46,9 @@ public class ViewPageFragmentActivity extends BaseFragmentActivity implements On
 
         fragmentList = new ArrayList<>();
 
-        fragmentList.add(new FragmentInfo(new SearchOneFragment(),R.mipmap.before,R.mipmap.file_attach_icon_normal));
-        fragmentList.add(new FragmentInfo(new SearchSecondFragment(),R.mipmap.icon_arror_down,R.mipmap.dui_icon));
-        fragmentList.add(new FragmentInfo(new SearchThridFragment(),R.mipmap.icon_arror_up,R.mipmap.icon_more));
+        fragmentList.add(new FragmentInfo(new SearchOneFragment(),R.mipmap.checked_on,R.mipmap.checked_off));
+        fragmentList.add(new FragmentInfo(new SearchSecondFragment(),R.mipmap.checked_off,R.mipmap.checked_on));
+        fragmentList.add(new FragmentInfo(new SearchThridFragment(),R.mipmap.checked_off,R.mipmap.checked_on));
 
 
         fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {

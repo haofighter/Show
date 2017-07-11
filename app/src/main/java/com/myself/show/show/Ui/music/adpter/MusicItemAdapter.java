@@ -62,7 +62,7 @@ public class MusicItemAdapter extends RecyclerView.Adapter {
                 backCall.backCall(v.getId(), position);
             }
         });
-        ((MusicItemHolder) holder).itemView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.animal_translate));
+        ((MusicItemHolder) holder).itemView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.animal_alpha_show));
 
     }
 

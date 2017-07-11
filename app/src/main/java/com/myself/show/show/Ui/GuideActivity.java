@@ -69,7 +69,7 @@ public class GuideActivity extends ThemeBaseActivity {
 
     @OnClick(R.id.btn_start)
     public void onClick(View v) {
-        startActivity(MainActivity.class);
+        startActivity(MainActivity.class,ActivityChangeAnimal.left);
         finish();
     }
 
@@ -102,7 +102,7 @@ public class GuideActivity extends ThemeBaseActivity {
         gvv.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                startActivity(MainActivity.class);
+                startActivity(MainActivity.class,ActivityChangeAnimal.left);
                 finish();
             }
         });
