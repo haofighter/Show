@@ -1,13 +1,26 @@
 package com.myself.show.show.Ui.home;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
-import android.widget.ImageButton;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.myself.show.show.R;
 import com.myself.show.show.base.ThemeBaseActivity;
@@ -25,39 +38,39 @@ public class AddNoteActivity extends ThemeBaseActivity {
     @BindView(R.id.editor)
     RichEditor editor;
     @BindView(R.id.text_bold)
-    ImageButton textBold;
+    CheckBox textBold;
     @BindView(R.id.text_italic)
-    ImageButton textItalic;
+    CheckBox textItalic;
     @BindView(R.id.text_strikethrough)
-    ImageButton textStrikethrough;
+    CheckBox textStrikethrough;
     @BindView(R.id.text_blockquote)
-    ImageButton textBlockquote;
+    CheckBox textBlockquote;
     @BindView(R.id.text_h1)
-    ImageButton textH1;
+    CheckBox textH1;
     @BindView(R.id.text_h2)
-    ImageButton textH2;
+    CheckBox textH2;
     @BindView(R.id.text_h3)
-    ImageButton textH3;
+    CheckBox textH3;
     @BindView(R.id.text_h4)
-    ImageButton textH4;
+    CheckBox textH4;
     @BindView(R.id.ll_layout_font)
     LinearLayout llLayoutFont;
     @BindView(R.id.add_image)
-    ImageButton addImage;
+    ImageView addImage;
     @BindView(R.id.add_link)
-    ImageButton addLink;
+    ImageView addLink;
     @BindView(R.id.add_split)
-    ImageButton addSplit;
+    ImageView addSplit;
     @BindView(R.id.ll_layout_add)
     LinearLayout llLayoutAdd;
     @BindView(R.id.action_undo)
-    ImageButton actionUndo;
+    ImageView actionUndo;
     @BindView(R.id.action_redo)
-    ImageButton actionRedo;
+    ImageView actionRedo;
     @BindView(R.id.action_font)
-    ImageButton actionFont;
+    ImageView actionFont;
     @BindView(R.id.action_add)
-    ImageButton actionAdd;
+    ImageView actionAdd;
     @BindView(R.id.ll_layout_editor)
     LinearLayout llLayoutEditor;
 
@@ -99,31 +112,25 @@ public class AddNoteActivity extends ThemeBaseActivity {
             public void onStateChangeListener(String text, List<RichEditor.Type> types) {
 
                 if (types.contains(RichEditor.Type.BOLD)) {
-                    textBold.setImageResource(R.mipmap.bold_l);
                     flag1 = true;
                     isBold = true;
                 } else {
-                    textBold.setImageResource(R.mipmap.bold_d);
                     flag1 = false;
                     isBold = false;
                 }
 
                 if (types.contains(RichEditor.Type.ITALIC)) {
-                    textItalic.setImageResource(R.mipmap.italic_l);
                     flag2 = true;
                     isItalic = true;
                 } else {
-                    textItalic.setImageResource(R.mipmap.italic_d);
                     flag2 = false;
                     isItalic = false;
                 }
 
                 if (types.contains(RichEditor.Type.STRIKETHROUGH)) {
-                    textStrikethrough.setImageResource(R.mipmap.strikethrough_l);
                     flag3 = true;
                     isStrikeThrough = true;
                 } else {
-                    textStrikethrough.setImageResource(R.mipmap.strikethrough_d);
                     flag3 = false;
                     isStrikeThrough = false;
                 }
@@ -136,13 +143,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
                     flag7 = false;
                     flag8 = false;
                     isclick = true;
-                    textBlockquote.setImageResource(R.mipmap.blockquote_l);
-                    textH1.setImageResource(R.mipmap.h1_d);
-                    textH2.setImageResource(R.mipmap.h2_d);
-                    textH3.setImageResource(R.mipmap.h3_d);
-                    textH4.setImageResource(R.mipmap.h4_d);
                 } else {
-                    textBlockquote.setImageResource(R.mipmap.blockquote_d);
                     flag4 = false;
                     isclick = false;
                 }
@@ -156,13 +157,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
                     flag8 = false;
 
                     isclick = true;
-                    textBlockquote.setImageResource(R.mipmap.blockquote_d);
-                    textH1.setImageResource(R.mipmap.h1_l);
-                    textH2.setImageResource(R.mipmap.h2_d);
-                    textH3.setImageResource(R.mipmap.h3_d);
-                    textH4.setImageResource(R.mipmap.h4_d);
                 } else {
-                    textH1.setImageResource(R.mipmap.h1_d);
                     flag5 = false;
                     isclick = false;
                 }
@@ -175,13 +170,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
                     flag8 = false;
 
                     isclick = true;
-                    textBlockquote.setImageResource(R.mipmap.blockquote_d);
-                    textH1.setImageResource(R.mipmap.h1_d);
-                    textH2.setImageResource(R.mipmap.h2_l);
-                    textH3.setImageResource(R.mipmap.h3_d);
-                    textH4.setImageResource(R.mipmap.h4_d);
                 } else {
-                    textH2.setImageResource(R.mipmap.h2_d);
                     flag6 = false;
                     isclick = false;
                 }
@@ -193,13 +182,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
                     flag7 = true;
                     flag8 = false;
                     isclick = true;
-                    textBlockquote.setImageResource(R.mipmap.blockquote_d);
-                    textH1.setImageResource(R.mipmap.h1_d);
-                    textH2.setImageResource(R.mipmap.h2_d);
-                    textH3.setImageResource(R.mipmap.h3_l);
-                    textH4.setImageResource(R.mipmap.h4_d);
                 } else {
-                    textH4.setImageResource(R.mipmap.h3_d);
                     flag7 = false;
                     isclick = false;
                 }
@@ -211,13 +194,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
                     flag7 = false;
                     flag8 = true;
                     isclick = true;
-                    textBlockquote.setImageResource(R.mipmap.blockquote_d);
-                    textH1.setImageResource(R.mipmap.h1_d);
-                    textH2.setImageResource(R.mipmap.h2_d);
-                    textH3.setImageResource(R.mipmap.h3_d);
-                    textH4.setImageResource(R.mipmap.h4_l);
                 } else {
-                    textH4.setImageResource(R.mipmap.h4_d);
                     flag8 = false;
                     isclick = false;
                 }
@@ -225,32 +202,140 @@ public class AddNoteActivity extends ThemeBaseActivity {
         });
     }
 
+    public final static int RICH_IMAGE_CODE = 0x33;
+
     @OnClick({R.id.text_bold, R.id.text_italic, R.id.text_strikethrough, R.id.text_blockquote, R.id.text_h1, R.id.text_h2, R.id.text_h3, R.id.text_h4, R.id.ll_layout_font, R.id.add_image, R.id.add_link, R.id.add_split, R.id.ll_layout_add, R.id.action_undo, R.id.action_redo, R.id.action_font, R.id.action_add, R.id.ll_layout_editor})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.text_bold:
+            case R.id.text_bold: //粗体
+                if (flag1) {
+                    flag1 = false;
+                    isBold = false;
+                } else {
+                    flag1 = true;
+                    isBold = true;
+                }
+                editor.setBold();
                 break;
-            case R.id.text_italic:
+            case R.id.text_italic: //斜体
+                if (flag2) {
+                    flag2 = false;
+                    isItalic = false;
+                } else {
+                    flag2 = true;
+                    isItalic = true;
+                }
+                editor.setItalic();
                 break;
-            case R.id.text_strikethrough:
+            case R.id.text_strikethrough://删除线
+                if (flag3) {
+                    flag3 = false;
+                    isStrikeThrough = false;
+                } else {
+                    flag3 = true;
+                    isStrikeThrough = true;
+                }
+                editor.setStrikeThrough();
                 break;
-            case R.id.text_blockquote:
+            case R.id.text_blockquote://块引用
+                if (flag4) {
+                    flag4 = false;
+                    isclick = false;
+                } else {
+                    flag4 = true;
+                    flag5 = false;
+                    flag6 = false;
+                    flag7 = false;
+                    flag8 = false;
+                    isclick = true;
+                }
+                Log.e("BlockQuote", "isItalic:" + isItalic + "，isBold：" + isBold + "，isStrikeThrough:" + isStrikeThrough);
+                editor.setBlockquote(isclick, isItalic, isBold, isStrikeThrough);
                 break;
-            case R.id.text_h1:
+            case R.id.text_h1://H1字体
+                if (flag5) {
+                    flag5 = false;
+                    isclick = false;
+
+                    //使加粗灰显并去除效果
+                    flag1 = false;
+                    isBold = false;
+                } else {
+                    flag4 = false;
+                    flag5 = true;
+                    flag6 = false;
+                    flag7 = false;
+                    flag8 = false;
+                    isclick = true;
+                }
+                editor.setHeading(1, isclick, isItalic, isBold, isStrikeThrough);
                 break;
-            case R.id.text_h2:
+            case R.id.text_h2://H2字体
+                if (flag6) {
+                    flag6 = false;
+                    isclick = false;
+
+                    //使加粗灰显并去除效果
+                    flag1 = false;
+                    isBold = false;
+                } else {
+                    flag4 = false;
+                    flag5 = false;
+                    flag6 = true;
+                    flag7 = false;
+                    flag8 = false;
+
+                    isclick = true;
+                }
+                editor.setHeading(2, isclick, isItalic, isBold, isStrikeThrough);
                 break;
-            case R.id.text_h3:
+            case R.id.text_h3://H3字体
+                if (flag7) {
+                    flag7 = false;
+                    isclick = false;
+
+                    //使加粗灰显并去除效果
+                    flag1 = false;
+                    isBold = false;
+                } else {
+                    flag4 = false;
+                    flag5 = false;
+                    flag6 = false;
+                    flag7 = true;
+                    flag8 = false;
+                    isclick = true;
+                }
+                editor.setHeading(3, isclick, isItalic, isBold, isStrikeThrough);
                 break;
-            case R.id.text_h4:
+            case R.id.text_h4://H4字体
+                if (flag8) {
+                    flag8 = false;
+                    isclick = false;
+
+                    //使加粗灰显并去除效果
+                    flag1 = false;
+                    isBold = false;
+                } else {
+                    flag4 = false;
+                    flag5 = false;
+                    flag6 = false;
+                    flag7 = false;
+                    flag8 = true;
+                    isclick = true;
+                }
+                editor.setHeading(4, isclick, isItalic, isBold, isStrikeThrough);
                 break;
             case R.id.ll_layout_font:
                 break;
-            case R.id.add_image:
+            case R.id.add_image://插入图片
+                Intent picture = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(picture, RICH_IMAGE_CODE);
                 break;
             case R.id.add_link:
+                showInsertLinkDialog();
                 break;
             case R.id.add_split:
+                editor.insertHr();
                 break;
             case R.id.ll_layout_add:
                 break;
@@ -277,6 +362,89 @@ public class AddNoteActivity extends ThemeBaseActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RICH_IMAGE_CODE && resultCode == Activity.RESULT_OK && null != data) {
+
+            Uri selectedImage = data.getData();
+            String[] filePathColumns = {MediaStore.Images.Media.DATA};
+            Cursor c = this.getContentResolver().query(selectedImage, filePathColumns, null, null, null);
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePathColumns[0]);
+            String picturePath = c.getString(columnIndex);
+            Log.i("dgs", "picturePath----" + picturePath);
+            //插入图片
+            editor.insertImage(picturePath, "图片");
+            c.close();
+            //获取图片并显示
+
+        }
+
+
+//        switch (requestCode) {
+//            case RICH_IMAGE_CODE://富文本选择图片
+//                if (data != null) {
+//                    richpImage = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+//                }
+//                if (richpImage != null) {
+//                    showDialog("图片加载中。。。");
+//                    requestYPU(richpImage.get(0));
+//                }
+//                break;
+//        }
+    }
+
+
+    private AlertDialog linkDialog;
+    /**
+     * 插入链接Dialog
+     */
+    private void showInsertLinkDialog() {
+
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        linkDialog = adb.create();
+
+        View view = getLayoutInflater().inflate(R.layout.dialog_insertlink, null);
+
+        final EditText et_link_address = (EditText) view.findViewById(R.id.et_link_address);
+        final EditText et_link_title = (EditText) view.findViewById(R.id.et_link_title);
+
+        Editable etext = et_link_address.getText();
+        Selection.setSelection(etext, etext.length());
+
+        //点击确实的监听
+        view.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String linkAddress = et_link_address.getText().toString();
+                String linkTitle = et_link_title.getText().toString();
+
+                if (linkAddress.endsWith("http://") || TextUtils.isEmpty(linkAddress)) {
+                    Toast.makeText(AddNoteActivity.this, "请输入超链接地址", Toast.LENGTH_SHORT);
+                } else if (TextUtils.isEmpty(linkTitle)) {
+                    Toast.makeText(AddNoteActivity.this, "请输入超链接标题", Toast.LENGTH_SHORT);
+                } else {
+                    editor.insertLink(linkAddress, linkTitle);
+                    linkDialog.dismiss();
+                }
+            }
+        });
+        //点击取消的监听
+        view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                linkDialog.dismiss();
+            }
+        });
+        linkDialog.setCancelable(false);
+        linkDialog.setView(view, 0, 0, 0, 0); // 设置 view
+        linkDialog.show();
+    }
+
 
     // 执行动画效果
     public void startAnimation(View mView) {

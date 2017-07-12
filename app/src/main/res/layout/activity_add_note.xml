@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.myself.show.show.Ui.home.AddNoteActivity">
 
 
@@ -13,94 +13,96 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:gravity="top|left"/>
+        android:gravity="top|left" />
 
-    <LinearLayout
+    <com.myself.show.show.customview.CheckedButtonLayout
         android:id="@+id/ll_layout_font"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/ll_layout_editor"
-        android:gravity="center"
         android:background="@color/gray_22"
+        app:maxCheck="2"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_bold"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:background="@null"
+            android:button="@drawable/selector_bold"
             android:contentDescription="@null"
+            android:gravity="center"
             android:src="@mipmap/bold_d" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_italic"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@null"
+            android:button="@drawable/selector_italic"
             android:contentDescription="@null"
-            android:src="@mipmap/italic_d" />
+            android:gravity="center" />
 
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_strikethrough"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/strikethrough_d" />
+            android:button="@drawable/selector_srtukethrough"
+            android:contentDescription="@null" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_blockquote"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@null"
+            android:button="@drawable/selector_blockquote"
             android:contentDescription="@null"
             android:src="@mipmap/blockquote_d" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_h1"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/h1_d" />
+            android:button="@drawable/selector_h1"
+            android:contentDescription="@null" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_h2"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/h2_d" />
+            android:button="@drawable/selector_h2"
+            android:contentDescription="@null" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_h3"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/h3_d" />
+            android:button="@drawable/selector_h3"
+            android:contentDescription="@null" />
 
-        <ImageButton
+        <CheckBox
             android:id="@+id/text_h4"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="@null"
-            android:contentDescription="@null"
-            android:src="@mipmap/h4_d" />
-    </LinearLayout>
+            android:button="@drawable/selector_h4"
+            android:contentDescription="@null" />
+    </com.myself.show.show.customview.CheckedButtonLayout>
 
     <LinearLayout
         android:id="@+id/ll_layout_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
         android:background="@drawable/shape_coner_black"
-        android:padding="5dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/add_image"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -109,7 +111,7 @@
             android:paddingRight="10dp"
             android:src="@mipmap/insert_image" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/add_link"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -120,7 +122,7 @@
             android:src="@mipmap/insert_link" />
 
 
-        <ImageButton
+        <ImageView
             android:id="@+id/add_split"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -134,7 +136,6 @@
         android:id="@+id/ll_layout_editor"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:orientation="horizontal">
 

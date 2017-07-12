@@ -33,4 +33,8 @@
         -->
     </declare-styleable>
 
+    <declare-styleable name="CheckedButtonLayout">
+        <attr name="maxCheck" format="integer" />
+    </declare-styleable>
+
 </resources>
