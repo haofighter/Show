@@ -26,14 +26,14 @@ public class CheckedButtonLayout extends LinearLayout {
     Context context;
 
     public CheckedButtonLayout(Context context) {
-        super(context);
-        init();
+        this(context,null);
+
     }
 
     public CheckedButtonLayout(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs,0);
         initAttrs(attrs);
-        init();
+
     }
 
     public CheckedButtonLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
