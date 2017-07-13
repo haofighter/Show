@@ -39,6 +39,8 @@ import java.util.Locale;
 
 public class RichEditor extends WebView {
 
+
+
     public enum Type {
         BOLD,
         ITALIC,
@@ -452,9 +454,19 @@ public class RichEditor extends WebView {
         exec("javascript:RE.setNumbers();");
     }
 
-    public void insertImage(String url, String alt) {
+    public void insertImage(String url, String alt,String title) {
         exec("javascript:RE.prepareInsert();");
-        exec("javascript:RE.insertImage('" + url + "', '" + alt + "');");
+        exec("javascript:RE.insertImage('" + url + "', '" + alt + "','"+title+"');");
+    }
+
+    public void setProgress(String str) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.progress('"+str+"');");
+    }
+
+    public void refreshProgess(String pic1,int progress) {
+        exec("javascript:RE.prepareInsert();");
+        exec("javascript:RE.progressRefresh('"+pic1+"', '"+progress+"');");
     }
 
     public void insertHr() {

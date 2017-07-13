@@ -201,10 +201,30 @@ RE.setBlockquote = function(b) {
 }
 
 //插入图片
-RE.insertImage = function(url, alt) {
-    var html = '<img  src="' + url + '" alt="' + alt + '" /><p align=center style="color:#aaaaaa">来自陌筹君App的图片</p><hr align=center width=200 color=#aaaaaa size=1 /><br/><br/>';
+RE.insertImage = function(url, alt,title) {
+    var html = '<img  src="' + url + '" alt="' + alt + '" /><p align=center style="color:#aaaaaa">'+title+'</p><hr align=center width=200 color=#aaaaaa size=1 /><br/><br/>';
     RE.insertHTML(html);
 }
+
+//插入进度条
+RE.progress = function(str) {
+    var html = '<progress id='+str+' value="0" max="100" style="height: 6px; width: 100%;"></progress><br/><br/>';
+    RE.insertHTML(html);
+}
+//border: 1px solid #0064B4   进度条边框
+
+
+//插入进度条
+RE.progressRefresh = function(str,progress) {
+    var pg=document.getElementById(str);
+     setInterval(function(e){
+          if(pg.value<=100) pg.value++;
+
+    },1000);
+}
+
+
+
 
 //插入分割线
 RE.insertHr = function() {

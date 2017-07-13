@@ -58,7 +58,6 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);//用于告诉Window页面切换需要使用动画
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
     }
 
     //容纳侧滑的中音乐布局的holder

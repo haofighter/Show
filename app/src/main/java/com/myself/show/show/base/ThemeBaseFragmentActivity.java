@@ -46,7 +46,6 @@ public class ThemeBaseFragmentActivity extends BaseFragmentActivity {
 //            if(runningServiceInfos.get(i).service.getPackageName().equals(getApplicationContext().getPackageName())){
 //                Log.i("============", runningServiceInfos.get(i).service.toString());
 //            }
-//
 //        }
     }
 
