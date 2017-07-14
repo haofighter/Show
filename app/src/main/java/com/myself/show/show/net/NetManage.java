@@ -3,6 +3,7 @@ package com.myself.show.show.net;
 import android.content.Context;
 import android.util.Log;
 
+import com.myself.show.show.net.requestBean.FileInfo;
 import com.myself.show.show.net.requestBean.MusicSearchBean;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
@@ -45,4 +46,7 @@ public class NetManage {
                     }
                 });
     }
+
+
+
 }

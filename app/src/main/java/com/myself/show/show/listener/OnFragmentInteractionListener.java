@@ -1,9 +1,9 @@
-package com.myself.show.show.Ui.viewpage.listener;
+package com.myself.show.show.listener;
 
 import android.net.Uri;
 
 /**
- * Created by Administrator on 2017/7/4.
+ * 用于activity和fragment之间数据交互的监听
  */
 
 public interface OnFragmentInteractionListener {

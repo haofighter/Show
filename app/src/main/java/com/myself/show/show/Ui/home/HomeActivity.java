@@ -7,15 +7,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 
 import com.myself.show.show.R;
+import com.myself.show.show.Ui.viewpage.fagment.SearchOneFragment;
+import com.myself.show.show.Ui.viewpage.fagment.SearchSecondFragment;
+import com.myself.show.show.Ui.viewpage.fagment.SearchThridFragment;
 import com.myself.show.show.Ui.viewpage.listener.FragmentInfo;
-import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
-import com.myself.show.show.Ui.viewpage1.fagment.SearchOneFragment;
-import com.myself.show.show.Ui.viewpage1.fagment.SearchSecondFragment;
-import com.myself.show.show.Ui.viewpage1.fagment.SearchThridFragment;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.base.ThemeBaseFragmentActivity;
 import com.myself.show.show.customview.verticaltablayout.VerticalTabLayout;
 import com.myself.show.show.customview.verticaltabviewpage.VerticalViewPager;
+import com.myself.show.show.listener.OnFragmentInteractionListener;
 
 import java.util.ArrayList;
 

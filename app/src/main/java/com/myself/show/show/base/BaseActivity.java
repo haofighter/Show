@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
-import com.myself.show.show.Ui.music.listener.OnSongChangeListener;
+import com.myself.show.show.listener.OnSongChangeListener;
 import com.myself.show.show.View.CircleImageView;
 import com.myself.show.show.View.FlowingDraw.ElasticDrawer;
 import com.myself.show.show.View.FlowingDraw.FlowingDrawer;
@@ -288,6 +288,11 @@ public class BaseActivity extends AppCompatActivity {
         top, bottom, left, right
     }
 
+
+    public void startActivity(Class<? extends Activity> activity) {
+        startActivity( activity,null);
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void startActivity(Class<? extends Activity> activity, ActivityChangeAnimal activityChangeAnimal) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || activityChangeAnimal == null) {
@@ -299,20 +304,20 @@ public class BaseActivity extends AppCompatActivity {
 
             switch (activityChangeAnimal) {
                 case top:
-                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
-                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
-                    break;
-                case bottom:
                     exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
                     enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
                     break;
-                case left:
-                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
-                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                case bottom:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
                     break;
-                case right:
+                case left:
                     exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
                     enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                    break;
+                case right:
+                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
                     break;
             }
 

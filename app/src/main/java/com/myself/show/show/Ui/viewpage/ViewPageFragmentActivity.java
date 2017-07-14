@@ -8,16 +8,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.View;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.viewpage.fagment.SearchOneFragment;
 import com.myself.show.show.Ui.viewpage.fagment.SearchSecondFragment;
 import com.myself.show.show.Ui.viewpage.fagment.SearchThridFragment;
 import com.myself.show.show.Ui.viewpage.listener.FragmentInfo;
-import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
 import com.myself.show.show.base.BaseFragmentActivity;
+import com.myself.show.show.listener.OnFragmentInteractionListener;
 
 import java.util.ArrayList;
 import java.util.List;

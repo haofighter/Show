@@ -9,8 +9,8 @@ import java.util.List;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 import com.myself.show.show.sql.DaoSession;
-import com.myself.show.show.sql.SheepDao;
 import com.myself.show.show.sql.UserDao;
+import com.myself.show.show.sql.SheepDao;
 
 /**
  * Created by Administrator on 2017/6/8 0008.
@@ -95,13 +95,6 @@ public class Sheep {
         return users;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 892965363)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getSheepDao() : null;
-    }
-
     /** Used for active entity operations. */
     @Generated(hash = 1294021435)
     private transient SheepDao myDao;
@@ -124,6 +117,13 @@ public class Sheep {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 892965363)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getSheepDao() : null;
     }
 
     @Generated(hash = 1871150570)

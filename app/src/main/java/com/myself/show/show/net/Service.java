@@ -1,5 +1,6 @@
 package com.myself.show.show.net;
 
+import com.myself.show.show.net.requestBean.FileInfo;
 import com.myself.show.show.net.responceBean.LoginResponse;
 import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
@@ -42,6 +43,7 @@ public interface Service {
 
     @GET("http://music.163.com/api/song/enhance/download/url?br=320000")
     Observable<MusicPath> musicPath(@Query("id") int id);
+
 
 
 //    @GET( "https://wxt.hbglky.com/oauth-provider/oauth/token?client_id=drv-client&client_secret=D76A9FA10B87&grant_type=client_credentials&scope=pub_api")

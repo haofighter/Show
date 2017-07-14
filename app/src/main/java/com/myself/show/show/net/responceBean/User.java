@@ -1,10 +1,5 @@
 package com.myself.show.show.net.responceBean;
 
-import com.myself.show.show.sql.CatDao;
-import com.myself.show.show.sql.DaoSession;
-import com.myself.show.show.sql.SheepDao;
-import com.myself.show.show.sql.UserDao;
-
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -18,6 +13,10 @@ import org.greenrobot.greendao.annotation.Transient;
 import org.greenrobot.greendao.annotation.Unique;
 
 import java.util.List;
+import com.myself.show.show.sql.DaoSession;
+import com.myself.show.show.sql.SheepDao;
+import com.myself.show.show.sql.CatDao;
+import com.myself.show.show.sql.UserDao;
 
 @Entity(
         // schema 名，多个 schema 时设置关联实体。插件产生不支持，需使用产生器
@@ -183,13 +182,6 @@ public List<Cat> getCats() {
     return cats;
 }
 
-/** called by internal mechanisms, do not call yourself. */
-@Generated(hash = 2059241980)
-public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getUserDao() : null;
-}
-
 /** Used for active entity operations. */
 @Generated(hash = 1507654846)
 private transient UserDao myDao;
@@ -236,6 +228,13 @@ public Long getId() {
 
 public void setId(Long id) {
         this.id = id;
+}
+
+/** called by internal mechanisms, do not call yourself. */
+@Generated(hash = 2059241980)
+public void __setDaoSession(DaoSession daoSession) {
+    this.daoSession = daoSession;
+    myDao = daoSession != null ? daoSession.getUserDao() : null;
 }
 
 @Generated(hash = 604905101)

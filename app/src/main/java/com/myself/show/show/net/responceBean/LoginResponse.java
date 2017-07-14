@@ -1,13 +1,12 @@
 package com.myself.show.show.net.responceBean;
 
-import com.myself.show.show.sql.DaoSession;
-import com.myself.show.show.sql.LoginResponseDao;
-import com.myself.show.show.sql.UserInfoDao;
-
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.ToOne;
+import com.myself.show.show.sql.DaoSession;
+import com.myself.show.show.sql.UserInfoDao;
+import com.myself.show.show.sql.LoginResponseDao;
 
 /**
  * Created by Administrator on 2017/6/8 0008.

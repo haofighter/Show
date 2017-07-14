@@ -124,13 +124,6 @@ public class TreeNode {
     @Generated(hash = 1293412156)
     private transient Long parent__resolvedKey;
 
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 575492216)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getTreeNodeDao() : null;
-    }
-
     /** Used for active entity operations. */
     @Generated(hash = 2127305444)
     private transient TreeNodeDao myDao;
@@ -153,6 +146,13 @@ public class TreeNode {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 575492216)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getTreeNodeDao() : null;
     }
 
     @Generated(hash = 688201735)

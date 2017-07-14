@@ -7,9 +7,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.myself.show.show.Ui.music.listener.OnSongChangeListener;
+import com.myself.show.show.listener.OnSongChangeListener;
 import com.myself.show.show.base.App;
-import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.utils.ToastUtils;

@@ -1,6 +1,5 @@
 package com.myself.show.show.Ui.viewpage.fagment;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,27 +11,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.myself.show.show.R;
-import com.myself.show.show.Ui.music.activity.MusicActivity;
 import com.myself.show.show.Ui.music.adpter.MusicItemAdapter;
-import com.myself.show.show.Ui.viewpage.listener.OnFragmentInteractionListener;
 import com.myself.show.show.View.Twink.RefreshListenerAdapter;
 import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.BackCall;
+import com.myself.show.show.listener.OnFragmentInteractionListener;
 import com.myself.show.show.net.NetManage;
-import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.requestBean.MusicSearchBean;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class SearchOneFragment extends Fragment {
 

@@ -1,15 +1,14 @@
 package com.myself.show.show.net.responceBean;
 
-import com.myself.show.show.sql.CatDao;
-import com.myself.show.show.sql.DaoSession;
-import com.myself.show.show.sql.UserDao;
-
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.NotNull;
 import org.greenrobot.greendao.annotation.ToOne;
+import com.myself.show.show.sql.DaoSession;
+import com.myself.show.show.sql.UserDao;
+import com.myself.show.show.sql.CatDao;
 
 /**
  * Created by Administrator on 2017/6/8 0008.
@@ -99,13 +98,6 @@ public class Cat {
     @Generated(hash = 251390918)
     private transient Long user__resolvedKey;
 
-    /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 1787171786)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getCatDao() : null;
-    }
-
     /** Used for active entity operations. */
     @Generated(hash = 1725686194)
     private transient CatDao myDao;
@@ -136,6 +128,13 @@ public class Cat {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1787171786)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getCatDao() : null;
     }
 
     @Generated(hash = 1225191413)

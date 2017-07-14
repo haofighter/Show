@@ -16,7 +16,6 @@ import com.myself.show.show.Ui.home.HomeActivity;
 import com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity;
 import com.myself.show.show.Ui.music.activity.MusicActivity;
 import com.myself.show.show.Ui.viewpage.ViewPageFragmentActivity;
-import com.myself.show.show.Ui.viewpage1.ViewPageFragment1Activity;
 import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.customview.ShadowLayout;
 
@@ -63,13 +62,13 @@ public class MainActivity extends ThemeBaseActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first:
-                startActivity(ViewPageFragmentActivity.class,ActivityChangeAnimal.left);
+                startActivity(ViewPageFragmentActivity.class);
                 break;
             case R.id.vertical_viewpager:
-                startActivity(HomeActivity.class,ActivityChangeAnimal.left);
+                startActivity(HomeActivity.class);
                 break;
             case R.id.search:
-                startActivity(MusicActivity.class,ActivityChangeAnimal.left);
+                startActivity(MusicActivity.class);
                 break;
             case R.id.button:
                 button.post(new Runnable() {
@@ -102,10 +101,10 @@ public class MainActivity extends ThemeBaseActivity {
                 });
                 break;
             case R.id.viewpage_test:
-                startActivity(ViewPageFragment1Activity.class,ActivityChangeAnimal.left);
+
                 break;
             case R.id.image_control:
-                startActivity(GetCustomImageAcitivity.class,ActivityChangeAnimal.left);
+                startActivity(GetCustomImageAcitivity.class);
                 break;
         }
     }
