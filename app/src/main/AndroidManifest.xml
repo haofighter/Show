@@ -24,7 +24,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".Ui.MainActivity" />
-        <activity android:name=".Ui.viewpage1.ViewPageFragment1Activity" />
 
         <service
             android:name=".Ui.music.musicService.MusicService"

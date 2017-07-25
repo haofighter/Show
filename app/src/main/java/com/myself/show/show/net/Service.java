@@ -1,17 +1,24 @@
 package com.myself.show.show.net;
 
 import com.myself.show.show.net.requestBean.FileInfo;
+import com.myself.show.show.net.responceBean.BaseResponse;
 import com.myself.show.show.net.responceBean.LoginResponse;
 import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+
 
 /**
  * Created by laucherish on 16/3/15.
@@ -44,7 +51,9 @@ public interface Service {
     @GET("http://music.163.com/api/song/enhance/download/url?br=320000")
     Observable<MusicPath> musicPath(@Query("id") int id);
 
-
+    @Multipart
+    @POST("/api/Public/upload_img")
+    Call<BaseResponse> uploadFile(@Part("") MultipartBody.Part file);
 
 //    @GET( "https://wxt.hbglky.com/oauth-provider/oauth/token?client_id=drv-client&client_secret=D76A9FA10B87&grant_type=client_credentials&scope=pub_api")
 //    Observable<BaseResponse> getToken();

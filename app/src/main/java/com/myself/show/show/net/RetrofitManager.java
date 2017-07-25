@@ -4,14 +4,19 @@ package com.myself.show.show.net;
 import android.content.Context;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.myself.show.show.net.responceBean.BaseResponse;
 import com.myself.show.show.net.responceBean.LoginResponse;
 import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import java.util.concurrent.TimeUnit;
 
+
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -87,12 +92,19 @@ public class RetrofitManager {
     //网易云音乐查询
     public Observable<WySearchInfo> wyYun(String searchContent, int page, int limit, String type) {
 
-        return mService.wyYun(  searchContent,  page,  limit,  type);
+        return mService.wyYun(searchContent, page, limit, type);
     }
-//网易云音乐下载地址
-    public Observable<MusicPath>  musicPath(int musicId) {
 
-        return mService.musicPath( musicId );
+    //网易云音乐下载地址
+    public Observable<MusicPath> musicPath(int musicId) {
+
+        return mService.musicPath(musicId);
+    }
+
+    //上传文件
+    public Call<BaseResponse> upload(MultipartBody.Part file) {
+
+        return mService.uploadFile(file);
     }
 
 }
