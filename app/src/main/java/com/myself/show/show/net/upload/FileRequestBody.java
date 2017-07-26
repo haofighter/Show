@@ -2,6 +2,7 @@ package com.myself.show.show.net.upload;
 
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -24,24 +25,39 @@ public final class FileRequestBody<T> extends RequestBody {
     /**
      * 上传回调接口
      */
-    private RetrofitCallback<T> callback;
+    private FileSubscribe<T> callback;
     /**
      * 包装完成的BufferedSink
      */
     private BufferedSink bufferedSink;
-    public FileRequestBody(RequestBody requestBody, RetrofitCallback<T> callback) {
+
+    public FileRequestBody(RequestBody requestBody, FileSubscribe<T> callback) {
         super();
         this.requestBody = requestBody;
         this.callback = callback;
     }
+
+    public FileRequestBody(File file, FileSubscribe<T> callback) {
+        super();
+        this.requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        this.callback = callback;
+    }
+
+    public FileRequestBody(RequestBody requestBody) {
+        super();
+        this.requestBody = requestBody;
+    }
+
     @Override
     public long contentLength() throws IOException {
         return requestBody.contentLength();
     }
+
     @Override
     public MediaType contentType() {
         return requestBody.contentType();
     }
+
     @Override
     public void writeTo(BufferedSink sink) throws IOException {
         if (bufferedSink == null) {
@@ -53,8 +69,10 @@ public final class FileRequestBody<T> extends RequestBody {
 //必须调用flush，否则最后一部分数据可能不会被写入
         bufferedSink.flush();
     }
+
     /**
      * 写入，回调进度接口
+     *
      * @param sink Sink
      * @return Sink
      */
@@ -64,6 +82,7 @@ public final class FileRequestBody<T> extends RequestBody {
             long bytesWritten = 0L;
             //总字节长度，避免多次调用contentLength()方法
             long contentLength = 0L;
+
             @Override
             public void write(Buffer source, long byteCount) throws IOException {
                 super.write(source, byteCount);
@@ -74,8 +93,8 @@ public final class FileRequestBody<T> extends RequestBody {
 //增加当前写入的字节数
                 bytesWritten += byteCount;
 //回调
-                Log.i("上唇","上传进度的调用啊");
-                callback.onLoading(contentLength, bytesWritten);
+                if (callback != null)
+                    callback.onLoading(contentLength, bytesWritten);
             }
         };
     }

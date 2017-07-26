@@ -146,7 +146,7 @@ public class MusicService extends Service {
         if (App.getInstance().getSongsList().size() <= index) {
             throw new ArrayIndexOutOfBoundsException("播放的歌曲标识越界了");
         }
-        RetrofitManager.builder(this).musicPath(App.getInstance().getSongsList().get(index).getId()).subscribeOn(Schedulers.io())
+        RetrofitManager.builder(com.myself.show.show.net.Service.class).musicPath(App.getInstance().getSongsList().get(index).getId()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<MusicPath>() {
                     @Override
@@ -155,6 +155,7 @@ public class MusicService extends Service {
                             ToastUtils.showMessage("未获取到播放资源");
                             return;
                         }
+                        Log.i("播放的歌曲地址",musicPath.getData().getUrl());
                         playMusic(musicPath.getData().getUrl());
                     }
                 }, new Action1<Throwable>() {

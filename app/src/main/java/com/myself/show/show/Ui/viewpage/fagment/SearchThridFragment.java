@@ -20,6 +20,7 @@ import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.listener.OnFragmentInteractionListener;
 import com.myself.show.show.net.RetrofitManager;
+import com.myself.show.show.net.Service;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import butterknife.BindView;
@@ -95,7 +96,7 @@ public class SearchThridFragment extends Fragment {
     }
 
     public void loadDate() {
-        RetrofitManager.builder(getActivity()).wyYun("孙子涵", page, limit, musicType).subscribeOn(Schedulers.io())
+        RetrofitManager.builder(Service.class).wyYun("孙子涵", page, limit, musicType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<WySearchInfo>() {
                     @Override

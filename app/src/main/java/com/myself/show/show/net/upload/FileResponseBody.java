@@ -23,16 +23,12 @@ public final class FileResponseBody<T> extends ResponseBody {
     /**
      * 下载回调接口
      */
-    private RetrofitCallback<T> mCallback;
+    private FileSubscribe<T> mCallback;
     /**
      * BufferedSource
      */
     private BufferedSource mBufferedSource;
-    public FileResponseBody(ResponseBody responseBody, RetrofitCallback<T> callback) {
-        super();
-        this.mResponseBody = responseBody;
-        this.mCallback = callback;
-    }
+
     @Override
     public BufferedSource source() {
         if (mBufferedSource == null) {

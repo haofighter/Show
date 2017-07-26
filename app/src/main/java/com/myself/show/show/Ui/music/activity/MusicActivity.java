@@ -22,6 +22,7 @@ import com.myself.show.show.base.App;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.net.RetrofitManager;
+import com.myself.show.show.net.Service;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 import com.myself.show.show.utils.ToastUtils;
 
@@ -108,7 +109,7 @@ public class MusicActivity extends BaseActivity {
             return;
         }
         searchStr = searchContent.getText().toString();
-        RetrofitManager.builder(this).wyYun(searchContent.getText().toString(), page, limit, musicType).subscribeOn(Schedulers.io())
+        RetrofitManager.builder(Service.class).wyYun(searchContent.getText().toString(), page, limit, musicType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<WySearchInfo>() {
                     @Override

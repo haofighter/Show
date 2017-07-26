@@ -37,7 +37,7 @@ public class NetManage {
      * @return
      */
     public void loadMusicDate(MusicSearchBean musicSearchBean, Action1<WySearchInfo> action1) {
-        RetrofitManager.builder(mContext).wyYun(musicSearchBean.getSearchName(), musicSearchBean.getPage(), musicSearchBean.getLimit(), musicSearchBean.getType()).subscribeOn(Schedulers.io())
+        RetrofitManager.builder(Service.class).wyYun(musicSearchBean.getSearchName(), musicSearchBean.getPage(), musicSearchBean.getLimit(), musicSearchBean.getType()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(action1, new Action1<Throwable>() {
                     @Override

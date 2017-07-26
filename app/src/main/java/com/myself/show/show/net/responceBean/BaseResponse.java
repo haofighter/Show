@@ -29,4 +29,12 @@ public class BaseResponse {
     public void setMsg(String msg) {
         this.msg = msg;
     }
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "suc='" + suc + '\'' +
+                ", msg='" + msg + '\'' +
+                '}';
+    }
 }

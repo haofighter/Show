@@ -1,7 +1,6 @@
 package com.myself.show.show.Ui;
 
 import android.animation.Animator;
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,10 +9,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
 import com.myself.show.show.Ui.home.HomeActivity;
@@ -26,30 +25,26 @@ import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.Service;
 import com.myself.show.show.net.responceBean.BaseResponse;
 import com.myself.show.show.net.upload.FileRequestBody;
-import com.myself.show.show.net.upload.FileResponseBody;
-import com.myself.show.show.net.upload.RetrofitCallback;
-import com.myself.show.show.utils.ToastUtils;
+import com.myself.show.show.net.upload.FileSubscribe;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import okhttp3.ResponseBody;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class MainActivity extends ThemeBaseActivity {
@@ -66,6 +61,8 @@ public class MainActivity extends ThemeBaseActivity {
     TextView first;
     @BindView(R.id.search)
     Button search;
+    @BindView(R.id.upload_progress)
+    ProgressBar uploadProgress;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -86,7 +83,9 @@ public class MainActivity extends ThemeBaseActivity {
         super.onResume();
     }
 
-    @OnClick({R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload})
+    String picPath = Environment.getExternalStorageDirectory() + "/test.jpg";
+
+    @OnClick({R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first:
@@ -134,101 +133,166 @@ public class MainActivity extends ThemeBaseActivity {
             case R.id.image_control:
                 startActivity(GetCustomImageAcitivity.class);
                 break;
-            case R.id.upload:
-                RetrofitCallback<BaseResponse> callback = new RetrofitCallback<BaseResponse>() {
-                    @Override
-                    public void onFailure(Call<BaseResponse> call, Throwable t) {
-                        //进度更新结束
-                        ToastUtils.showMessage("失败");
-                    }
-
-                    @Override
-                    public void onSuccess(Call<BaseResponse> call, Response<BaseResponse> response) {
-                        //进度更新结束
-                        ToastUtils.showMessage("成功");
-                    }
-
+            case R.id.upload://上传单个文件
+                File file1 = new File(picPath);
+                FileRequestBody fileRequestMore = new FileRequestBody(file1, fileSubscribeSingle);
+                MultipartBody.Part part1 = MultipartBody.Part.createFormData("file", file1.getName(), fileRequestMore);
+                Service service = RetrofitManager.builder(Service.class);
+                service.uploadFile1(part1).subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(fileSubscribeSingle);
+                break;
+            case R.id.upload_more://批量传
+                File file = new File(picPath);
+                Map<String, RequestBody> requestBodyMap = new HashMap<>();
+                FileRequestBody fileRequestBody = new FileRequestBody(file, new FileSubscribe() {
                     @Override
                     public void onLoading(long total, long progress) {
-                        ToastUtils.showMessage("上传===" + total + "==" + progress);
-                        //此处进行进度更新
                         super.onLoading(total, progress);
-
                     }
-                };
+                });
+                requestBodyMap.put("file\"; filename=\"1" + file.getName(), fileRequestBody);
+                FileRequestBody fileRequestBody1 = new FileRequestBody(file, new FileSubscribe() {
+                    @Override
+                    public void onLoading(long total, long progress) {
+                        Log.i("1", "上传的进度" + total + "==" + progress);
+                    }
+                });
+                requestBodyMap.put("file\"; filename=\"2" + file.getName(), fileRequestBody1);
+                FileRequestBody fileRequestBody2 = new FileRequestBody(file, new FileSubscribe() {
+                    @Override
+                    public void onLoading(long total, long progress) {
+                        Log.i("2", "上传的进度" + total + "==" + progress);
+                    }
+                });
+                requestBodyMap.put("file\"; filename=\"3" + file.getName(), fileRequestBody2);
+                FileRequestBody fileRequestBody3 = new FileRequestBody(file, new FileSubscribe() {
+                    @Override
+                    public void onLoading(long total, long progress) {
+                        Log.i("3", "上传的进度" + total + "==" + progress);
+                    }
+                });
+                requestBodyMap.put("file\"; filename=\"4" + file.getName(), fileRequestBody3);
+                FileRequestBody fileRequestBody4 = new FileRequestBody(file, new FileSubscribe() {
+                    @Override
+                    public void onLoading(long total, long progress) {
+                        Log.i("4", "上传的进度" + total + "==" + progress);
+                    }
+                });
+                requestBodyMap.put("file\"; filename=\"5" + file.getName(), fileRequestBody4);
 
-                File file = new File(Environment.getExternalStorageDirectory()+"/storage/emulated/0/Pictures/Screenshots/Screenshot_2016-07-28-09-26-14.jpeg");
+                RetrofitManager.builder(Service.class).uploadFileInfo(requestBodyMap).subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe();
+                break;
 
-                RequestBody body = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
-                FileRequestBody fileRequestBody = new FileRequestBody(body, callback);
-                MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), fileRequestBody);
-                Call<BaseResponse> call = getRetrofitService(callback).uploadFile(part);
-                call.enqueue(callback);
+            case R.id.download:
+                RetrofitManager.builder(Service.class).downloadFile().subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Subscriber<ResponseBody>() {
+                            @Override
+                            public void onCompleted() {
+                                Log.i("下载完成", "");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(ResponseBody responseBody) {
+                                writeResponseBodyToDisk(responseBody);
+                                Log.i("下载获取道的数据", "数据的大小" + responseBody.contentLength());
+                            }
+                        });
                 break;
         }
 
     }
 
 
-    //从Sdk中获取文件
-    private List<File> getFile(String str) {
-        File mfile = new File(str);
-        // 图片列表
-        List<File> fileList = new ArrayList<File>();
-//        // 得到sd卡内路径
-//        String imagePath =
-//                Environment.getExternalStorageDirectory().toString();
-        // 得到该路径文件夹下所有的文件
-        if (mfile.isDirectory()) {
-            File[] files = mfile.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    getFile(files[i].getAbsolutePath());
-                } else {
-                    fileList.add(files[i]);
+    private boolean writeResponseBodyToDisk(ResponseBody body) {
+        try {
+
+            File futureStudioIconFile = new File(Environment.getExternalStorageDirectory()+ "123.MP3");
+
+            if(!futureStudioIconFile.exists()){
+                futureStudioIconFile.createNewFile();
+            }
+
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+                long fileSize = body.contentLength();
+                long fileSizeDownloaded = 0;
+                inputStream = body.byteStream();
+                outputStream = new FileOutputStream(futureStudioIconFile);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+                    if (read == -1) {
+                        break;
+                    }
+                    outputStream.write(fileReader, 0, read);
+                    fileSizeDownloaded += read;
+                }
+                outputStream.flush();
+                Log.i("6464","写入成功");
+                return true;
+            } catch (IOException e) {
+                return false;
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
                 }
             }
-        } else {
-            fileList.add(mfile);
-        }
-        ToastUtils.showMessage("fileList==="+fileList.size());
-        return fileList;
-    }
-
-    // 检查扩展名，得到图片格式的文件
-    private boolean checkIsImageFile(String fName) {
-        boolean isImageFile = false;
-
-        // 获取扩展名
-        String FileEnd = fName.substring(fName.lastIndexOf(".") + 1,
-                fName.length()).toLowerCase();
-        if (FileEnd.equals("jpg") || FileEnd.equals("gif")
-                || FileEnd.equals("png") || FileEnd.equals("jpeg")
-                || FileEnd.equals("bmp")) {
-            isImageFile = true;
-        } else {
-            isImageFile = false;
+        } catch (IOException e) {
+            return false;
         }
 
-        return isImageFile;
     }
 
-    private <T> Service getRetrofitService(final RetrofitCallback<T> callback) {
-        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        clientBuilder.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                okhttp3.Response response = chain.proceed(chain.request());
-//将ResponseBody转换成我们需要的FileResponseBody
-                return response.newBuilder().body(new FileResponseBody<T>(response.body(), callback)).build();
-            }
-        });
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://119.97.150.30/")
-                .client(clientBuilder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        Service service = retrofit.create(Service.class);
-        return service ;
-    }
+
+
+    FileSubscribe<BaseResponse> fileSubscribeSingle = new FileSubscribe<BaseResponse>() {
+        @Override
+        public void onLoading(long total, long progress) {
+            super.onLoading(total, progress);
+            uploadProgress.setProgress((int) (progress * 100 / total));
+            Log.i("有木有", "total==" + total + "-------progress===" + progress);
+        }
+
+        @Override
+        public void onStart() {
+            Log.i("有木有", "开始了");
+            super.onStart();
+        }
+
+        @Override
+        public void onCompleted() {
+            Log.i("有木有", "完成了");
+            super.onCompleted();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            Log.i("有木有", "出错了" + e.getMessage());
+            super.onError(e);
+        }
+
+        @Override
+        public void onNext(BaseResponse o) {
+            Log.i("有木有", "请求完成" + o.toString());
+            super.onNext(o);
+        }
+    };
+
+
 }

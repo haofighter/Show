@@ -6,8 +6,11 @@ import com.myself.show.show.net.responceBean.LoginResponse;
 import com.myself.show.show.net.responceBean.MusicPath;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 
+import java.util.Map;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -15,8 +18,11 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import rx.Observable;
 
 
@@ -42,18 +48,41 @@ public interface Service {
     @FormUrlEncoded
     Observable<LoginResponse> login(@Field("password") String password, @Field("username") String username);
 
-
+    //网易云音乐查询
     @POST("http://music.163.com/api/search/pc")
     @FormUrlEncoded
     Observable<WySearchInfo> wyYun(@Field("s") String searchContent, @Field("offset") int page, @Field("limit") int limit, @Field("type") String type);
 
 
+    ////网易云音乐下载地址
     @GET("http://music.163.com/api/song/enhance/download/url?br=320000")
     Observable<MusicPath> musicPath(@Query("id") int id);
 
+//    @Multipart
+//    @POST("/api/Public/upload_img")
+//    Call<BaseResponse> uploadFile(@Part("") MultipartBody.Part file);
+
     @Multipart
     @POST("/api/Public/upload_img")
-    Call<BaseResponse> uploadFile(@Part("") MultipartBody.Part file);
+    Observable<BaseResponse> uploadFile1(@Part MultipartBody.Part file);
+
+
+    @POST("/api/Public/upload_img")
+    @Multipart
+    Observable<ResponseBody> uploadFileInfo(@Part  RequestBody externalFileParameters) ;
+
+    @POST("/api/Public/upload_img")
+    @Multipart
+    Observable<ResponseBody> uploadFileInfo(@PartMap Map<String, RequestBody> externalFileParameters) ;
+
+    @Streaming
+    @GET
+    Observable<ResponseBody> downloadFile(@Url String fileUrl);
+
+    @Streaming
+    @GET("http://m10.music.126.net/20170726182543/28b866236bf54189103d09cb6cb74137/ymusic/6775/40b5/cfc1/ee973add1ad4c10dd5b23260983d8744.mp3")
+    Observable<ResponseBody> downloadFile();
+
 
 //    @GET( "https://wxt.hbglky.com/oauth-provider/oauth/token?client_id=drv-client&client_secret=D76A9FA10B87&grant_type=client_credentials&scope=pub_api")
 //    Observable<BaseResponse> getToken();

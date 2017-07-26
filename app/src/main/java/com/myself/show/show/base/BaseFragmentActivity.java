@@ -277,55 +277,60 @@ public class BaseFragmentActivity extends FragmentActivity {
     }
 
 
-    protected  void  startActivity(Class<? extends Activity> activity){
-        startActivity(activity,null);
+    protected void startActivity(Class<? extends Activity> activity) {
+        startActivity(activity, null);
     }
 
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void startActivity(Class<? extends Activity> activity, BaseActivity.ActivityChangeAnimal activityChangeAnimal) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || activityChangeAnimal == null) {
+        if (AppConstant.needAnimal) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || activityChangeAnimal == null) {
+                Intent intent = new Intent(this, activity);
+                startActivity(intent);
+            } else {
+                Transition exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
+                Transition enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
+                Transition reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
+
+                switch (activityChangeAnimal) {
+                    case top:
+                        exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                        enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                        reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                        break;
+                    case bottom:
+                        exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
+                        enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                        reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
+                        break;
+                    case left:
+                        exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                        enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                        reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                        break;
+                    case right:
+                        exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
+                        enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                        reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
+                        break;
+                }
+
+                //退出时使用
+                getWindow().setExitTransition(exitexplode);
+                //第一次进入时使用
+                getWindow().setEnterTransition(enterexplode);
+                //再次进入时使用
+                getWindow().setReenterTransition(reenterexplode);
+
+
+                Intent intent = new Intent(this, activity);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+
+            }
+        } else {
             Intent intent = new Intent(this, activity);
             startActivity(intent);
-        } else {
-            Transition exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
-            Transition enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
-            Transition reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.fade);
-
-            switch (activityChangeAnimal) {
-                case top:
-                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
-                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
-                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
-                    break;
-                case bottom:
-                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_top);
-                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
-                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_bottom);
-                    break;
-                case left:
-                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
-                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
-                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
-                    break;
-                case right:
-                    exitexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_left);
-                    enterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
-                    reenterexplode = TransitionInflater.from(this).inflateTransition(R.transition.slide_right);
-                    break;
-            }
-
-            //退出时使用
-            getWindow().setExitTransition(exitexplode);
-            //第一次进入时使用
-            getWindow().setEnterTransition(enterexplode);
-            //再次进入时使用
-            getWindow().setReenterTransition(reenterexplode);
-
-
-            Intent intent = new Intent(this, activity);
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-
         }
     }
 
