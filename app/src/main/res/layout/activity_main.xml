@@ -62,7 +62,7 @@
                 android:id="@+id/viewpage_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="fragment滑动" />
+                android:text="置顶滑动" />
 
             <Button
                 android:id="@+id/image_control"

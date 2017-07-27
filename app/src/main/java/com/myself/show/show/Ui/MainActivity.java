@@ -128,7 +128,7 @@ public class MainActivity extends ThemeBaseActivity {
                 });
                 break;
             case R.id.viewpage_test:
-
+                startActivity(OrderMuneActivity.class);
                 break;
             case R.id.image_control:
                 startActivity(GetCustomImageAcitivity.class);
@@ -215,9 +215,9 @@ public class MainActivity extends ThemeBaseActivity {
     private boolean writeResponseBodyToDisk(ResponseBody body) {
         try {
 
-            File futureStudioIconFile = new File(Environment.getExternalStorageDirectory()+ "123.MP3");
+            File futureStudioIconFile = new File(Environment.getExternalStorageDirectory() + "123.MP3");
 
-            if(!futureStudioIconFile.exists()){
+            if (!futureStudioIconFile.exists()) {
                 futureStudioIconFile.createNewFile();
             }
 
@@ -240,7 +240,7 @@ public class MainActivity extends ThemeBaseActivity {
                     fileSizeDownloaded += read;
                 }
                 outputStream.flush();
-                Log.i("6464","写入成功");
+                Log.i("6464", "写入成功");
                 return true;
             } catch (IOException e) {
                 return false;
@@ -258,7 +258,6 @@ public class MainActivity extends ThemeBaseActivity {
         }
 
     }
-
 
 
     FileSubscribe<BaseResponse> fileSubscribeSingle = new FileSubscribe<BaseResponse>() {
