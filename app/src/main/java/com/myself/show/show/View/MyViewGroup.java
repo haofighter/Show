@@ -114,30 +114,30 @@ public class MyViewGroup extends LinearLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downY = (int) event.getY();
+                isScoll = true;
                 break;
             case MotionEvent.ACTION_MOVE:
-                isScoll = true;
-                Log.i("触摸", "移动了" + "  moveY:" + moveY + "     systemHight:" + systemHight + "  getViewHight()" + getViewHight());
-                if (moveY + systemHight <= getViewHight()) {
-                    scollY = -(int) (event.getY() - downY + moveY - 1);
-                    scrollTo(0, scollY < 0 ? 0 : scollY);
-                    Log.i("触摸", "移动了" + "手指位置:" + event.getY() + "         按下位置:" + downY + "      移动过得位置=" + moveY);
+                if (Math.abs(moveY) +systemHight <= getViewHight()) {
+                    scollY = -(int) (event.getY() - downY + moveY);
+                    scrollTo(0, scollY < 0 ? 0 : (scollY>getChildAt(0).getHeight()?getChildAt(0).getHeight():scollY));
+                    Log.i("滑动", "移动了" + "手指位置:" + event.getY() + "         按下位置:" + downY + "      移动过得位置=" + moveY);
                     isScoll = true;
                 } else {
-                    Log.i("触摸", "滑动到了底部");
+                    Log.i("停止", "滑动到了底部");
                     isScoll = false;
                 }
-                break;
-            case MotionEvent.ACTION_UP:
+
                 if (isScoll) {
                     moveY += (event.getY() - downY);
                 } else {
                     if (scollY < 0) {
                         moveY = 0;
                     } else {
-                        moveY = getViewHight() - systemHight;
+                        moveY = systemHight-getViewHight();
                     }
                 }
+                break;
+            case MotionEvent.ACTION_UP:
                 break;
         }
         return true;

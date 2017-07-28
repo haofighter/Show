@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
+import com.myself.show.show.Ui.download.DownloadMoreActivity;
 import com.myself.show.show.Ui.home.HomeActivity;
 import com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity;
 import com.myself.show.show.Ui.music.activity.MusicActivity;
@@ -25,10 +26,11 @@ import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.Service;
 import com.myself.show.show.net.responceBean.BaseResponse;
 import com.myself.show.show.net.upload.FileRequestBody;
+import com.myself.show.show.net.download.FileResponseBody;
 import com.myself.show.show.net.upload.FileSubscribe;
+import com.myself.show.show.net.download.ProgressListener;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,9 +41,17 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Interceptor;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -85,7 +95,7 @@ public class MainActivity extends ThemeBaseActivity {
 
     String picPath = Environment.getExternalStorageDirectory() + "/test.jpg";
 
-    @OnClick({R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
+    @OnClick({R.id.downloadmore,R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first:
@@ -137,8 +147,7 @@ public class MainActivity extends ThemeBaseActivity {
                 File file1 = new File(picPath);
                 FileRequestBody fileRequestMore = new FileRequestBody(file1, fileSubscribeSingle);
                 MultipartBody.Part part1 = MultipartBody.Part.createFormData("file", file1.getName(), fileRequestMore);
-                Service service = RetrofitManager.builder(Service.class);
-                service.uploadFile1(part1).subscribeOn(Schedulers.io()).
+                RetrofitManager.builder(Service.class).uploadFile1(part1).subscribeOn(Schedulers.io()).
                         observeOn(AndroidSchedulers.mainThread()).
                         subscribe(fileSubscribeSingle);
                 break;
@@ -183,16 +192,10 @@ public class MainActivity extends ThemeBaseActivity {
 
                 RetrofitManager.builder(Service.class).uploadFileInfo(requestBodyMap).subscribeOn(Schedulers.io()).
                         observeOn(AndroidSchedulers.mainThread()).
-                        subscribe();
-                break;
-
-            case R.id.download:
-                RetrofitManager.builder(Service.class).downloadFile().subscribeOn(Schedulers.io()).
-                        observeOn(AndroidSchedulers.mainThread()).
                         subscribe(new Subscriber<ResponseBody>() {
                             @Override
                             public void onCompleted() {
-                                Log.i("下载完成", "");
+
                             }
 
                             @Override
@@ -202,10 +205,82 @@ public class MainActivity extends ThemeBaseActivity {
 
                             @Override
                             public void onNext(ResponseBody responseBody) {
-                                writeResponseBodyToDisk(responseBody);
-                                Log.i("下载获取道的数据", "数据的大小" + responseBody.contentLength());
+
                             }
                         });
+                break;
+            case R.id.download:
+                RetrofitManager.builder(Service.class, new FileSubscribe() {
+                    @Override
+                    public void onLoading(long total, long progress) {
+                        Log.i("4", "上传的进度" + total + "==" + progress);
+                    }
+                },"http://msoftdl.360.cn")
+                        .downloadFile()
+                        .subscribeOn(Schedulers.io()).
+                        observeOn(AndroidSchedulers.mainThread()).
+                        subscribe(new Subscriber<ResponseBody>() {
+                            @Override
+                            public void onCompleted() {
+                                Log.i("", "完成");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.i("", "完成" + e.toString());
+                            }
+
+                            @Override
+                            public void onNext(ResponseBody responseBody) {
+                                Log.i("", "完成" + responseBody.contentLength());
+                            }
+                        });
+
+                break;
+            case R.id.download1:
+                Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .baseUrl("http://msoftdl.360.cn");
+
+                OkHttpClient.Builder builder = new OkHttpClient.Builder();
+
+                //添加拦截器，自定义ResponseBody，添加下载进度
+                builder.networkInterceptors().add(new Interceptor() {
+                    @Override
+                    public okhttp3.Response intercept(Chain chain) throws IOException {
+                        okhttp3.Response originalResponse = chain.proceed(chain.request());
+                        return originalResponse.newBuilder().body(
+                                new FileResponseBody(originalResponse.body(), new ProgressListener() {
+                                    @Override
+                                    public void onProgress(long progress, long total, boolean done) {
+                                        Log.i("下载的进度", "progress:" + progress + "    total:" + total + "      done:" + done);
+                                    }
+                                }))
+                                .build();
+
+                    }
+                });
+
+                Service retrofit = retrofitBuilder
+                        .client(builder.build())
+                        .build().create(Service.class);
+
+                Call<ResponseBody> call = retrofit.retrofitDownload();
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        writeResponseBodyToDisk(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                    }
+                });
+                break;
+            case R.id.downloadmore:
+                startActivity(DownloadMoreActivity.class);
                 break;
         }
 
@@ -213,14 +288,16 @@ public class MainActivity extends ThemeBaseActivity {
 
 
     private boolean writeResponseBodyToDisk(ResponseBody body) {
-        try {
-
-            File futureStudioIconFile = new File(Environment.getExternalStorageDirectory() + "123.MP3");
-
-            if (!futureStudioIconFile.exists()) {
+        File futureStudioIconFile = new File(Environment.getExternalStorageDirectory() + "/123.MP3");
+        if (!futureStudioIconFile.exists()) {
+            try {
                 futureStudioIconFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
 
+        try {
             InputStream inputStream = null;
             OutputStream outputStream = null;
 
@@ -238,9 +315,9 @@ public class MainActivity extends ThemeBaseActivity {
                     }
                     outputStream.write(fileReader, 0, read);
                     fileSizeDownloaded += read;
+                    Log.i("6464", "body=" + body.contentLength() + "fileSizeDownloaded:" + fileSizeDownloaded + " 进度:" + fileSizeDownloaded * 100 / body.contentLength());
                 }
                 outputStream.flush();
-                Log.i("6464", "写入成功");
                 return true;
             } catch (IOException e) {
                 return false;

@@ -15,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -79,10 +80,19 @@ public interface Service {
     @GET
     Observable<ResponseBody> downloadFile(@Url String fileUrl);
 
-    @Streaming
-    @GET("http://m10.music.126.net/20170726182543/28b866236bf54189103d09cb6cb74137/ymusic/6775/40b5/cfc1/ee973add1ad4c10dd5b23260983d8744.mp3")
+
+    @GET("/mobilesafe/shouji360/360safesis/360MobileSafe_6.2.3.1060.apk")
     Observable<ResponseBody> downloadFile();
 
+    @Streaming
+    @GET("/mobilesafe/shouji360/360safesis/360MobileSafe_6.2.3.1060.apk")
+    Call<ResponseBody> retrofitDownload();
+
+
+    /*断点续传下载接口*/
+    @Streaming/*大文件需要加入这个判断，防止下载过程中写入到内存中*/
+    @GET()
+    Observable<ResponseBody> download(@Header("RANGE") String start, @Url String url);
 
 //    @GET( "https://wxt.hbglky.com/oauth-provider/oauth/token?client_id=drv-client&client_secret=D76A9FA10B87&grant_type=client_credentials&scope=pub_api")
 //    Observable<BaseResponse> getToken();
