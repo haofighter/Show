@@ -1,20 +1,22 @@
-package com.myself.show.show.Ui.home;
+package com.myself.show.show.Ui.viewpage;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.MainActivity;
-import com.myself.show.show.Ui.home.fragment.HomeFragment;
+import com.myself.show.show.Ui.home.AddNoteActivity;
+import com.myself.show.show.Ui.viewpage.fagment.SearchOneFragment;
+import com.myself.show.show.Ui.viewpage.fagment.SearchSecondFragment;
+import com.myself.show.show.Ui.viewpage.fagment.SearchThridFragment;
 import com.myself.show.show.Ui.viewpage.listener.FragmentInfo;
 import com.myself.show.show.View.NavigationBar;
-import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.base.ThemeBaseActivity;
+import com.myself.show.show.customview.verticaltablayout.VerticalTabLayout;
+import com.myself.show.show.customview.verticaltabviewpage.VerticalViewPager;
 import com.myself.show.show.listener.OnFragmentInteractionListener;
 
 import java.util.ArrayList;
@@ -24,11 +26,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class HomeActivity extends ThemeBaseActivity implements OnFragmentInteractionListener {
-    @BindView(R.id.vp_main)
-    ViewPager vpMain;
-    @BindView(R.id.add_note)
-    ImageView addNote;
+public class VirticalViewPageActivity extends ThemeBaseActivity implements OnFragmentInteractionListener {
+
     private ArrayList<FragmentInfo> fragmentList;
     private FragmentPagerAdapter fragmentPagerAdapter;
 
@@ -53,7 +52,9 @@ public class HomeActivity extends ThemeBaseActivity implements OnFragmentInterac
     private void initView() {
         fragmentList = new ArrayList<>();
 
-        fragmentList.add(new FragmentInfo(new HomeFragment(), ""));
+        fragmentList.add(new FragmentInfo(new SearchOneFragment(), "栏目一"));
+        fragmentList.add(new FragmentInfo(new SearchSecondFragment(), "栏目二"));
+        fragmentList.add(new FragmentInfo(new SearchThridFragment(), "栏目三"));
 
 
         fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -72,7 +73,8 @@ public class HomeActivity extends ThemeBaseActivity implements OnFragmentInterac
                 return fragmentList.size();
             }
         };
-        vpMain.setAdapter(fragmentPagerAdapter);
+//        vertiacalViewpager.setAdapter(fragmentPagerAdapter);
+//        vertiacalTab.setupWithViewPager(vertiacalViewpager);
     }
 
     @Override

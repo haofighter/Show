@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
+import com.myself.show.show.listener.ActivityInitListener;
 import com.myself.show.show.listener.OnSongChangeListener;
 import com.myself.show.show.View.CircleImageView;
 import com.myself.show.show.View.FlowingDraw.ElasticDrawer;
@@ -179,6 +180,7 @@ public class BaseActivity extends AppCompatActivity {
     int progress = 0;
     Timer timer = new Timer() {
     };
+
 
 
     //实时修改音乐播放进度

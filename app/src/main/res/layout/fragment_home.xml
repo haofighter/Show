@@ -5,17 +5,16 @@
     tools:context="com.myself.show.show.Ui.home.fragment.HomeFragment">
 
     <com.myself.show.show.View.Twink.TwinklingRefreshLayout
-        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/note_date_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"></android.support.v7.widget.RecyclerView>
-    </com.myself.show.show.View.Twink.TwinklingRefreshLayout>
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"></android.support.v7.widget.RecyclerView>
 
+    </com.myself.show.show.View.Twink.TwinklingRefreshLayout>
 </FrameLayout>

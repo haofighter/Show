@@ -14,7 +14,7 @@ import com.myself.show.show.Ui.viewpage.fagment.SearchOneFragment;
 import com.myself.show.show.Ui.viewpage.fagment.SearchSecondFragment;
 import com.myself.show.show.Ui.viewpage.fagment.SearchThridFragment;
 import com.myself.show.show.Ui.viewpage.listener.FragmentInfo;
-import com.myself.show.show.base.BaseFragmentActivity;
+import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.listener.OnFragmentInteractionListener;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 
 
 //TabLayout +ViewPager 实现界面滑动
-public class ViewPageFragmentActivity extends BaseFragmentActivity implements OnFragmentInteractionListener {
+public class ViewPageFragmentActivity extends BaseActivity implements OnFragmentInteractionListener {
 
 
     @BindView(R.id.vp_content)

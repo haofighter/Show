@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,17 +11,11 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <com.myself.show.show.customview.verticaltablayout.VerticalTabLayout
-            android:id="@+id/vertiacal_tab"
-            android:layout_width="0dp"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_main"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"></com.myself.show.show.customview.verticaltablayout.VerticalTabLayout>
-
-        <com.myself.show.show.customview.verticaltabviewpage.VerticalViewPager
-            android:id="@+id/vertiacal_viewpager"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"></com.myself.show.show.customview.verticaltabviewpage.VerticalViewPager>
+            ></android.support.v4.view.ViewPager>
     </LinearLayout>
 
     <RadioGroup
@@ -48,8 +43,8 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:button="@null"
-            android:src="@mipmap/add"
-            android:gravity="center" />
+            android:gravity="center"
+            android:src="@mipmap/add" />
 
         <RadioButton
             android:layout_width="50dp"

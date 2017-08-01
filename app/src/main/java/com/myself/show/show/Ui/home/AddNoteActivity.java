@@ -7,13 +7,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -26,9 +24,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.myself.show.show.R;
+import com.myself.show.show.View.NavigationBar;
+import com.myself.show.show.base.App;
 import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.customview.CheckedButtonLayout;
 import com.myself.show.show.customview.richeditor.RichEditor;
+import com.myself.show.show.net.responceBean.NoteDate;
+import com.myself.show.show.sql.NoteDateDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +85,11 @@ public class AddNoteActivity extends ThemeBaseActivity {
     ImageButton actionAdd;
     @BindView(R.id.ll_layout_editor)
     LinearLayout llLayoutEditor;
+    @BindView(R.id.note_title)
+    EditText noteTitle;
     //富文本图片保存的集合
     private ArrayList<String> selectedRichImage = new ArrayList<>();
+    private NoteDateDao noteDateDao;
 
 
     @Override
@@ -93,6 +98,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         ButterKnife.bind(this);
+        noteDateDao = App.getInstance().getDaoSession().getNoteDateDao();
         initNaBar();
         init();
     }
@@ -101,15 +107,29 @@ public class AddNoteActivity extends ThemeBaseActivity {
         na_bar.setLeftBack(this);
         na_bar.setRightText("完成");
         na_bar.setRightTextColor(R.color.white);
-        na_bar.setOnClickListener(new View.OnClickListener() {
+        na_bar.setListener(new NavigationBar.NavigationListener() {
             @Override
-            public void onClick(View v) {
-                editor.getHtml();
+            public void onButtonClick(int button) {
+                if (button == NavigationBar.RIGHT_VIEW) {
+                    NoteDate noteDate = new NoteDate();
+                    noteDate.setNoteHtml(editor.getHtml());
+                    noteDate.setNoteId(-1);
+                    noteDate.setTitle(noteTitle.getText().toString());
+                    noteDate.setUserId(1);
+                    noteDate.setSaveTime(System.currentTimeMillis());
+                    noteDateDao.insert(noteDate);
+                    finish();
+                }
             }
         });
     }
 
     public void init() {
+        //默认隐藏
+        llLayoutAdd.setVisibility(View.GONE);
+        llLayoutFont.setVisibility(View.GONE);
+
+
         editor.setEditorFontSize(15);
         editor.setPadding(10, 10, 10, 50);
         editor.setPlaceholder("填写笔记内容");
@@ -187,7 +207,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
 
     public final static int RICH_IMAGE_CODE = 0x33;
 
-    @OnClick({R.id.ll_layout_font, R.id.add_image, R.id.add_link, R.id.add_split, R.id.ll_layout_add, R.id.action_undo, R.id.action_redo, R.id.action_font, R.id.action_add, R.id.ll_layout_editor})
+    @OnClick({R.id.ll_layout_font, R.id.add_image, R.id.add_link, R.id.add_split, R.id.ll_layout_add, R.id.action_add, R.id.ll_layout_editor})
     public void onClick(View view) {
         editor.focusEditor();
         switch (view.getId()) {
@@ -204,23 +224,6 @@ public class AddNoteActivity extends ThemeBaseActivity {
                 editor.insertHr();
                 break;
             case R.id.ll_layout_add:
-                break;
-            case R.id.action_undo:
-                editor.undo();
-                break;
-            case R.id.action_redo:
-                editor.redo();
-                break;
-            case R.id.action_font:
-                if (llLayoutFont.getVisibility() == View.VISIBLE) {
-                    llLayoutFont.setVisibility(View.GONE);
-                } else {
-                    if (llLayoutAdd.getVisibility() == View.VISIBLE) {
-                        llLayoutAdd.setVisibility(View.GONE);
-                    }
-                    llLayoutFont.setVisibility(View.VISIBLE);
-                    startAnimation(llLayoutFont);
-                }
                 break;
             case R.id.action_add:
                 break;
@@ -272,6 +275,45 @@ public class AddNoteActivity extends ThemeBaseActivity {
     }
 
 
+    @OnClick({R.id.action_font,R.id.action_add,R.id.action_undo,R.id.action_redo})
+    public void setContentModel(View v){
+        switch (v.getId()){
+            case R.id.action_font:
+                if (llLayoutFont.getVisibility() == View.VISIBLE) {
+                    llLayoutFont.setVisibility(View.GONE);
+                } else {
+                    if (llLayoutAdd.getVisibility() == View.VISIBLE) {
+                        llLayoutAdd.setVisibility(View.GONE);
+                    }
+                    llLayoutFont.setVisibility(View.VISIBLE);
+                    startAnimation(llLayoutFont);
+                }
+                break;
+            case R.id.action_add:
+                if (llLayoutAdd.getVisibility() == View.VISIBLE) {
+                    llLayoutAdd.setVisibility(View.GONE);
+                } else {
+                    if (llLayoutFont.getVisibility() == View.VISIBLE) {
+                        llLayoutFont.setVisibility(View.GONE);
+                    }
+                    llLayoutAdd.setVisibility(View.VISIBLE);
+                    startAnimation(llLayoutAdd);
+                }
+                break;
+            case R.id.action_undo:
+                llLayoutAdd.setVisibility(View.GONE);
+                llLayoutFont.setVisibility(View.GONE);
+                editor.undo();
+                break;
+            case R.id.action_redo:
+                llLayoutAdd.setVisibility(View.GONE);
+                llLayoutFont.setVisibility(View.GONE);
+                editor.redo();
+                break;
+        }
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -288,14 +330,16 @@ public class AddNoteActivity extends ThemeBaseActivity {
             //插入图片
             editor.setProgress(picturePath);
             uploadImage(picturePath);
-            editor.insertImage(picturePath, "图片","来自....的图片");
+            editor.insertImage(picturePath, "图片", "来自....的图片");
             c.close();
         }
     }
-    int i=0;
-    public void uploadImage(final String  picturePath){
-        i=0;
-        Timer timer=new Timer();
+
+    int i = 0;
+
+    public void uploadImage(final String picturePath) {
+        i = 0;
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -308,7 +352,6 @@ public class AddNoteActivity extends ThemeBaseActivity {
             }
         }, 0, 200);
     }
-
 
 
     private AlertDialog linkDialog;
@@ -366,8 +409,8 @@ public class AddNoteActivity extends ThemeBaseActivity {
         AlphaAnimation aa = new AlphaAnimation(0.4f, 1.0f); // 0完全透明 1 完全不透明
         // 以(0%,0.5%)为基准点，从0.5缩放至1
         ScaleAnimation sa = new ScaleAnimation(0.5f, 1, 0.5f, 1,
-                Animation.RELATIVE_TO_SELF, 0,
-                Animation.RELATIVE_TO_SELF, 0.5f);
+                Animation.RELATIVE_TO_SELF, 1f,
+                Animation.RELATIVE_TO_SELF, 1f);
 
         // 添加至动画集合
         AnimationSet as = new AnimationSet(false);

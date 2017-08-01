@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -15,13 +15,14 @@
         <com.myself.show.show.View.CircleImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_arrow" />
+            android:src="@mipmap/img_head" />
 
         <TextView
             android:id="@+id/author_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginLeft="10dp"
             android:textColor="@color/black"
             android:text="测试"
             android:textSize="@dimen/text12" />

@@ -1,14 +1,11 @@
-package com.myself.show.show.Ui.home.fragment;
+package com.myself.show.show.Ui.viewpage.fagment;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,19 +15,17 @@ import com.myself.show.show.Ui.home.adapter.NoteListAdapter;
 import com.myself.show.show.base.App;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseFragment;
-import com.myself.show.show.customview.RecycleViewDivider;
 import com.myself.show.show.listener.OnFragmentInteractionListener;
 import com.myself.show.show.net.responceBean.NoteDate;
 import com.myself.show.show.sql.NoteDateDao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class HomeFragment extends BaseFragment {
+public class VirtivalViewPageFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -44,7 +39,7 @@ public class HomeFragment extends BaseFragment {
     private Unbinder unbinder;
     private NoteListAdapter noteListAdapter;
 
-    public HomeFragment() {
+    public VirtivalViewPageFragment() {
     }
 
     /**
@@ -58,8 +53,8 @@ public class HomeFragment extends BaseFragment {
         onHiddenChanged(isVisibleToUser);
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static VirtivalViewPageFragment newInstance(String param1, String param2) {
+        VirtivalViewPageFragment fragment = new VirtivalViewPageFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -80,13 +75,17 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        noteListAdapter = new NoteListAdapter(getActivity());
+        unbinder = ButterKnife.bind(view);
+        noteListAdapter = new NoteListAdapter(getActivity(), new BackCall() {
+            @Override
+            public void backCall(int tag, Object... obj) {
+
+            }
+        });
         //设置布局管理器
         noteDateList.setLayoutManager(new LinearLayoutManager(getActivity()));
         //设置增加或删除条目的动画
         noteDateList.setItemAnimator(new DefaultItemAnimator());
-        noteDateList.addItemDecoration(new RecycleViewDivider(getActivity(), DividerItemDecoration.HORIZONTAL, 1, ContextCompat.getColor(getActivity(), R.color.gray_22)));
         noteDateList.setAdapter(noteListAdapter);
         return view;
     }
@@ -112,10 +111,8 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (noteListAdapter != null) {
-            noteListAdapter.setDate(loadLocalDate());
-            noteListAdapter.notifyDataSetChanged();
-        }
+        noteListAdapter.setDate(loadLocalDate());
+        noteListAdapter.notifyDataSetChanged();;
     }
 
     @Override
@@ -124,22 +121,10 @@ public class HomeFragment extends BaseFragment {
         mListener = null;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (noteListAdapter != null) {
-            noteListAdapter.setDate(loadLocalDate());
-            noteListAdapter.notifyDataSetChanged();
-        }
-    }
 
     public List<NoteDate> loadLocalDate() {
         NoteDateDao noteDateDao = App.getInstance().getDaoSession().getNoteDateDao();
         List<NoteDate> noteDates = noteDateDao.loadAll();
-        Log.i("获取到的笔记数",noteDates.size()+"");
-        if (noteDates == null) {
-            noteDates = new ArrayList<>();
-        }
         return noteDates;
     }
 

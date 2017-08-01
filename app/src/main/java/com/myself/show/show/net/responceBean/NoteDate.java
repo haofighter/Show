@@ -9,18 +9,37 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 @Entity
 public class NoteDate {
-    @Id
+    @Id(autoincrement = true)
+    private Long id;
     private int userId;
     private String noteHtml;
+    private int noteId;
+    private String title;
+    private long saveTime;
 
-    @Generated(hash = 1682528207)
-    public NoteDate(int userId, String noteHtml) {
+
+    @Generated(hash = 710124588)
+    public NoteDate(Long id, int userId, String noteHtml, int noteId, String title,
+            long saveTime) {
+        this.id = id;
         this.userId = userId;
         this.noteHtml = noteHtml;
+        this.noteId = noteId;
+        this.title = title;
+        this.saveTime = saveTime;
     }
 
     @Generated(hash = 928794295)
     public NoteDate() {
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getUserId() {
@@ -32,10 +51,34 @@ public class NoteDate {
     }
 
     public String getNoteHtml() {
-        return this.noteHtml;
+        return noteHtml;
     }
 
     public void setNoteHtml(String noteHtml) {
         this.noteHtml = noteHtml;
+    }
+
+    public int getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(int noteId) {
+        this.noteId = noteId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public long getSaveTime() {
+        return saveTime;
+    }
+
+    public void setSaveTime(long saveTime) {
+        this.saveTime = saveTime;
     }
 }

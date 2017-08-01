@@ -1,4 +1,4 @@
-package com.myself.show.show.Ui;
+package com.myself.show.show.Ui.home;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.myself.show.show.R;
+import com.myself.show.show.Ui.MainActivity;
 import com.myself.show.show.View.GuideVideoView;
 import com.myself.show.show.base.ThemeBaseActivity;
 
@@ -69,7 +70,7 @@ public class GuideActivity extends ThemeBaseActivity {
 
     @OnClick(R.id.btn_start)
     public void onClick(View v) {
-        startActivity(MainActivity.class,ActivityChangeAnimal.left);
+        startActivity(HomeActivity.class);
         finish();
     }
 

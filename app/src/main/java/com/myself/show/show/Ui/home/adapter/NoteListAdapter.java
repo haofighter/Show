@@ -5,16 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
+import com.myself.show.show.Tools.Utils;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.net.responceBean.NoteDate;
-import com.myself.show.show.net.responceBean.WySearchInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +27,10 @@ public class NoteListAdapter extends RecyclerView.Adapter {
     LayoutInflater minflater;
     BackCall backCall;
 
+    public NoteListAdapter(Context context) {
+        this.context = context;
+        minflater = LayoutInflater.from(context);
+    }
 
     public NoteListAdapter(Context context, BackCall backCall) {
         this.context = context;
@@ -48,19 +48,20 @@ public class NoteListAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = minflater.inflate(R.layout.note_item_layout,
                 parent, false);
-        MusicItemHolder viewHolder = new MusicItemHolder(view);
+        NoteTitleItemHolder viewHolder = new NoteTitleItemHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
+        ((NoteTitleItemHolder) holder).noteTitle.setText(items.get(position).getTitle().equals("")?"(无标题)":items.get(position).getTitle());
+        ((NoteTitleItemHolder) holder).saveTime.setText(Utils.FormatDate(items.get(position).getSaveTime()));
 
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return items == null ? 0 : items.size();
     }
 
     public void addDate(List<NoteDate> songs) {
@@ -77,20 +78,18 @@ public class NoteListAdapter extends RecyclerView.Adapter {
         return items;
     }
 
-    public class MusicItemHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.music_pic)
-        ImageView musicPic;
-        @BindView(R.id.music_item)
-        LinearLayout musicItem;
-        @BindView(R.id.music_title)
-        TextView musicTitle;
-        @BindView(R.id.music_auther)
-        TextView musicAuther;
-
+    public class NoteTitleItemHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.author_name)
+        TextView authorName;
+        @BindView(R.id.save_time)
+        TextView saveTime;
+        @BindView(R.id.note_title)
+        TextView noteTitle;
         View itemView;
-        public MusicItemHolder(View itemView) {
+
+        public NoteTitleItemHolder(View itemView) {
             super(itemView);
-            this.itemView=itemView;
+            this.itemView = itemView;
             ButterKnife.bind(this, itemView);
         }
     }
