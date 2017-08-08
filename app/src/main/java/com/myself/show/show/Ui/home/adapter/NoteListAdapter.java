@@ -1,10 +1,15 @@
 package com.myself.show.show.Ui.home.adapter;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myself.show.show.R;
@@ -26,6 +31,7 @@ public class NoteListAdapter extends RecyclerView.Adapter {
     Context context;
     LayoutInflater minflater;
     BackCall backCall;
+
 
     public NoteListAdapter(Context context) {
         this.context = context;
@@ -54,9 +60,21 @@ public class NoteListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        ((NoteTitleItemHolder) holder).noteTitle.setText(items.get(position).getTitle().equals("")?"(无标题)":items.get(position).getTitle());
-        ((NoteTitleItemHolder) holder).saveTime.setText(Utils.FormatDate(items.get(position).getSaveTime()));
-
+        ((NoteTitleItemHolder) holder).setNoteDate(items.get(position));
+        ((NoteTitleItemHolder) holder).write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (backCall != null)
+                    backCall.backCall(v.getId(), items.get(position).getId());
+            }
+        });
+        ((NoteTitleItemHolder) holder).look.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (backCall != null)
+                    backCall.backCall(v.getId(), position);
+            }
+        });
     }
 
     @Override
@@ -78,6 +96,15 @@ public class NoteListAdapter extends RecyclerView.Adapter {
         return items;
     }
 
+    //当条目显示显示在屏幕上的时候调用
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        Animator anim=new ObjectAnimator().ofFloat(holder.itemView, "translationX", -holder.itemView.getRootView().getWidth(), 0);
+        anim.setDuration(500).start();
+        anim.setInterpolator(new LinearInterpolator());
+    }
+
     public class NoteTitleItemHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.author_name)
         TextView authorName;
@@ -85,12 +112,28 @@ public class NoteListAdapter extends RecyclerView.Adapter {
         TextView saveTime;
         @BindView(R.id.note_title)
         TextView noteTitle;
+        @BindView(R.id.write)
+        ImageView write;
+        @BindView(R.id.look)
+        ImageView look;
         View itemView;
+        NoteDate noteDate;
+
+        public void setNoteDate(final NoteDate noteDate) {
+            this.noteDate = noteDate;
+            noteTitle.setText(noteDate.getTitle().equals("") ? "(无标题)" : noteDate.getTitle());
+            saveTime.setText(Utils.FormatDate(noteDate.getSaveTime()));
+        }
+
+        public NoteDate getNoteDate() {
+            return noteDate;
+        }
 
         public NoteTitleItemHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
             ButterKnife.bind(this, itemView);
+
         }
     }
 }

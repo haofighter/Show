@@ -38,9 +38,9 @@
         <activity android:name=".Ui.imageCorrelation.GetCustomImageAcitivity" />
         <activity android:name=".Ui.home.HomeActivity" />
         <activity android:name=".Ui.home.AddNoteActivity" />
-        <activity android:name=".net.test.MainActivity1" />
         <activity android:name=".Ui.OrderMuneActivity" />
         <activity android:name=".Ui.download.DownloadMoreActivity"></activity>
+        <activity android:name=".Ui.home.LookNoteActivity"></activity>
     </application>
 
 </manifest>

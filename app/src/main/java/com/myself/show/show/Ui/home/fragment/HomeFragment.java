@@ -1,6 +1,7 @@
 package com.myself.show.show.Ui.home.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -14,7 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.myself.show.show.R;
+import com.myself.show.show.Ui.home.AddNoteActivity;
+import com.myself.show.show.Ui.home.LookNoteActivity;
 import com.myself.show.show.Ui.home.adapter.NoteListAdapter;
+import com.myself.show.show.View.Twink.RefreshListenerAdapter;
+import com.myself.show.show.View.Twink.TwinklingRefreshLayout;
 import com.myself.show.show.base.App;
 import com.myself.show.show.base.BackCall;
 import com.myself.show.show.base.BaseFragment;
@@ -36,6 +41,8 @@ public class HomeFragment extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.note_date_list)
     RecyclerView noteDateList;
+    @BindView(R.id.refresh)
+    TwinklingRefreshLayout refresh;
 
     private String mParam1;
     private String mParam2;
@@ -81,7 +88,37 @@ public class HomeFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
-        noteListAdapter = new NoteListAdapter(getActivity());
+        refresh.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                super.onRefresh(refreshLayout);
+                refresh.finishRefreshing();
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                refresh.finishLoadmore();
+            }
+        });
+
+        noteListAdapter = new NoteListAdapter(getActivity(), new BackCall() {
+            @Override
+            public void backCall(int tag, Object... obj) {//跳转编辑界面
+                switch (tag){
+                    case R.id.write:
+                        Intent intent=new Intent(getActivity(),AddNoteActivity.class);
+                        intent.putExtra("dateID",(Long)obj[0]);
+                        startActivity(intent);
+                        break;
+                    case R.id.look:
+                        Intent intent1=new Intent(getActivity(),LookNoteActivity.class);
+                        intent1.putExtra("select",(int)obj[0]);
+                        startActivity(intent1);
+                        break;
+                }
+            }
+        });
         //设置布局管理器
         noteDateList.setLayoutManager(new LinearLayoutManager(getActivity()));
         //设置增加或删除条目的动画
@@ -109,14 +146,14 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (noteListAdapter != null) {
-            noteListAdapter.setDate(loadLocalDate());
-            noteListAdapter.notifyDataSetChanged();
-        }
-    }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (noteListAdapter != null) {
+//            noteListAdapter.setDate(loadLocalDate());
+//            noteListAdapter.notifyDataSetChanged();
+//        }
+//    }
 
     @Override
     public void onDetach() {
@@ -136,7 +173,7 @@ public class HomeFragment extends BaseFragment {
     public List<NoteDate> loadLocalDate() {
         NoteDateDao noteDateDao = App.getInstance().getDaoSession().getNoteDateDao();
         List<NoteDate> noteDates = noteDateDao.loadAll();
-        Log.i("获取到的笔记数",noteDates.size()+"");
+        Log.i("获取到的笔记数", noteDates.size() + "");
         if (noteDates == null) {
             noteDates = new ArrayList<>();
         }

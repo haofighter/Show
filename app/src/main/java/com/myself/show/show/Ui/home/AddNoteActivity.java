@@ -90,6 +90,7 @@ public class AddNoteActivity extends ThemeBaseActivity {
     //富文本图片保存的集合
     private ArrayList<String> selectedRichImage = new ArrayList<>();
     private NoteDateDao noteDateDao;
+    private NoteDate noteDate;
 
 
     @Override
@@ -101,6 +102,9 @@ public class AddNoteActivity extends ThemeBaseActivity {
         noteDateDao = App.getInstance().getDaoSession().getNoteDateDao();
         initNaBar();
         init();
+        noteDate = App.getInstance().getDaoSession().getNoteDateDao().queryBuilder().where(NoteDateDao.Properties.Id.eq(getIntent().getLongExtra("dateID", -1))).unique();
+        editor.setHtml(noteDate ==null?"": noteDate.getNoteHtml());
+        noteTitle.setText(noteDate ==null?"": noteDate.getTitle());
     }
 
     private void initNaBar() {
@@ -111,13 +115,19 @@ public class AddNoteActivity extends ThemeBaseActivity {
             @Override
             public void onButtonClick(int button) {
                 if (button == NavigationBar.RIGHT_VIEW) {
-                    NoteDate noteDate = new NoteDate();
-                    noteDate.setNoteHtml(editor.getHtml());
-                    noteDate.setNoteId(-1);
-                    noteDate.setTitle(noteTitle.getText().toString());
-                    noteDate.setUserId(1);
-                    noteDate.setSaveTime(System.currentTimeMillis());
-                    noteDateDao.insert(noteDate);
+                    if(noteDate==null) {
+                        noteDate = new NoteDate();
+                        noteDate.setNoteHtml(editor.getHtml());
+                        noteDate.setNoteId(-1);
+                        noteDate.setTitle(noteTitle.getText().toString());
+                        noteDate.setSaveTime(System.currentTimeMillis());
+                    }else{
+                        noteDate.setNoteHtml(editor.getHtml());
+                        noteDate.setNoteId(-1);
+                        noteDate.setTitle(noteTitle.getText().toString());
+                        noteDate.setSaveTime(System.currentTimeMillis());
+                    }
+                    noteDateDao.insertOrReplace(noteDate);
                     finish();
                 }
             }
@@ -128,7 +138,6 @@ public class AddNoteActivity extends ThemeBaseActivity {
         //默认隐藏
         llLayoutAdd.setVisibility(View.GONE);
         llLayoutFont.setVisibility(View.GONE);
-
 
         editor.setEditorFontSize(15);
         editor.setPadding(10, 10, 10, 50);
@@ -275,9 +284,9 @@ public class AddNoteActivity extends ThemeBaseActivity {
     }
 
 
-    @OnClick({R.id.action_font,R.id.action_add,R.id.action_undo,R.id.action_redo})
-    public void setContentModel(View v){
-        switch (v.getId()){
+    @OnClick({R.id.action_font, R.id.action_add, R.id.action_undo, R.id.action_redo})
+    public void setContentModel(View v) {
+        switch (v.getId()) {
             case R.id.action_font:
                 if (llLayoutFont.getVisibility() == View.VISIBLE) {
                     llLayoutFont.setVisibility(View.GONE);

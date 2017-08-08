@@ -52,10 +52,7 @@ public class HomeActivity extends ThemeBaseActivity implements OnFragmentInterac
 
     private void initView() {
         fragmentList = new ArrayList<>();
-
         fragmentList.add(new FragmentInfo(new HomeFragment(), ""));
-
-
         fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {

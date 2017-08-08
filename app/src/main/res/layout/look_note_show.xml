@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:hint="标题"
+        android:textColor="@color/black"
+        android:padding="10dp"
+        android:textSize="@dimen/text20" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="@drawable/imaginary_ine"
+        android:layerType="software" />
+
+    <com.myself.show.show.customview.richeditor.RichEditor
+        android:id="@+id/note_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="false"
+        ></com.myself.show.show.customview.richeditor.RichEditor>
+</LinearLayout>

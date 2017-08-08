@@ -5,6 +5,7 @@
     tools:context="com.myself.show.show.Ui.home.fragment.HomeFragment">
 
     <com.myself.show.show.View.Twink.TwinklingRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
