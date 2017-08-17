@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
+import com.myself.show.show.Ui.baiduMap.BaiduGuideActivity;
 import com.myself.show.show.Ui.download.DownloadMoreActivity;
 import com.myself.show.show.Ui.home.HomeActivity;
 import com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity;
@@ -29,6 +31,8 @@ import com.myself.show.show.net.upload.FileRequestBody;
 import com.myself.show.show.net.download.FileResponseBody;
 import com.myself.show.show.net.upload.FileSubscribe;
 import com.myself.show.show.net.download.ProgressListener;
+import com.myself.show.show.test.TestBehavior;
+import com.myself.show.show.test.TestBehaviorActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -87,6 +91,11 @@ public class MainActivity extends ThemeBaseActivity {
 //        ActivityManager.RunningServiceInfo();
     }
 
+    @Override
+    public int getContentView() {
+        return R.layout.activity_main;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onResume() {
@@ -95,11 +104,14 @@ public class MainActivity extends ThemeBaseActivity {
 
     String picPath = Environment.getExternalStorageDirectory() + "/test.jpg";
 
-    @OnClick({R.id.downloadmore,R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
+    @OnClick({R.id.guide,R.id.behavior_test, R.id.downloadmore, R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first:
                 startActivity(ViewPageFragmentActivity.class);
+                break;
+            case R.id.behavior_test:
+                startActivity(TestBehaviorActivity.class);
                 break;
             case R.id.vertical_viewpager:
                 startActivity(HomeActivity.class);
@@ -215,7 +227,7 @@ public class MainActivity extends ThemeBaseActivity {
                     public void onLoading(long total, long progress) {
                         Log.i("4", "上传的进度" + total + "==" + progress);
                     }
-                },"http://msoftdl.360.cn")
+                }, "http://msoftdl.360.cn")
                         .downloadFile()
                         .subscribeOn(Schedulers.io()).
                         observeOn(AndroidSchedulers.mainThread()).
@@ -281,6 +293,9 @@ public class MainActivity extends ThemeBaseActivity {
                 break;
             case R.id.downloadmore:
                 startActivity(DownloadMoreActivity.class);
+                break;
+            case R.id.guide:
+                startActivity(BaiduGuideActivity.class);
                 break;
         }
 

@@ -69,4 +69,9 @@ public class LookNoteActivity extends ThemeBaseActivity {
         }
 
     }
+
+    @Override
+    public int getContentView() {
+        return 0;
+    }
 }

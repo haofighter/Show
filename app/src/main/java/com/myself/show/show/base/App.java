@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.myself.show.show.Ui.music.musicService.MusicService;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 import com.myself.show.show.sql.DaoMaster;
@@ -52,6 +53,8 @@ public class App extends Application {
         super.onCreate();
         mInstance = this;
         setDatabase();
+
+        SDKInitializer.initialize(this);
         createMusicServie(getApplicationContext());
     }
 

@@ -118,6 +118,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="下载1" />
+                <Button
+                    android:id="@+id/behavior_test"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="behavior" />
+                <Button
+                    android:id="@+id/guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="导航" />
             </LinearLayout>
 
         </com.myself.show.show.customview.ShadowLayout>

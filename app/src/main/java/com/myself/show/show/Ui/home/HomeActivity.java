@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.myself.show.show.R;
 import com.myself.show.show.Ui.MainActivity;
 import com.myself.show.show.Ui.home.fragment.HomeFragment;
 import com.myself.show.show.Ui.viewpage.listener.FragmentInfo;
 import com.myself.show.show.View.NavigationBar;
-import com.myself.show.show.base.BaseActivity;
 import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.listener.OnFragmentInteractionListener;
 
@@ -29,6 +31,8 @@ public class HomeActivity extends ThemeBaseActivity implements OnFragmentInterac
     ViewPager vpMain;
     @BindView(R.id.add_note)
     ImageView addNote;
+    @BindView(R.id.home_layout)
+    LinearLayout homeLayout;
     private ArrayList<FragmentInfo> fragmentList;
     private FragmentPagerAdapter fragmentPagerAdapter;
 
@@ -47,6 +51,11 @@ public class HomeActivity extends ThemeBaseActivity implements OnFragmentInterac
             }
         });
         initView();
+    }
+
+    @Override
+    public int getContentView() {
+        return 0;
     }
 
 
@@ -76,6 +85,7 @@ public class HomeActivity extends ThemeBaseActivity implements OnFragmentInterac
     public void onFragmentInteraction(Uri uri) {
 
     }
+
 
     @OnClick(R.id.add_note)
     public void onClick(View view) {

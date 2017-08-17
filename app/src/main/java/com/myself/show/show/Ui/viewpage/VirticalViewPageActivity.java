@@ -48,6 +48,11 @@ public class VirticalViewPageActivity extends ThemeBaseActivity implements OnFra
         initView();
     }
 
+    @Override
+    public int getContentView() {
+        return 0;
+    }
+
 
     private void initView() {
         fragmentList = new ArrayList<>();

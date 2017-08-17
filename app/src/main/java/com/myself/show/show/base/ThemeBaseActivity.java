@@ -35,7 +35,7 @@ import butterknife.ButterKnife;
 /**
  * 基于部分界面公用部分第二级自定义标题栏的界面
  */
-public class ThemeBaseActivity extends BaseActivity {
+public abstract class ThemeBaseActivity extends BaseActivity {
 
     @BindView(R.id.na_bar)
     protected NavigationBar na_bar;
@@ -56,11 +56,22 @@ public class ThemeBaseActivity extends BaseActivity {
 //            }
 //
 //        }
+        if (getContentView()!=0) {
+            setContentView(getContentView());
+        }
     }
 
 
     /**
+     * 使用抽象方法获取内容布局的ID,如果此方法返回值为0
+     * 则需要自行调用setContentView方法来填充主要布局
+     * @return
+     */
+    public abstract int getContentView();
+
+    /**
      * 设置状态栏的样式
+     * 用于判断是否显示状态栏和标题栏
      */
     protected void setActivityBar() {
         switch (activityBarType) {

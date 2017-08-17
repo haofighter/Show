@@ -54,6 +54,11 @@ public class GuideActivity extends ThemeBaseActivity {
     }
 
     @Override
+    public int getContentView() {
+        return 0;
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -75,6 +75,14 @@ public class NoteListAdapter extends RecyclerView.Adapter {
                     backCall.backCall(v.getId(), position);
             }
         });
+        ((NoteTitleItemHolder) holder).itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (backCall != null)
+                    backCall.backCall(v.getId(), position);
+                return true;
+            }
+        });
     }
 
     @Override

@@ -97,7 +97,6 @@ public class AddNoteActivity extends ThemeBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 //        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_note);
         ButterKnife.bind(this);
         noteDateDao = App.getInstance().getDaoSession().getNoteDateDao();
         initNaBar();
@@ -106,6 +105,12 @@ public class AddNoteActivity extends ThemeBaseActivity {
         editor.setHtml(noteDate ==null?"": noteDate.getNoteHtml());
         noteTitle.setText(noteDate ==null?"": noteDate.getTitle());
     }
+
+    @Override
+    public int getContentView() {
+        return R.layout.activity_add_note;
+    }
+
 
     private void initNaBar() {
         na_bar.setLeftBack(this);
@@ -385,7 +390,6 @@ public class AddNoteActivity extends ThemeBaseActivity {
         view.findViewById(R.id.btn_ok).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String linkAddress = et_link_address.getText().toString();
                 String linkTitle = et_link_title.getText().toString();
 
@@ -414,7 +418,6 @@ public class AddNoteActivity extends ThemeBaseActivity {
 
     // 执行动画效果
     public void startAnimation(View mView) {
-
         AlphaAnimation aa = new AlphaAnimation(0.4f, 1.0f); // 0完全透明 1 完全不透明
         // 以(0%,0.5%)为基准点，从0.5缩放至1
         ScaleAnimation sa = new ScaleAnimation(0.5f, 1, 0.5f, 1,
