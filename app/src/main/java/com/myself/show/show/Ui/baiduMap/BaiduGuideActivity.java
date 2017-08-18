@@ -12,9 +12,14 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.myself.show.show.R;
 
@@ -100,12 +105,25 @@ public class BaiduGuideActivity extends AppCompatActivity {
                 location.getStreetNumber();    //获取街道码
                 location.getLocationDescribe();    //获取当前位置描述信息
                 location.getPoiList();    //获取当前位置周边POI信息
-
                 location.getBuildingID();    //室内精准定位下，获取楼宇ID
                 location.getBuildingName();    //室内精准定位下，获取楼宇名称
                 location.getFloor();    //室内精准定位下，获取当前位置所处的楼层信息
 
                 Log.i("------------",location.getTime()+"=="+ location.getCountry()+"==="+location.getCity()+"");
+
+                BitmapDescriptor bitmap = BitmapDescriptorFactory
+                        .fromResource(R.mipmap.ic_launcher);
+                LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
+                OverlayOptions option1 = new MarkerOptions()
+                        .position(point).icon(bitmap)
+                        .title(location.getCity()).zIndex(0);
+
+                mapView.getMap().addOverlay(option1);
+                mapView.getMap().setMapStatus(MapStatusUpdateFactory
+                        .zoomTo(20));
+                MapStatusUpdate msu = MapStatusUpdateFactory
+                        .newLatLng(point);
+                mapView.getMap().animateMapStatus(msu);
             }
         });
         //注册监听函数
@@ -141,12 +159,11 @@ public class BaiduGuideActivity extends AppCompatActivity {
 //        option.setIgnoreCacheException(false);
         //可选，默认false，设置是否收集CRASH信息，默认收集
 
-        option.setEnableSimulateGps(false);
+//        option.setEnableSimulateGps(false);
         //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
 
 //        option.setWifiValidTime(5*60*1000);
         //可选，7.2版本新增能力，如果您设置了这个接口，首次启动定位时，会先判断当前WiFi是否超出有效期，超出有效期的话，会先重新扫描WiFi，然后再定位
-
         mLocationClient.setLocOption(option);
 
         mLocationClient.start();
