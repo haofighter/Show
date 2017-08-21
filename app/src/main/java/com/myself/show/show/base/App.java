@@ -7,7 +7,12 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
+import android.util.Log;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.myself.show.show.Ui.music.musicService.MusicService;
 import com.myself.show.show.net.responceBean.WySearchInfo;
@@ -55,6 +60,23 @@ public class App extends Application {
         setDatabase();
 
         SDKInitializer.initialize(this);
+        LocationClient mLocClient = new LocationClient(this);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true); // 打开gps
+        option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setScanSpan(1000);
+        mLocClient.setLocOption(option);
+        mLocClient.registerLocationListener(new BDLocationListener() {
+
+            @Override
+            public void onReceiveLocation(BDLocation arg0) {
+                Log.i("定位的位置","LocationManager.lat====="+arg0.getLatitude());
+            }
+        });
+        mLocClient.start();
+
+
+
         createMusicServie(getApplicationContext());
     }
 

@@ -87,6 +87,7 @@
         <activity android:name=".Ui.home.LookNoteActivity" />
         <activity android:name=".test.TestBehaviorActivity" />
         <activity android:name=".Ui.baiduMap.BaiduGuideActivity"></activity>
+        <activity android:name=".Ui.baiduMap.BNDemoGuideActivity"></activity>
     </application>
 
 </manifest>

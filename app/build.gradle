@@ -89,6 +89,7 @@ dependencies {
     compile 'net.qiujuer.genius:blur:2.0.0-beta4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile files('libs/BaiduNaviSDK_3.3.1.jar')
 }
 
 
