@@ -17,4 +17,5 @@ public class AppConstant {
     public static boolean needAnimal = false;
 
 
+    public final static String  LOCATION_ADDRESS="定位成功";
 }

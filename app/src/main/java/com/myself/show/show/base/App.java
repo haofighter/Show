@@ -14,6 +14,13 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
+import com.myself.show.show.Ui.baiduMap.MyOrientationListener;
+import com.myself.show.show.Ui.baiduMap.MyOrientationListener.OnOrientationListener;
+import com.myself.show.show.Ui.baiduMap.test.LocationLisener;
 import com.myself.show.show.Ui.music.musicService.MusicService;
 import com.myself.show.show.net.responceBean.WySearchInfo;
 import com.myself.show.show.sql.DaoMaster;
@@ -37,6 +44,7 @@ public class App extends Application {
     private MusicService musicService;
     private static App mInstance = null;
     private List<WySearchInfo.ResultBean.SongsBean> songsList = new ArrayList<>();
+    private LocationClient mLocationClient;
 
     public List<WySearchInfo.ResultBean.SongsBean> getSongsList() {
         return songsList;
@@ -47,9 +55,10 @@ public class App extends Application {
      * getInstance
      */
     public static App getInstance() {
-        if (mInstance == null){
+        if (mInstance == null) {
             ToastUtils.showMessage("APP是个空的");
-            mInstance = new App();}
+            mInstance = new App();
+        }
         return mInstance;
     }
 
@@ -59,25 +68,101 @@ public class App extends Application {
         mInstance = this;
         setDatabase();
 
-        SDKInitializer.initialize(this);
-        LocationClient mLocClient = new LocationClient(this);
-        LocationClientOption option = new LocationClientOption();
-        option.setOpenGps(true); // 打开gps
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
-        mLocClient.setLocOption(option);
-        mLocClient.registerLocationListener(new BDLocationListener() {
+        SDKInitializer.initialize(getApplicationContext());
 
+//        createMusicServie(getApplicationContext());//此服务与定位服务有冲突 需后续进行改进
+
+        //此处调用用于设置罗盘初始化时的角度
+        getCompass();
+    }
+
+    //罗盘的角度
+    private float mCurrentX;
+
+    //获取到罗盘的角度
+    public float getCurrentX() {
+        return mCurrentX;
+    }
+
+    /**
+     * 获取到罗盘信息
+     */
+    private void getCompass() {
+        MyOrientationListener myOrientationListener = new MyOrientationListener(this);
+        myOrientationListener.setOnOrientationListener(new MyOrientationListener.OnOrientationListener() {
             @Override
-            public void onReceiveLocation(BDLocation arg0) {
-                Log.i("定位的位置","LocationManager.lat====="+arg0.getLatitude());
+            public void onOrientationChanged(float x) {
+                mCurrentX = x;
+                if (onLocationListener != null || mLocation != null) {
+                    onLocationListener.locSuc(mLocation);
+                }
             }
         });
-        mLocClient.start();
+        myOrientationListener.start();
+    }
 
 
+    //定位刷新监听
+    LocationLisener onLocationListener;
 
-        createMusicServie(getApplicationContext());
+    public void setOnLocationListener(LocationLisener onLocationListener) {
+        this.onLocationListener = onLocationListener;
+    }
+
+    /**
+     * 刷新定位
+     */
+    public LocationClient refreshLocation() {
+        if (mLocationClient != null) {
+            mLocationClient.stop();
+            mLocationClient.start();
+            Log.i("开启定位", "" + mLocationClient.isStarted());
+        } else {
+            startGetLoction();
+        }
+        return mLocationClient;
+    }
+
+    private BDLocation mLocation;
+
+
+    BDLocationListener bdLocationListener = new BDLocationListener() {
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            mLocation = bdLocation;
+            Log.d("定位成功", "bdLocation==" + bdLocation.getCity());
+            onLocationListener.locSuc(mLocation);
+        }
+    };
+
+    /**
+     * 开始定位
+     */
+    public void startGetLoction() {
+        mLocationClient = new LocationClient(getApplicationContext());
+        mLocationClient.registerLocationListener(bdLocationListener);
+
+        //注册监听函数
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("bd09ll");
+        //可选，默认gcj02，设置返回的定位结果坐标系
+        option.setScanSpan(LocationClientOption.MIN_SCAN_SPAN);
+        //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setIsNeedAddress(true);
+        //可选，设置是否需要地址信息，默认不需要
+        option.setOpenGps(true);
+        //可选，默认false,设置是否使用gps
+        option.setLocationNotify(true);
+        //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
+        option.setIsNeedLocationDescribe(true);
+        //可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+        option.setIsNeedLocationPoiList(true);
+        //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+        option.setIgnoreKillProcess(false);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
     }
 
 
@@ -87,7 +172,7 @@ public class App extends Application {
     }
 
     public MusicService getMusicServie(Context context) {
-        if (musicService==null){
+        if (musicService == null) {
             createMusicServie(context);
         }
         return musicService;
@@ -114,14 +199,14 @@ public class App extends Application {
         bindService(intent, sc, this.BIND_AUTO_CREATE);
     }
 
-    public WySearchInfo.ResultBean.SongsBean getRunMusicInfo(){
-        WySearchInfo.ResultBean.SongsBean songsBean=null;
-        try{
-            songsBean= this.getSongsList().get(musicService.getRunIndex());
-        }catch (Exception e){
+    public WySearchInfo.ResultBean.SongsBean getRunMusicInfo() {
+        WySearchInfo.ResultBean.SongsBean songsBean = null;
+        try {
+            songsBean = this.getSongsList().get(musicService.getRunIndex());
+        } catch (Exception e) {
             return null;
         }
-       return songsBean;
+        return songsBean;
     }
 
 
@@ -129,6 +214,7 @@ public class App extends Application {
     @Override
     public void onTerminate() {
         unbindService(sc);
+        mLocationClient.unRegisterLocationListener(bdLocationListener);
         super.onTerminate();
     }
 
@@ -160,5 +246,7 @@ public class App extends Application {
     public void setMusicMediaSever(MusicService musicMediaSever) {
         this.musicMediaSever = musicMediaSever;
     }
+
+
 }
 

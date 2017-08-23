@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,6 +16,7 @@ import android.widget.TextView;
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
 import com.myself.show.show.Ui.baiduMap.BaiduGuideActivity;
+import com.myself.show.show.Ui.baiduMap.test.TestMapActivity;
 import com.myself.show.show.Ui.download.DownloadMoreActivity;
 import com.myself.show.show.Ui.home.HomeActivity;
 import com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity;
@@ -31,7 +31,6 @@ import com.myself.show.show.net.upload.FileRequestBody;
 import com.myself.show.show.net.download.FileResponseBody;
 import com.myself.show.show.net.upload.FileSubscribe;
 import com.myself.show.show.net.download.ProgressListener;
-import com.myself.show.show.test.TestBehavior;
 import com.myself.show.show.test.TestBehaviorActivity;
 
 import java.io.File;
@@ -104,7 +103,7 @@ public class MainActivity extends ThemeBaseActivity {
 
     String picPath = Environment.getExternalStorageDirectory() + "/test.jpg";
 
-    @OnClick({R.id.guide,R.id.behavior_test, R.id.downloadmore, R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
+    @OnClick({R.id.guide_test,R.id.guide,R.id.behavior_test, R.id.downloadmore, R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first:
@@ -296,6 +295,8 @@ public class MainActivity extends ThemeBaseActivity {
                 break;
             case R.id.guide:
                 startActivity(BaiduGuideActivity.class);
+                break; case R.id.guide_test:
+                startActivity(TestMapActivity.class);
                 break;
         }
 

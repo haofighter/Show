@@ -7,18 +7,17 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
+    <!-- Baidu地图 -->
 
-    <!--                              Baidu地图                       -->
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -38,12 +37,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- 摄影机 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!--                             权限申请结束                       -->
 
-
-
-
-
+    <!-- 权限申请结束 -->
     <application
         android:name=".base.App"
         android:allowBackup="true"
@@ -52,15 +47,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--Baidu地图  AK填写  -->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="bCqvUkN27QR2MbGpHcpFUmjWKnCDcMN4" />
-        <!--  定位用到的service-->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" />
 
         <activity android:name=".Ui.home.GuideActivity">
             <intent-filter>
@@ -86,8 +72,25 @@
         <activity android:name=".Ui.download.DownloadMoreActivity" />
         <activity android:name=".Ui.home.LookNoteActivity" />
         <activity android:name=".test.TestBehaviorActivity" />
-        <activity android:name=".Ui.baiduMap.BaiduGuideActivity"></activity>
-        <activity android:name=".Ui.baiduMap.BNDemoGuideActivity"></activity>
+        <activity android:name=".Ui.baiduMap.BaiduGuideActivity" />
+        <activity android:name=".Ui.baiduMap.BNDemoGuideActivity" />
+        <activity
+            android:name=".Ui.baiduMap.test.TestMapActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Ui.baiduMap.test.SlelectAddressActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <!-- Baidu地图  AK填写 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="bCqvUkN27QR2MbGpHcpFUmjWKnCDcMN4" />
+        <!-- 定位用到的service -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+        <!--音乐播放服务-->
     </application>
 
 </manifest>

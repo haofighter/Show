@@ -62,8 +62,7 @@ public class MyOrientationListener implements SensorEventListener{
             lastX=x;
         }
     }
-    public void setOnOrientationListener(OnOrientationListener listener)
-    {
+    public void setOnOrientationListener(OnOrientationListener listener) {
         mOnOrientationListener=listener;
     }
 

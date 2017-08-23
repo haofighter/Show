@@ -46,7 +46,6 @@ public abstract class ThemeBaseActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
 //        List<ActivityManager.RunningServiceInfo> runningServiceInfos = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getRunningServices(Integer.MAX_VALUE);
 //
 //        for (int i = 0; i < runningServiceInfos.size(); i++) {
@@ -109,6 +108,16 @@ public abstract class ThemeBaseActivity extends BaseActivity {
         ButterKnife.bind(this);
         setToolbarColor(-1);
         setActivityBar();
+
+        na_bar.setListener(new NavigationBar.NavigationListener() {
+            @Override
+            public void onButtonClick(int button) {
+                switch (button){
+                    case NavigationBar.LEFT_VIEW:
+                        finish();
+                }
+            }
+        });
     }
 
 

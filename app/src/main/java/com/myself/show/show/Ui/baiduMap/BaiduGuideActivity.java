@@ -29,6 +29,9 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.navisdk.adapter.BNCommonSettingParam;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BNaviSettingManager;
@@ -163,6 +166,9 @@ public class BaiduGuideActivity extends AppCompatActivity {
         BNaviSettingManager.setNaviSdkParam(bundle);
     }
 
+    // 搜索相关
+    RoutePlanSearch mSearch = null;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -239,6 +245,15 @@ public class BaiduGuideActivity extends AppCompatActivity {
 
                 MyLocationConfiguration config = new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker);
                 mapView.getMap().setMyLocationConfiguration(config);
+
+
+                mSearch = RoutePlanSearch.newInstance();
+                DrivingRoutePlanOption drivingRoutePlanOption = new DrivingRoutePlanOption();
+                PlanNode stNode = PlanNode.withLocation(new LatLng(mlocation.getLongitude(), mlocation.getLatitude()));
+                PlanNode eNode = PlanNode.withLocation(new LatLng(116.397491, 39.908749));
+                drivingRoutePlanOption.from(stNode);
+                drivingRoutePlanOption.to(eNode);
+                mSearch.drivingSearch(drivingRoutePlanOption);
 
             }
         });
