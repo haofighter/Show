@@ -12,10 +12,24 @@
     app:edPosition="1">
 
     <RelativeLayout
-        android:id="@+id/show_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"></RelativeLayout>
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/show_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </RelativeLayout>
+    </RelativeLayout>
 
     <com.myself.show.show.View.FlowingDraw.FlowingMenuLayout
         android:id="@+id/flowing_content"
@@ -23,4 +37,5 @@
         android:layout_height="match_parent">
         <!--<include layout="@layout/flowing_content_layout" />-->
     </com.myself.show.show.View.FlowingDraw.FlowingMenuLayout>
+
 </com.myself.show.show.View.FlowingDraw.FlowingDrawer>

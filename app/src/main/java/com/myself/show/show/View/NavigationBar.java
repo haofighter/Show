@@ -148,6 +148,10 @@ public class NavigationBar extends RelativeLayout {
         mTitleView.setText(string);
     }
 
+    public void setTitleColor(int color) {
+        mTitleView.setTextColor(color);
+    }
+
     public void setTitle(int strResId) {
         mTitleView.setText(strResId);
     }

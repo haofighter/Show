@@ -141,6 +141,8 @@ public class HomeFragment extends BaseFragment {
         noteDateList.setItemAnimator(new DefaultItemAnimator());
         noteDateList.addItemDecoration(new RecycleViewDivider(getActivity(), DividerItemDecoration.HORIZONTAL, 1, ContextCompat.getColor(getActivity(), R.color.gray_22)));
         noteDateList.setAdapter(noteListAdapter);
+
+        //可移动条目的Recycleview设置
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(mCallback);
         itemTouchHelper.attachToRecyclerView(noteDateList);
         return view;

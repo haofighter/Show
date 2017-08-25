@@ -136,6 +136,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="导航测试" />
+
+                <Button
+                    android:id="@+id/pop_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="弹窗地图测试" />
             </LinearLayout>
 
         </com.myself.show.show.customview.ShadowLayout>

@@ -125,6 +125,9 @@ public class App extends Application {
 
     private BDLocation mLocation;
 
+    public BDLocation getLoction() {
+        return mLocation;
+    }
 
     BDLocationListener bdLocationListener = new BDLocationListener() {
         @Override

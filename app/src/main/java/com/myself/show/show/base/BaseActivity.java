@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.myself.show.show.R;
 import com.myself.show.show.Tools.StatusBarUtil;
+import com.myself.show.show.View.LoadingDialog;
 import com.myself.show.show.listener.ActivityInitListener;
 import com.myself.show.show.listener.OnSongChangeListener;
 import com.myself.show.show.View.CircleImageView;
@@ -52,6 +53,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private FrameLayout flowing_content;
     protected FlowingDrawer flowView;
+    private RelativeLayout loading;
 
 
     @Override
@@ -59,6 +61,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);//用于告诉Window页面切换需要使用动画
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        initDialog();//初始化进度框
     }
 
     //容纳侧滑的中音乐布局的holder
@@ -182,7 +185,6 @@ public class BaseActivity extends AppCompatActivity {
     };
 
 
-
     //实时修改音乐播放进度
     class MyMusicUIRefreshTask extends TimerTask {
         @Override
@@ -292,12 +294,12 @@ public class BaseActivity extends AppCompatActivity {
 
 
     public void startActivity(Class<? extends Activity> activity) {
-        startActivity( activity,null);
+        startActivity(activity, null);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void startActivity(Class<? extends Activity> activity, ActivityChangeAnimal activityChangeAnimal) {
-        if(AppConstant.needAnimal) {
+        if (AppConstant.needAnimal) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP || activityChangeAnimal == null) {
                 Intent intent = new Intent(this, activity);
                 startActivity(intent);
@@ -334,10 +336,51 @@ public class BaseActivity extends AppCompatActivity {
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
 
             }
-        }else{
+        } else {
             Intent intent = new Intent(this, activity);
             startActivity(intent);
         }
     }
 
+
+    protected void startActivityForResult(Class<? extends Activity> activity, int requestCode) {
+        Intent intent = new Intent(this, activity);
+        startActivityForResult(intent, requestCode);
+    }
+
+    /****************************加载进度框***************************************/
+    LoadingDialog loadingDialog;
+
+    private void initDialog() {
+        loadingDialog = new LoadingDialog(this);
+    }
+
+    public void showLoadingDialog() {
+        if (null != loadingDialog) {
+            loadingDialog.show("");
+        }
+    }
+
+    public void showLoadingDialog(String content) {
+        if (null != loadingDialog) {
+            loadingDialog.show(content);
+        }
+    }
+
+    public void dimissLoadingDialog() {
+        if (null != loadingDialog) {
+            loadingDialog.dismiss();
+        }
+    }
+
+    /*************************************************************************/
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (null != loadingDialog) {
+            dimissLoadingDialog();
+            loadingDialog = null; // 加快gc
+        }
+    }
 }
