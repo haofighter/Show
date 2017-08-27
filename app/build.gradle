@@ -9,7 +9,7 @@ android {
         config {
             keyAlias 'show'
             keyPassword '123456'
-            storeFile file('C:/myself.jks')
+            storeFile file('C:/Users/Administrator/Desktop/Show/show.jks')
             storePassword '123456'
         }
     }
