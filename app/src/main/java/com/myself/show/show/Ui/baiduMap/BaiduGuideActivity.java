@@ -162,7 +162,7 @@ public class BaiduGuideActivity extends AppCompatActivity {
         BNaviSettingManager.setIsAutoQuitWhenArrived(true);
         Bundle bundle = new Bundle();
         // 必须设置APPID，否则会静音
-        bundle.putString(BNCommonSettingParam.TTS_APP_ID, "9354030");
+        bundle.putString(BNCommonSettingParam.TTS_APP_ID, "10019454");
         BNaviSettingManager.setNaviSdkParam(bundle);
     }
 
@@ -220,7 +220,6 @@ public class BaiduGuideActivity extends AppCompatActivity {
                 location.getBuildingName();    //室内精准定位下，获取楼宇名称
                 location.getFloor();    //室内精准定位下，获取当前位置所处的楼层信息
 
-                ToastUtils.showMessage(location.getTime() + "==" + location.getCountry() + "===" + location.getCity() + "" + location.getLongitude());
                 Log.i("===", location.getTime() + "==" + location.getCountry() + "===" + location.getCity() + "" + location.getLongitude());
                 //TODO  定位地点显示
 //                BitmapDescriptor bitmap = BitmapDescriptorFactory
@@ -403,7 +402,7 @@ public class BaiduGuideActivity extends AppCompatActivity {
             }
             case WGS84: {
                 sNode = new BNRoutePlanNode(mlocation.getLongitude(), mlocation.getLatitude(), "我的位置", null, coType);
-                eNode = new BNRoutePlanNode(116.397491, 39.908749, "北京天安门", null, coType);
+                eNode = new BNRoutePlanNode(114.244624, 30.625935, "武汉市长青花园", null, coType);
                 break;
             }
             case BD09_MC: {
@@ -422,18 +421,11 @@ public class BaiduGuideActivity extends AppCompatActivity {
             List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
             list.add(sNode);
             list.add(eNode);
-            BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(eNode), eventListerner);
+            BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(eNode));
 
         }
     }
 
-    BaiduNaviManager.NavEventListener eventListerner = new BaiduNaviManager.NavEventListener() {
-
-        @Override
-        public void onCommonEventCall(int what, int arg1, int arg2, Bundle bundle) {
-            BNEventHandler.getInstance().handleNaviEvent(what, arg1, arg2, bundle);
-        }
-    };
 
 
     public static final String ROUTE_PLAN_NODE = "routePlanNode";

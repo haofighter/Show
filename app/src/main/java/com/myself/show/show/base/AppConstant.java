@@ -17,5 +17,14 @@ public class AppConstant {
     public static boolean needAnimal = false;
 
 
-    public final static String  LOCATION_ADDRESS="定位成功";
+    public final static String LOCATION_ADDRESS = "定位成功";
+
+    /**
+     * LogCat的标记
+     */
+    public static final String DEBUG_TAG = "AndroidPicker";
+    /**
+     * 是否调试模式
+     */
+    public static final boolean DEBUG_ENABLE = false;
 }

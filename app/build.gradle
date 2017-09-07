@@ -4,6 +4,7 @@ apply plugin: 'com.jakewharton.butterknife'
 
 apply plugin: 'org.greenrobot.greendao'
 
+
 android {
     signingConfigs {
         config {
@@ -40,6 +41,12 @@ android {
         }
     }
     productFlavors {
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, "简_"+defaultConfig.versionName +".apk" );
+        }
     }
 }
 
@@ -85,7 +92,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'org.ow2.util.base64:base64:2.0.0'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
-    compile 'com.android.support:support-v4:25.3.1'
     compile 'net.qiujuer.genius:blur:2.0.0-beta4'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

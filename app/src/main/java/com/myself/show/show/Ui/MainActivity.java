@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.myself.show.show.Ui.home.HomeActivity;
 import com.myself.show.show.Ui.imageCorrelation.GetCustomImageAcitivity;
 import com.myself.show.show.Ui.music.activity.MusicActivity;
 import com.myself.show.show.Ui.viewpage.ViewPageFragmentActivity;
+import com.myself.show.show.View.picker.CustomPicker;
+import com.myself.show.show.View.picker.listener.OnItemPickListener;
 import com.myself.show.show.base.ThemeBaseActivity;
 import com.myself.show.show.customview.ShadowLayout;
 import com.myself.show.show.net.RetrofitManager;
@@ -36,6 +39,7 @@ import com.myself.show.show.net.download.FileResponseBody;
 import com.myself.show.show.net.upload.FileSubscribe;
 import com.myself.show.show.net.download.ProgressListener;
 import com.myself.show.show.test.TestBehaviorActivity;
+import com.myself.show.show.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -107,7 +111,7 @@ public class MainActivity extends ThemeBaseActivity {
 
     String picPath = Environment.getExternalStorageDirectory() + "/test.jpg";
 
-    @OnClick({R.id.pop_map,R.id.guide_test, R.id.guide, R.id.behavior_test, R.id.downloadmore, R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
+    @OnClick({R.id.pop_map, R.id.guide_test, R.id.guide, R.id.behavior_test, R.id.downloadmore, R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first:
@@ -304,12 +308,20 @@ public class MainActivity extends ThemeBaseActivity {
                 startActivity(TestMapActivity.class);
                 break;
             case R.id.pop_map:
-                initMapWindow();
+                CustomPicker picker = new CustomPicker(this);
+                picker.setOffset(2);//显示的条目的偏移量，条数为（offset*2+1）
+                picker.setGravity(Gravity.BOTTOM);//居中
+                picker.setOnItemPickListener(new OnItemPickListener<String>() {
+                    @Override
+                    public void onItemPicked(int position, String option) {
+                        ToastUtils.showMessage("index=" + position + ", item=" + option);
+                    }
+                });
+                picker.show();
                 break;
         }
 
     }
-
 
 
     // 地图弹出框

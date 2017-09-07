@@ -216,7 +216,6 @@ public class DrivingRouteOverlay extends OverlayManager {
 				// Toast.makeText(App.mCurrentActivity, i + "321", 1000).show();
 				if (marker.getExtraInfo() != null) {
 					onRouteNodeClick(marker.getExtraInfo().getInt("index"),new LatLng( marker.getPosition().latitude,  marker.getPosition().longitude));
-
 				} else {
 					onRouteNodeClick(i,new LatLng( marker.getPosition().latitude,  marker.getPosition().longitude));
 					// Toast.makeText(App.mCurrentActivity,

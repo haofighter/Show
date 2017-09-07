@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -18,6 +19,8 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.navisdk.adapter.BNCommonSettingParam;
+import com.baidu.navisdk.adapter.BNaviSettingManager;
 import com.myself.show.show.Ui.baiduMap.MyOrientationListener;
 import com.myself.show.show.Ui.baiduMap.MyOrientationListener.OnOrientationListener;
 import com.myself.show.show.Ui.baiduMap.test.LocationLisener;
@@ -75,6 +78,8 @@ public class App extends Application {
         //此处调用用于设置罗盘初始化时的角度
         getCompass();
     }
+
+
 
     //罗盘的角度
     private float mCurrentX;
