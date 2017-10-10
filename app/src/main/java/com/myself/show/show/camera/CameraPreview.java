@@ -94,7 +94,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         });
     }
 
-    interface PhotoComplate{
+    interface PhotoComplate {
         void backPhotoUrl(File file);
     }
 
@@ -128,12 +128,40 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         mHolder.addCallback(this);
     }
 
+    private int cameraPosition = 1;
+
     public Camera getCameraInstance() {
         if (mCamera == null) {
-            try {
-                mCamera = Camera.open();
-            } catch (Exception e) {
-                Log.d(TAG, "camera is not available");
+            mCamera = Camera.open();
+            //如果想后置摄像头，可直接Camera.open();默认就是后置的
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            int count = Camera.getNumberOfCameras();
+            for (int i = 0; i < count; i++) {
+                Camera.getCameraInfo(i, info);//得到每一个摄像头的信息
+                if (cameraPosition == 1) {
+                    //现在是后置，变更为前置
+                    if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
+                        mCamera.stopPreview();//停掉原来摄像头的预览
+                        mCamera.release();//释放资源
+                        mCamera = null;//取消原来摄像头
+                        mCamera = Camera.open(i);//打开当前选中的摄像头
+                        mCamera.startPreview();//开始预览
+                        cameraPosition = 0;
+                        break;
+                    }
+                } else {
+                    //现在是前置， 变更为后置
+                    if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {//代表摄像头的方位，CAMERA_FACING_FRONT前置      CAMERA_FACING_BACK后置
+                        mCamera.stopPreview();//停掉原来摄像头的预览
+                        mCamera.release();//释放资源
+                        mCamera = null;//取消原来摄像头
+                        mCamera = Camera.open(i);//打开当前选中的摄像头
+                        mCamera.startPreview();//开始预览
+                        cameraPosition = 1;
+                        break;
+                    }
+
+                }
             }
         }
         return mCamera;

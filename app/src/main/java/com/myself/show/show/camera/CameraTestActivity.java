@@ -36,7 +36,7 @@ public class CameraTestActivity extends AppCompatActivity {
         findViewById(R.id.button_capture_photo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mPreview.takePicture(mediaPreview);
+                mPreview.takePicture(mediaPreview);
                 mPreview.takePicture(new CameraPreview.PhotoComplate() {
                     @Override
                     public void backPhotoUrl(File file) {
