@@ -8,6 +8,8 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
 
+import com.myself.show.show.R;
+
 import java.util.ArrayList;
 import java.util.List;
 

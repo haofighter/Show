@@ -69,6 +69,36 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         });
     }
 
+    public void takePicture(final PhotoComplate photoComplate) {
+        mCamera.takePicture(null, null, new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+                if (pictureFile == null) {
+                    Log.d(TAG, "Error creating media file, check storage permissions");
+                    return;
+                }
+                try {
+                    FileOutputStream fos = new FileOutputStream(pictureFile);
+                    fos.write(data);
+                    fos.close();
+
+                    photoComplate.backPhotoUrl(pictureFile);
+                    camera.startPreview();
+                } catch (FileNotFoundException e) {
+                    Log.d(TAG, "File not found: " + e.getMessage());
+                } catch (IOException e) {
+                    Log.d(TAG, "Error accessing file: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+    interface PhotoComplate{
+        void backPhotoUrl(File file);
+    }
+
+
     public boolean startRecording() {
         if (prepareVideoRecorder()) {
             mMediaRecorder.start();

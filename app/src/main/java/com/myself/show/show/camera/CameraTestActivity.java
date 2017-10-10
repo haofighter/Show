@@ -5,12 +5,16 @@ import android.hardware.Camera;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.myself.show.show.R;
+import com.myself.show.show.utils.ToastUtils;
+
+import java.io.File;
 
 public class CameraTestActivity extends AppCompatActivity {
 
@@ -32,7 +36,14 @@ public class CameraTestActivity extends AppCompatActivity {
         findViewById(R.id.button_capture_photo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreview.takePicture(mediaPreview);
+//                mPreview.takePicture(mediaPreview);
+                mPreview.takePicture(new CameraPreview.PhotoComplate() {
+                    @Override
+                    public void backPhotoUrl(File file) {
+                        ToastUtils.showMessage(file.length()+"");
+                        Log.i("照片的路径",file.getAbsolutePath());
+                    }
+                });
             }
         });
         buttonCaptureVideo = (Button) findViewById(R.id.button_capture_video);

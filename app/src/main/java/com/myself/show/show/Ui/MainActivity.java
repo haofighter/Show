@@ -30,6 +30,7 @@ import com.myself.show.show.Ui.viewpage.ViewPageFragmentActivity;
 import com.myself.show.show.View.picker.CustomPicker;
 import com.myself.show.show.View.picker.listener.OnItemPickListener;
 import com.myself.show.show.base.ThemeBaseActivity;
+import com.myself.show.show.camera.CameraTestActivity;
 import com.myself.show.show.customview.ShadowLayout;
 import com.myself.show.show.net.RetrofitManager;
 import com.myself.show.show.net.Service;
@@ -111,7 +112,7 @@ public class MainActivity extends ThemeBaseActivity {
 
     String picPath = Environment.getExternalStorageDirectory() + "/test.jpg";
 
-    @OnClick({R.id.pop_map, R.id.guide_test, R.id.guide, R.id.behavior_test, R.id.downloadmore, R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
+    @OnClick({R.id.use_camera,R.id.pop_map, R.id.guide_test, R.id.guide, R.id.behavior_test, R.id.downloadmore, R.id.download1, R.id.first, R.id.search, R.id.button, R.id.viewpage_test, R.id.image_control, R.id.vertical_viewpager, R.id.upload, R.id.upload_more, R.id.download})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.first:
@@ -318,6 +319,10 @@ public class MainActivity extends ThemeBaseActivity {
                     }
                 });
                 picker.show();
+                break;
+
+            case R.id.use_camera:
+               startActivity(CameraTestActivity.class);
                 break;
         }
 

@@ -142,6 +142,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="弹窗地图测试" />
+
+                <Button
+                    android:id="@+id/use_camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="使用相机" />
             </LinearLayout>
 
         </com.myself.show.show.customview.ShadowLayout>
