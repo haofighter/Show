@@ -10,12 +10,12 @@ android {
         config {
             keyAlias 'show'
             keyPassword '123456'
-            storeFile file('C:/Users/Administrator/Desktop/Show/show.jks')
+            storeFile file('/Users/haozhang/Desktop/Show/show.jks')
             storePassword '123456'
         }
     }
     compileSdkVersion 26
-    buildToolsVersion "25.0.3"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.myself.show.show"
         minSdkVersion 15
@@ -43,11 +43,6 @@ android {
     productFlavors {
     }
 
-    android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            output.outputFile = new File(output.outputFile.parent, "简_" + defaultConfig.versionName + ".apk");
-        }
-    }
 }
 
 buildscript {
@@ -56,7 +51,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2'
     }
 }
